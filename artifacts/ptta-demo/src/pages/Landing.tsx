@@ -7,7 +7,9 @@ export default function Landing() {
   const [muted, setMuted] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [heroPast, setHeroPast] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroRef = useRef<HTMLElement>(null);
