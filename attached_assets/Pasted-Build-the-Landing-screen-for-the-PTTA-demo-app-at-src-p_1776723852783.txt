@@ -1,0 +1,58 @@
+Build the Landing screen for the PTTA demo app at /src/pages/Landing.jsx.
+
+Layout (top to bottom, single scrollable column on mobile):
+
+1. HEADER (sticky, transparent until scrolled)
+   - Logo placeholder on the left (text logo "Please Touch This Art" in serif until I provide a file — leave a clearly-labelled comment so I can swap it)
+   - Language toggle on the right (EN / DE)
+
+2. HERO VIDEO BLOCK
+   - Full-width video, ~16:9 aspect ratio on mobile, max-height 70vh on desktop
+   - Use a placeholder <video> element with poster image and a comment indicating where the real footage goes (footage will show blind visitors interacting with tactile models in a museum)
+   - Video autoplays muted with looping; include a visible mute/unmute toggle in the corner
+   - Soft dark gradient overlay at the bottom for text contrast
+
+3. HERO COPY (overlaid on bottom of video on desktop, below video on mobile)
+   - Eyebrow line (small, uppercase, tracked): "Inclusive museum experiences"
+   - Headline (serif, large): "Art you can finally touch."
+   - Subline (sans, body size): "AI-assisted tactile 3D models that make paintings, sculptures, and museum objects accessible to blind and visually impaired visitors."
+   - Primary CTA button: "Tap to start demo" → navigates to /how-it-works
+   - Button style: large, full-width on mobile, pill shape, accent background, deep charcoal text, generous padding (min 56px height for touch target)
+
+4. SLOGAN BLOCK (full-width band, off-white background)
+   - Centered serif quote, large: "Museums tell visitors not to touch. We're changing that."
+   - Small caption below: "Founded 2023 in Bremen · Social Impact Award Germany 2025"
+
+5. PROBLEM / SOLUTION SECTION (two-column on desktop, stacked on mobile)
+   - Left card: "The Problem"
+     - Heading
+     - Body: "For blind and visually impaired people, art in museums is essentially invisible. Paintings sit behind glass with 'do not touch' signs. Audio guides describe what others can see — but they can't replace the experience of perceiving a work directly."
+   - Right card: "Our Solution"
+     - Heading
+     - Body: "We convert paintings and objects into precise tactile 3D models, paired with custom audio descriptions and braille plaques. Visitors explore the artwork with their hands, guided by audio crafted with blind collaborators."
+   - Each card has a subtle background (slightly different warm neutral), generous padding, soft border-radius (16px)
+
+6. CONTEXT STRIP (small, horizontal scroll on mobile, grid on desktop)
+   - 4 quick facts as small cards:
+     - "27+ installations"
+     - "Partner: BSVH & BSVB"
+     - "ESA Mars surface commission"
+     - "Overbeck-Museum Bremen — 20+ models"
+   - Small caption below strip: "Verified figures as of 2026"
+
+7. FOOTER (minimal)
+   - "contact@ptta.art"
+   - Small note: "Demo prototype — actual product features include optional audio equipment, braille plaques, and mounting systems."
+
+Interaction notes:
+- Smooth scroll behavior
+- "Tap to start demo" CTA also fixed-bottom on mobile after the user scrolls past the hero, so it's always reachable
+- All copy stored in /src/content/copy.js so I can add German translations
+
+Accessibility:
+- Video has captions track placeholder
+- All interactive elements have aria-labels
+- Focus visible states on every button and link
+- prefers-reduced-motion disables video autoplay and Framer Motion transitions
+
+Build only this screen. Do not stub out the next screens yet.
