@@ -1,24 +1,24 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { copy } from "@/content/copy.js";
+import { copy } from "@/content/copy";
 
 export default function Landing() {
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState<"en" | "de">("en");
   const [muted, setMuted] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [heroPast, setHeroPast] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  const videoRef = useRef(null);
-  const heroRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const [, navigate] = useLocation();
 
-  const t = copy[lang] || copy.en;
+  const t = copy[lang] ?? copy.en;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mq.matches);
-    const handler = (e) => setPrefersReducedMotion(e.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
@@ -67,7 +67,7 @@ export default function Landing() {
         role="banner"
       >
         {/*
-          LOGO: Replace this text with your actual logo file once available.
+          LOGO: Replace this text element with your actual logo file once available.
           e.g.: <img src={logo} alt="Please Touch This Art" className="h-8" />
         */}
         <a
@@ -122,9 +122,10 @@ export default function Landing() {
         aria-label="Hero video"
       >
         {/*
-          VIDEO: Replace src with your footage file once available.
-          poster: add a still frame image path, e.g. poster="/images/hero-poster.jpg"
-          Footage should show blind visitors interacting with tactile 3D models in a museum.
+          VIDEO: Replace the commented-out <source> with your footage file path.
+          Add a poster attribute with a still-frame image path, e.g.:
+            poster="/images/hero-poster.jpg"
+          Footage should show blind visitors interacting with tactile 3D models.
         */}
         <video
           ref={videoRef}
@@ -137,8 +138,8 @@ export default function Landing() {
         >
           {/* <source src="/videos/ptta-hero.mp4" type="video/mp4" /> */}
           {/*
-            CAPTIONS: Replace src with your WebVTT file path once available.
-            e.g. src="/captions/ptta-hero-en.vtt" and add the `default` attribute.
+            CAPTIONS: Replace src with your WebVTT file once available, e.g.:
+              src="/captions/ptta-hero-en.vtt"  and add the `default` attribute.
           */}
           <track kind="captions" src="" srcLang="en" label="English captions placeholder" />
         </video>
