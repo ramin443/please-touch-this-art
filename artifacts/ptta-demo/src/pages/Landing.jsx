@@ -13,7 +13,7 @@ export default function Landing() {
   const heroRef = useRef(null);
   const [, navigate] = useLocation();
 
-  const t = copy[lang];
+  const t = copy[lang] || copy.en;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -59,24 +59,20 @@ export default function Landing() {
   return (
     <div className="ptta-root min-h-screen" style={{ scrollBehavior: "smooth" }}>
 
-      {/* ─── 1. HEADER ─────────────────────────────────────────────────────── */}
+      {/* HEADER */}
       <header
-        className={`ptta-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
           scrolled ? "bg-white/90 backdrop-blur shadow-sm" : "bg-transparent"
         }`}
         role="banner"
       >
         {/*
-          LOGO PLACEHOLDER
-          ─────────────────────────────────────────────────────────────────────
-          Replace the text below with your actual logo once you have the file.
-          Example (after placing logo.svg in /src/assets/):
-            <img src={logo} alt="Please Touch This Art" className="h-8" />
-          ─────────────────────────────────────────────────────────────────────
+          LOGO: Replace this text with your actual logo file once available.
+          e.g.: <img src={logo} alt="Please Touch This Art" className="h-8" />
         */}
         <a
           href="/"
-          className={`ptta-logo font-serif text-lg font-bold tracking-tight transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
+          className={`font-serif text-lg font-bold tracking-tight transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
             scrolled ? "text-stone-900" : "text-white"
           }`}
           aria-label="Please Touch This Art – home"
@@ -118,24 +114,17 @@ export default function Landing() {
         </nav>
       </header>
 
-      {/* ─── 2. HERO VIDEO BLOCK ────────────────────────────────────────────── */}
+      {/* HERO VIDEO */}
       <section
         ref={heroRef}
-        className="ptta-hero relative w-full bg-stone-950 overflow-hidden"
+        className="relative w-full bg-stone-950 overflow-hidden"
         style={{ aspectRatio: "16/9", maxHeight: "100svh" }}
         aria-label="Hero video"
       >
         {/*
-          VIDEO PLACEHOLDER
-          ─────────────────────────────────────────────────────────────────────
-          Replace the src attributes with your actual video file paths.
-          The poster image should be a still frame from the footage.
-          Footage will show blind visitors interacting with tactile 3D models in a museum.
-
-          Example:
-            <source src="/videos/ptta-hero.mp4" type="video/mp4" />
-            poster="/images/ptta-hero-poster.jpg"
-          ─────────────────────────────────────────────────────────────────────
+          VIDEO: Replace src with your footage file once available.
+          poster: add a still frame image path, e.g. poster="/images/hero-poster.jpg"
+          Footage should show blind visitors interacting with tactile 3D models in a museum.
         */}
         <video
           ref={videoRef}
@@ -146,22 +135,14 @@ export default function Landing() {
           playsInline
           aria-label="Video showing blind visitors experiencing tactile art models in a museum"
         >
-          {/* Replace the src below with your actual footage */}
           {/* <source src="/videos/ptta-hero.mp4" type="video/mp4" /> */}
-
           {/*
-            CAPTIONS TRACK PLACEHOLDER
-            ───────────────────────────────────────────────────────────────────
-            Replace src below with your real WebVTT captions file path, e.g.:
-              src="/captions/ptta-hero-en.vtt"
-            and add the `default` attribute once you have the file ready.
-            ───────────────────────────────────────────────────────────────────
+            CAPTIONS: Replace src with your WebVTT file path once available.
+            e.g. src="/captions/ptta-hero-en.vtt" and add the `default` attribute.
           */}
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <track kind="captions" src="" srcLang="en" label="English captions placeholder" />
         </video>
 
-        {/* Dark gradient overlay at bottom for text contrast (desktop) */}
         <div
           className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none"
           style={{
@@ -171,7 +152,6 @@ export default function Landing() {
           aria-hidden="true"
         />
 
-        {/* Mute / Unmute toggle */}
         <button
           onClick={toggleMute}
           aria-label={muted ? "Unmute video" : "Mute video"}
@@ -192,21 +172,21 @@ export default function Landing() {
           )}
         </button>
 
-        {/* ─── 3. HERO COPY (desktop: overlaid on bottom of video) ────────── */}
+        {/* Hero copy — desktop: overlaid on bottom of video */}
         <div className="absolute inset-x-0 bottom-0 z-10 hidden md:flex flex-col items-start p-10 lg:p-16 max-w-3xl">
-          <p className="ptta-eyebrow text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
+          <p className="text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
             {t.hero.eyebrow}
           </p>
-          <h1 className="ptta-headline font-serif text-white text-4xl lg:text-6xl font-bold leading-tight mb-4">
+          <h1 className="font-serif text-white text-4xl lg:text-6xl font-bold leading-tight mb-4">
             {t.hero.headline}
           </h1>
-          <p className="ptta-subline font-sans text-white/80 text-base lg:text-lg leading-relaxed mb-8 max-w-xl">
+          <p className="font-sans text-white/80 text-base lg:text-lg leading-relaxed mb-8 max-w-xl">
             {t.hero.subline}
           </p>
           <button
             onClick={handleCta}
             aria-label={t.hero.cta}
-            className="ptta-cta w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             style={{ minHeight: 56 }}
           >
             {t.hero.cta}
@@ -214,29 +194,29 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 3. HERO COPY (mobile: below video) ─────────────────────────────── */}
+      {/* Hero copy — mobile: below video */}
       <section className="md:hidden bg-stone-950 px-6 pt-8 pb-10">
-        <p className="ptta-eyebrow text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
+        <p className="text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
           {t.hero.eyebrow}
         </p>
-        <h1 className="ptta-headline font-serif text-white text-4xl font-bold leading-tight mb-4">
+        <h1 className="font-serif text-white text-4xl font-bold leading-tight mb-4">
           {t.hero.headline}
         </h1>
-        <p className="ptta-subline font-sans text-white/75 text-base leading-relaxed mb-8">
+        <p className="font-sans text-white/75 text-base leading-relaxed mb-8">
           {t.hero.subline}
         </p>
         <button
           onClick={handleCta}
           aria-label={t.hero.cta}
-          className="ptta-cta w-full px-8 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
+          className="w-full px-8 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
           style={{ minHeight: 56 }}
         >
           {t.hero.cta}
         </button>
       </section>
 
-      {/* ─── 4. SLOGAN BLOCK ────────────────────────────────────────────────── */}
-      <section className="ptta-slogan w-full bg-stone-50 py-16 px-6 text-center" aria-label="Mission statement">
+      {/* SLOGAN */}
+      <section className="w-full bg-stone-50 py-16 px-6 text-center" aria-label="Mission statement">
         <blockquote>
           <p className="font-serif text-stone-800 text-2xl md:text-4xl font-bold leading-snug max-w-3xl mx-auto">
             {t.slogan.quote}
@@ -247,17 +227,10 @@ export default function Landing() {
         </blockquote>
       </section>
 
-      {/* ─── 5. PROBLEM / SOLUTION ──────────────────────────────────────────── */}
-      <section
-        className="ptta-cards w-full bg-stone-100 py-16 px-6"
-        aria-label="Problem and solution"
-      >
+      {/* PROBLEM / SOLUTION */}
+      <section className="w-full bg-stone-100 py-16 px-6" aria-label="Problem and solution">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Problem card */}
-          <article
-            className="ptta-card-problem rounded-2xl p-8 md:p-10"
-            style={{ background: "hsl(34 30% 94%)" }}
-          >
+          <article className="rounded-2xl p-8 md:p-10" style={{ background: "hsl(34 30% 94%)" }}>
             <h2 className="font-serif text-stone-900 text-2xl font-bold mb-4">
               {t.problem.heading}
             </h2>
@@ -265,12 +238,7 @@ export default function Landing() {
               {t.problem.body}
             </p>
           </article>
-
-          {/* Solution card */}
-          <article
-            className="ptta-card-solution rounded-2xl p-8 md:p-10"
-            style={{ background: "hsl(40 35% 91%)" }}
-          >
+          <article className="rounded-2xl p-8 md:p-10" style={{ background: "hsl(40 35% 91%)" }}>
             <h2 className="font-serif text-stone-900 text-2xl font-bold mb-4">
               {t.solution.heading}
             </h2>
@@ -281,13 +249,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 6. CONTEXT STRIP ───────────────────────────────────────────────── */}
-      <section
-        className="ptta-facts w-full bg-white py-12 px-6"
-        aria-label="Key facts"
-      >
+      {/* CONTEXT STRIP */}
+      <section className="w-full bg-white py-12 px-6" aria-label="Key facts">
         <div className="max-w-5xl mx-auto">
-          {/* horizontal scroll on mobile, grid on desktop */}
           <div className="flex gap-4 overflow-x-auto pb-2 md:overflow-visible md:grid md:grid-cols-4 md:pb-0 snap-x snap-mandatory md:snap-none">
             {t.facts.map((fact, i) => (
               <div
@@ -306,11 +270,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 7. FOOTER ──────────────────────────────────────────────────────── */}
-      <footer
-        className="ptta-footer w-full bg-stone-950 py-10 px-6 text-center"
-        role="contentinfo"
-      >
+      {/* FOOTER */}
+      <footer className="w-full bg-stone-950 py-10 px-6 text-center" role="contentinfo">
         <a
           href={`mailto:${t.footer.email}`}
           className="font-sans text-amber-400 text-sm hover:text-amber-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
@@ -323,7 +284,7 @@ export default function Landing() {
         </p>
       </footer>
 
-      {/* ─── FIXED MOBILE CTA (after hero scrolled past) ──────────────────── */}
+      {/* Fixed mobile CTA — appears after hero scrolls out of view */}
       {heroPast && (
         <div
           className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white/95 backdrop-blur border-t border-stone-200"

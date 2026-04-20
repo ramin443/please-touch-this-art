@@ -2,8 +2,6 @@ export const copy = {
   en: {
     header: {
       logoText: "Please Touch This Art",
-      langEN: "EN",
-      langDE: "DE",
     },
     hero: {
       eyebrow: "Inclusive museum experiences",
@@ -40,43 +38,6 @@ export const copy = {
     },
   },
   de: {
-    header: {
-      logoText: "Please Touch This Art",
-      langEN: "EN",
-      langDE: "DE",
-    },
-    hero: {
-      eyebrow: "Inklusive Museumserlebnisse",
-      headline: "Kunst, die man endlich anfassen darf.",
-      subline:
-        "KI-unterst\u00fctzte taktile 3D-Modelle machen Gem\u00e4lde, Skulpturen und Museumsobjekte f\u00fcr blinde und sehbehinderte Besucher zug\u00e4nglich.",
-      cta: "Demo starten",
-    },
-    slogan: {
-      quote: "Museen bitten Besucher, nichts anzufassen. Das \u00e4ndern wir.",
-      caption: "Gegr\u00fcndet 2023 in Bremen \u00b7 Social Impact Award Germany 2025",
-    },
-    problem: {
-      heading: "Das Problem",
-      body:
-        "F\u00fcr blinde und sehbehinderte Menschen ist Kunst in Museen im Grunde unsichtbar. Gem\u00e4lde h\u00e4ngen hinter Glas mit \u201eBitte nicht ber\u00fchren\u201c-Schildern. Audioguides beschreiben, was andere sehen \u2014 k\u00f6nnen aber das direkte Erleben eines Werkes nicht ersetzen.",
-      },
-    solution: {
-      heading: "Unsere L\u00f6sung",
-      body:
-        "Wir wandeln Gem\u00e4lde und Objekte in pr\u00e4zise taktile 3D-Modelle um, kombiniert mit individuellen Audiobeschreibungen und Braille-Tafeln. Besucher erkunden das Kunstwerk mit den H\u00e4nden, gef\u00fchrt von Audio, das gemeinsam mit blinden Mitarbeitenden entwickelt wurde.",
-    },
-    facts: [
-      { label: "27+ Installationen" },
-      { label: "Partner: BSVH & BSVB" },
-      { label: "ESA Mars-Oberfl\u00e4chenauftrag" },
-      { label: "Overbeck-Museum Bremen \u2014 20+ Modelle" },
-    ],
-    factsCaption: "Gepr\u00fcfte Zahlen, Stand 2026",
-    footer: {
-      email: "contact@ptta.art",
-      disclaimer:
-        "Demo-Prototyp \u2014 das eigentliche Produkt umfasst optionale Audioausr\u00fcstung, Braille-Tafeln und Montagesysteme.",
-    },
+    // German translations — add strings here to enable DE mode
   },
 };
