@@ -2,6 +2,16 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { copy } from "@/content/copy";
 
+const YOUTUBE_VIDEO_ID = "uLaldrzO8PM";
+
+function ytCmd(iframe: HTMLIFrameElement | null, func: string) {
+  if (!iframe?.contentWindow) return;
+  iframe.contentWindow.postMessage(
+    JSON.stringify({ event: "command", func, args: "" }),
+    "*"
+  );
+}
+
 export default function Landing() {
   const [lang, setLang] = useState<"en" | "de">("en");
   const [muted, setMuted] = useState(true);
@@ -11,36 +21,40 @@ export default function Landing() {
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const [, navigate] = useLocation();
 
   const t = copy[lang] ?? copy.en;
 
+  const youtubeSrc = [
+    `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}`,
+    `?autoplay=${prefersReducedMotion ? 0 : 1}`,
+    `&mute=1`,
+    `&loop=1`,
+    `&playlist=${YOUTUBE_VIDEO_ID}`,
+    `&controls=0`,
+    `&playsinline=1`,
+    `&modestbranding=1`,
+    `&rel=0`,
+    `&enablejsapi=1`,
+  ].join("");
+
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    const handler = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+      ytCmd(iframeRef.current, e.matches ? "pauseVideo" : "playVideo");
+    };
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
 
   useEffect(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-    if (prefersReducedMotion) {
-      vid.pause();
-    } else {
-      vid.play().catch(() => {});
-    }
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
       if (heroRef.current) {
-        const rect = heroRef.current.getBoundingClientRect();
-        setHeroPast(rect.bottom < 0);
+        setHeroPast(heroRef.current.getBoundingClientRect().bottom < 0);
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -48,11 +62,14 @@ export default function Landing() {
   }, []);
 
   const toggleMute = useCallback(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-    vid.muted = !vid.muted;
-    setMuted(vid.muted);
-  }, []);
+    if (muted) {
+      ytCmd(iframeRef.current, "unMute");
+      setMuted(false);
+    } else {
+      ytCmd(iframeRef.current, "mute");
+      setMuted(true);
+    }
+  }, [muted]);
 
   const handleCta = useCallback(() => {
     navigate("/how-it-works");
@@ -120,31 +137,18 @@ export default function Landing() {
       <section
         ref={heroRef}
         className="relative w-full bg-stone-950 overflow-hidden"
-        style={{ aspectRatio: "16/9", maxHeight: "100svh" }}
+        style={{ aspectRatio: "16/9", maxHeight: "70vh" }}
         aria-label="Hero video"
       >
-        {/*
-          VIDEO: Replace the commented-out <source> with your footage file path.
-          Add a poster attribute with a still-frame image path, e.g.:
-            poster="/images/hero-poster.jpg"
-          Footage should show blind visitors interacting with tactile 3D models.
-        */}
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          autoPlay={!prefersReducedMotion}
-          muted={muted}
-          loop
-          playsInline
-          aria-label="Video showing blind visitors experiencing tactile art models in a museum"
-        >
-          {/* <source src="/videos/ptta-hero.mp4" type="video/mp4" /> */}
-          {/*
-            CAPTIONS: Replace src with your WebVTT file once available, e.g.:
-              src="/captions/ptta-hero-en.vtt"  and add the `default` attribute.
-          */}
-          <track kind="captions" src="" srcLang="en" label="English captions placeholder" />
-        </video>
+        <iframe
+          ref={iframeRef}
+          className="absolute inset-0 w-full h-full"
+          src={youtubeSrc}
+          title="Please Touch This Art — blind visitors experiencing tactile art models in a museum"
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          style={{ border: "none", pointerEvents: "none" }}
+        />
 
         <div
           className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none"
