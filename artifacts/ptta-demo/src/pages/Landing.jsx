@@ -152,10 +152,13 @@ export default function Landing() {
           {/*
             CAPTIONS TRACK PLACEHOLDER
             ───────────────────────────────────────────────────────────────────
-            Once your WebVTT captions file is ready, uncomment the line below:
-            <track kind="captions" src="/captions/ptta-hero-en.vtt" srcLang="en" label="English" default />
+            Replace src below with your real WebVTT captions file path, e.g.:
+              src="/captions/ptta-hero-en.vtt"
+            and add the `default` attribute once you have the file ready.
             ───────────────────────────────────────────────────────────────────
           */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <track kind="captions" src="" srcLang="en" label="English captions placeholder" />
         </video>
 
         {/* Dark gradient overlay at bottom for text contrast (desktop) */}
