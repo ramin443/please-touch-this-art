@@ -145,7 +145,8 @@ export function ViewerStage({ model, onBack }: Props) {
   const cameraOrbit = isLowRelief ? "-55deg 82deg auto" : "-25deg 76deg auto";
   const exposure = isLowRelief ? "0.8" : "0.95";
   const shadowIntensity = isLowRelief ? "2.6" : "2.0";
-  const modelScale = isLowRelief ? "1 1 2.5" : "1 1 1";
+  const modelScale = model.modelScale ?? (isLowRelief ? "1 1 2.5" : "1 1 1");
+  const orientation = model.orientation ?? "0 0 0";
 
   return (
     <div className="fixed inset-0 bg-stone-950 text-stone-100 overflow-hidden">
@@ -153,6 +154,7 @@ export function ViewerStage({ model, onBack }: Props) {
         ref={viewerRef}
         alt={`3D tactile model of ${model.title} by ${model.artist}`}
         scale={modelScale}
+        orientation={orientation}
         camera-controls
         auto-rotate
         rotation-per-second="24deg"

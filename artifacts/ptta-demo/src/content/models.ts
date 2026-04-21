@@ -1,6 +1,7 @@
 export type ModelId =
   | "mona-lisa"
   | "van-gogh"
+  | "the-scream"
   | "st-nikolai"
   | "eiffel-tower";
 
@@ -14,6 +15,10 @@ export interface ModelEntry {
   glb?: string;
   available: boolean;
   commissionedBy?: string;
+  /** Override the default <model-viewer orientation> ("roll pitch yaw", in degrees). */
+  orientation?: string;
+  /** Override the default <model-viewer scale>, e.g. "1 1 2.5". */
+  modelScale?: string;
 }
 
 function publicPath(relative: string): string {
@@ -42,6 +47,22 @@ export const MODELS: ModelEntry[] = [
     image: publicPath("paintings/van-gogh.webp"),
     glb: publicPath("models/van-gogh.glb"),
     available: true,
+  },
+  {
+    id: "the-scream",
+    type: "painting",
+    title: "The Scream",
+    artist: "Edvard Munch",
+    year: "1893",
+    image: publicPath("paintings/the-scream.jpg"),
+    glb: publicPath("models/the-scream.glb"),
+    available: true,
+    // The Scream's mesh is authored with Z as the tall axis and Y as the
+    // shallow (depth) axis — unlike Mona Lisa / Van Gogh where Y is tall
+    // and Z is depth. Rotate -90° around X so the painting stands upright,
+    // then stretch the resulting depth (now Z) instead of the default.
+    orientation: "0 -90 0",
+    modelScale: "1 1 2.5",
   },
   {
     id: "st-nikolai",
