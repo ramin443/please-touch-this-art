@@ -400,6 +400,44 @@
     100% { transform: scaleY(1);    opacity: 1; }
   }
 
+  /* Audio-guide scrubber — accent-filled track, accent round thumb */
+  .ptta-scrubber {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      var(--color-accent) 0%,
+      var(--color-accent) var(--progress, 0%),
+      var(--color-hairline) var(--progress, 0%),
+      var(--color-hairline) 100%
+    );
+    border-radius: 9999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .ptta-scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 2px solid var(--color-page);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+  .ptta-scrubber::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 2px solid var(--color-page);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+
   .ptta-caret {
     display: inline-block;
     width: 0.5em;

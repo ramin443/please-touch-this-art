@@ -207,6 +207,7 @@ const en: PageCopy = {
           "Hear how audio descriptions are crafted alongside the tactile experience.",
         illoAlt: "Audio guide device and headphones for museum visitors",
         imageSrc: "images/audio-guide.jpg",
+        route: "/audio-guide",
       },
       {
         slug: "showcase",
