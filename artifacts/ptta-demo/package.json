@@ -73,5 +73,9 @@
     "vite": "catalog:",
     "wouter": "^3.3.5",
     "zod": "catalog:"
+  },
+  "dependencies": {
+    "@google/model-viewer": "^4.2.0",
+    "three": "^0.182.0"
   }
 }
