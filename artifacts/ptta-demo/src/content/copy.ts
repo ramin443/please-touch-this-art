@@ -190,7 +190,7 @@ const en: PageCopy = {
     cards: [
       {
         slug: "3d-model",
-        title: "3D Model Conversion",
+        title: "AI 3D Model Maker",
         description: "See how a flat painting becomes a layered 3D form.",
         illoAlt: "Van Gogh Self-Portrait painting, the source for a tactile conversion",
         imageSrc: "paintings/van-gogh.webp",
