@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { getArtistPrompt, ARTIST_IDS, type ArtistId } from "../artistPrompts";
 
 describe("artistPrompts", () => {
-  it("exposes exactly three artist ids", () => {
-    expect(ARTIST_IDS).toEqual(["van-gogh", "dali", "munch"]);
+  it("exposes all four artist ids", () => {
+    expect(ARTIST_IDS).toEqual(["van-gogh", "dali", "munch", "leonardo"]);
   });
 
   it("returns a non-empty system prompt for each id", () => {

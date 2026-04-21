@@ -227,7 +227,7 @@ export default function DemoHub() {
                 ariaLabel={demoHub.ariaOpenModule(card.title)}
                 openLabel={demoHub.openLabel}
                 reduceMotion={reduceMotion}
-                wide={isFuture}
+                wide={card.wide ?? isFuture}
               />
             );
           })}

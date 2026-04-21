@@ -1,4 +1,4 @@
-export const ARTIST_IDS = ["van-gogh", "dali", "munch"] as const;
+export const ARTIST_IDS = ["leonardo", "van-gogh", "dali", "munch"] as const;
 export type ArtistId = (typeof ARTIST_IDS)[number];
 
 export interface ArtistPalette {
@@ -26,6 +26,26 @@ export interface ArtistMeta {
 }
 
 export const ARTISTS: Record<ArtistId, ArtistMeta> = {
+  "leonardo": {
+    id: "leonardo",
+    displayName: "Leonardo da Vinci",
+    shortName: "Leonardo",
+    placeholder: "Type your question to Leonardo",
+    suggested: [
+      "Why does the Mona Lisa smile?",
+      "What did you learn from dissecting bodies?",
+    ],
+    portrait: "artists/leonardo.jpg",
+    portraitAlt: "Engraved portrait of Leonardo da Vinci",
+    lifespan: "1452–1519",
+    tagline: "Amboise, 1517",
+    quote: "Simplicity is the ultimate sophistication.",
+    palette: {
+      accent: "#b08d57",
+      gradientFrom: "#5a3d22",
+      gradientTo: "#1a1208",
+    },
+  },
   "van-gogh": {
     id: "van-gogh",
     displayName: "Vincent van Gogh",

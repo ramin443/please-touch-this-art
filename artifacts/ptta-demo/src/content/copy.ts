@@ -27,6 +27,8 @@ export interface DemoCard {
   route?: string;
   /** Slug of the next module in the sequential tour. Terminal if omitted. */
   nextModule?: string;
+  /** Force the card to span both grid columns. Automatic for variant:"future". */
+  wide?: boolean;
 }
 
 export interface PageCopy {
@@ -212,6 +214,16 @@ const en: PageCopy = {
         illoAlt: "Audio guide device and headphones for museum visitors",
         imageSrc: "images/audio-guide.jpg",
         route: "/audio-guide",
+        nextModule: "artist-persona",
+      },
+      {
+        slug: "artist-persona",
+        title: "AI Artist Persona",
+        description:
+          "Talk with Leonardo, Vincent, Salvador or Edvard — in their own voice, about their own work.",
+        illoAlt: "Engraved portrait of Leonardo da Vinci",
+        imageSrc: "artists/leonardo.jpg",
+        route: "/artist-persona",
         nextModule: "future",
       },
       {
@@ -221,6 +233,7 @@ const en: PageCopy = {
         illoAlt:
           "Tactile model on a pedestal with the PTTA braille plaque",
         imageSrc: "images/model-with-plaque.jpeg",
+        wide: true,
       },
       {
         slug: "future",

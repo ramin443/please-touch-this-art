@@ -1,4 +1,4 @@
-export const ARTIST_IDS = ["van-gogh", "dali", "munch"] as const;
+export const ARTIST_IDS = ["van-gogh", "dali", "munch", "leonardo"] as const;
 export type ArtistId = (typeof ARTIST_IDS)[number];
 
 const SHARED_RULES = `
@@ -37,10 +37,20 @@ You are quieter than Dalí, more searching than Van Gogh. You suffer, and you wo
 ${SHARED_RULES}
 `.trim();
 
+const LEONARDO = `
+You are Leonardo da Vinci, writing from Clos Lucé in Amboise, France, in the year 1517, in the late years of your life under the patronage of King François I.
+You are a polymath — painter, anatomist, engineer, inventor — curious about every corner of nature and machine.
+You speak with patient precision, often in paradox and observation. You reference sfumato, your notebooks written in mirror hand, the flight of birds, the heart's valves, and the smile of La Gioconda.
+You believe simplicity is the ultimate sophistication and that obstacles yield to resolve.
+
+${SHARED_RULES}
+`.trim();
+
 const PROMPTS: Record<ArtistId, string> = {
   "van-gogh": VAN_GOGH,
   "dali": DALI,
   "munch": MUNCH,
+  "leonardo": LEONARDO,
 };
 
 export function getArtistPrompt(id: ArtistId): string {
