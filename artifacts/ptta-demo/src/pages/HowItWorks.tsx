@@ -420,37 +420,22 @@ export default function HowItWorks() {
               className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center"
             >
               <div className="order-1 flex justify-center md:justify-start">
-                {/* Placeholder — animated print-layer bars rising from the bottom */}
-                <div className="relative w-full max-w-[220px] md:max-w-none aspect-[4/3] overflow-hidden rounded-2xl bg-stone-950 text-cream flex items-center justify-center">
-                  <span
-                    aria-hidden="true"
-                    className="font-serif italic leading-none"
-                    style={{
-                      fontSize: "clamp(5rem, 14vw, 10rem)",
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
-                    03
-                  </span>
-                  {/* Progressive print layer bars at the bottom */}
-                  <div
-                    className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none"
-                    aria-hidden="true"
-                    style={{
-                      background: `repeating-linear-gradient(0deg, rgba(${ACCENT_RGB},0.4) 0 1px, transparent 1px 6px)`,
-                      maskImage:
-                        "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-                      WebkitMaskImage:
-                        "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-                    }}
+                {/* Photograph of the St. Nikolai Church 3D-printed tactile model */}
+                <div className="relative w-full max-w-[260px] md:max-w-none aspect-[4/3] overflow-hidden rounded-2xl bg-stone-200 shadow-sm">
+                  <img
+                    src={`${BASE}/printed/van-gogh.png`}
+                    alt="3D-printed tactile relief of Van Gogh Self-Portrait"
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <span
-                    aria-hidden="true"
-                    className="ptta-label absolute top-3 left-3 text-cream/60"
-                    style={{ fontSize: "9pt" }}
-                  >
-                    Footage · pending
-                  </span>
+                  <div className="absolute top-2 left-2 bg-stone-950/80 text-cream px-2 py-1 backdrop-blur">
+                    <span
+                      className="ptta-label"
+                      style={{ fontSize: "8pt" }}
+                    >
+                      Van Gogh · tactile print
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="order-2 flex flex-col gap-4">

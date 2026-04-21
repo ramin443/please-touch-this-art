@@ -8,7 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const VIDEO_SRC = `${BASE}/videos/people-using-tactile.mp4`;
-const SOLUTION_IMG = `${BASE}/images/hands-exploring-model.jpeg`;
+const SOLUTION_IMG = `${BASE}/printed/st-nikolai.png`;
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
 const headingTight = { letterSpacing: "-0.02em" } as const;

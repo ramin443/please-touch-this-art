@@ -42,7 +42,9 @@
       "Bash(node -e 'console.log\\('\\\\''node'\\\\'', process.version, '\\\\''works'\\\\''\\)')",
       "Bash('~/.local/bin/pnpm' install *)",
       "Bash(git update-ref *)",
-      "Bash(git ls-tree *)"
+      "Bash(git ls-tree *)",
+      "Bash(sips -Z 1600 -s format jpeg -s formatOptions 78 '/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/images/3D Printed Images/St Nikolai/DSCF3652.JPG' --out /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/printed/st-nikolai-photo.jpg)",
+      "Bash(sips -Z 1600 -s format jpeg -s formatOptions 78 '/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/images/3D Printed Images/Van Gogh/DSCF3665.JPG' --out /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/printed/van-gogh-photo.jpg)"
     ]
   }
 }
