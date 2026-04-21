@@ -1,5 +1,4 @@
 import { ModelViewerElement } from "@google/model-viewer";
-import "@/types/model-viewer";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import type { ModelEntry } from "@/content/models";
@@ -29,7 +28,13 @@ export function ViewerStage({ model, onBack }: Props) {
 
   useEffect(() => {
     const el = viewerRef.current;
-    if (!el) return;
+    if (!el || !model.glb) return;
+
+    // Set src imperatively — React 19 does not always serialise known HTML
+    // attributes like "src" onto custom elements the way it does for <img>,
+    // so the property can arrive as null. Using setAttribute guarantees the
+    // model-viewer sees the URL and starts loading.
+    el.setAttribute("src", model.glb);
 
     const handleLoad = () => {
       setStatus("ready");
@@ -113,7 +118,6 @@ export function ViewerStage({ model, onBack }: Props) {
           <div className="w-full h-full rounded-2xl overflow-hidden bg-stone-900/70 relative">
             <model-viewer
               ref={viewerRef}
-              src={model.glb}
               alt={`3D tactile model of ${model.title} by ${model.artist}`}
               camera-controls
               auto-rotate
@@ -125,8 +129,7 @@ export function ViewerStage({ model, onBack }: Props) {
               shadow-intensity="1.6"
               shadow-softness="0.6"
               exposure="1.05"
-              environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
-              skybox-image=""
+              environment-image="neutral"
               touch-action="pan-y"
               interaction-prompt="none"
               loading="eager"
