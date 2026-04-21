@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import type { ModelEntry } from "@/content/models";
 import { fabricationImage } from "@/content/fabrication-images";
 
@@ -11,6 +12,7 @@ interface Props {
 
 export function RevealStage({ model, onBack, onPickAnother }: Props) {
   const src = fabricationImage(model.id);
+  const [, navigate] = useLocation();
 
   return (
     <div className="fixed inset-0 bg-stone-950 text-cream overflow-hidden">
@@ -106,6 +108,13 @@ export function RevealStage({ model, onBack, onPickAnother }: Props) {
             style={{ minHeight: 56, letterSpacing: "-0.01em" }}
           >
             View another
+          </button>
+          <button
+            onClick={() => navigate("/audio-guide")}
+            aria-label="Continue to AI Audio Guide Curator"
+            className="pointer-events-auto mt-3 w-full px-6 py-3 rounded-full bg-white/10 border border-white/30 text-white/90 text-sm hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Next: AI Audio Guide Curator →
           </button>
         </div>
       </motion.div>

@@ -10,6 +10,8 @@ import DemoPlaceholder from "@/pages/DemoPlaceholder";
 import PaintingToModel from "@/pages/PaintingToModel";
 import Fabrication from "@/pages/Fabrication";
 import AudioGuide from "@/pages/AudioGuide";
+import ArtistPersonaPage from "@/pages/ArtistPersonaPage";
+import FutureFeatures from "@/pages/FutureFeatures";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ function Router() {
       <Route path="/painting-to-model" component={PaintingToModel} />
       <Route path="/fabrication" component={Fabrication} />
       <Route path="/audio-guide" component={AudioGuide} />
+      <Route path="/artist-persona" component={ArtistPersonaPage} />
+      <Route path="/future-features" component={FutureFeatures} />
       <Route path="/demo/:slug" component={DemoPlaceholder} />
       <Route component={NotFound} />
     </Switch>

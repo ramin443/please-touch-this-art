@@ -25,6 +25,10 @@ export interface DemoCard {
   imageSrc?: string;
   /** Override destination. If omitted, DemoHub navigates to /demo/:slug (the placeholder). */
   route?: string;
+  /** Slug of the next module in the sequential tour. Terminal if omitted. */
+  nextModule?: string;
+  /** Force the card to span both grid columns. Automatic for variant:"future". */
+  wide?: boolean;
 }
 
 export interface PageCopy {
@@ -186,11 +190,12 @@ const en: PageCopy = {
     cards: [
       {
         slug: "3d-model",
-        title: "3D Model Conversion",
+        title: "AI 3D Model Maker",
         description: "See how a flat painting becomes a layered 3D form.",
         illoAlt: "Van Gogh Self-Portrait painting, the source for a tactile conversion",
         imageSrc: "paintings/van-gogh.webp",
         route: "/painting-to-model",
+        nextModule: "3d-printing",
       },
       {
         slug: "3d-printing",
@@ -199,23 +204,38 @@ const en: PageCopy = {
         illoAlt: "3D-printed tactile relief of Dalí's The Persistence of Memory",
         imageSrc: "printed/persistence-of-memory.png",
         route: "/fabrication",
+        nextModule: "audio-guide",
       },
       {
         slug: "audio-guide",
-        title: "Audio Guide",
+        title: "AI Audio Guide Curator",
         description:
           "Hear how audio descriptions are crafted alongside the tactile experience.",
         illoAlt: "Audio guide device and headphones for museum visitors",
         imageSrc: "images/audio-guide.jpg",
         route: "/audio-guide",
+        nextModule: "artist-persona",
+      },
+      {
+        slug: "artist-persona",
+        title: "AI Artist Persona",
+        description:
+          "Talk with Leonardo, Vincent, Salvador or Edvard — in their own voice, about their own work.",
+        illoAlt: "Engraved portrait of Leonardo da Vinci",
+        imageSrc: "artists/leonardo.webp",
+        route: "/artist-persona",
+        nextModule: "future",
       },
       {
         slug: "future",
         title: "Future Features",
         description:
           "What’s next: scaling to more museums, more languages, more formats.",
-        illoAlt: "Abstract roadmap visualisation",
+        illoAlt:
+          "Surrealist portrait of a woman wearing a VR headset surrounded by floating museum objects",
+        imageSrc: "images/future-of-art.jpg",
         variant: "future",
+        route: "/future-features",
       },
     ],
     footer: {

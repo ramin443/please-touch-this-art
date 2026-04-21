@@ -1,3 +1,4 @@
+import "dotenv/config";
 import app from "./app";
 import { logger } from "./lib/logger";
 
@@ -13,6 +14,13 @@ const port = Number(rawPort);
 
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
+}
+
+const groqKey = process.env["GROQ_API_KEY"];
+if (!groqKey || groqKey.trim().length === 0) {
+  throw new Error(
+    "GROQ_API_KEY environment variable is required but was not provided.",
+  );
 }
 
 app.listen(port, (err) => {
