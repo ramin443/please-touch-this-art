@@ -18,9 +18,9 @@ export function ModelPicker({ onSelect }: Props) {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
-      <div className="mx-auto w-full max-w-md">
+      <div className="mx-auto w-full max-w-md sm:max-w-3xl">
         <header
-          className="flex items-center gap-3 px-5 pt-6 pb-2"
+          className="flex items-center gap-3 px-5 sm:px-8 pt-6 pb-2"
           role="banner"
         >
           <button
@@ -30,32 +30,42 @@ export function ModelPicker({ onSelect }: Props) {
           >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="font-serif text-xl font-bold tracking-tight text-stone-900">
+          <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900">
             Painting <span aria-hidden>→</span>
             <span className="sr-only">to</span> 3D Model
           </h1>
         </header>
 
-        <section className="px-5 pt-3 pb-7">
-          <p className="font-serif text-stone-700 text-lg leading-snug">
+        <section className="px-5 sm:px-8 pt-3 pb-7">
+          <p className="font-serif text-stone-700 text-lg sm:text-xl leading-snug max-w-2xl">
             Pick a piece to see it come alive in your hands.
           </p>
         </section>
 
-        <section className="px-5 pb-8" aria-label="Paintings">
+        <section className="px-5 sm:px-8 pb-8" aria-label="Paintings">
           <SectionHeading>Paintings</SectionHeading>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {PAINTINGS.map((m) => (
-              <ModelCard key={m.id} model={m} onSelect={onSelect} />
+              <ModelCard
+                key={m.id}
+                model={m}
+                onSelect={onSelect}
+                aspectClass="aspect-[3/4]"
+              />
             ))}
           </div>
         </section>
 
-        <section className="px-5 pb-12" aria-label="Monuments">
+        <section className="px-5 sm:px-8 pb-12" aria-label="Monuments">
           <SectionHeading>Monuments</SectionHeading>
           <div className="grid grid-cols-1 gap-4">
             {MONUMENTS.map((m) => (
-              <ModelCard key={m.id} model={m} onSelect={onSelect} />
+              <ModelCard
+                key={m.id}
+                model={m}
+                onSelect={onSelect}
+                aspectClass="aspect-[3/4] sm:aspect-[2/1]"
+              />
             ))}
           </div>
         </section>
@@ -75,9 +85,10 @@ function SectionHeading({ children }: { children: ReactNode }) {
 interface CardProps {
   model: ModelEntry;
   onSelect: (id: ModelId) => void;
+  aspectClass: string;
 }
 
-function ModelCard({ model, onSelect }: CardProps) {
+function ModelCard({ model, onSelect, aspectClass }: CardProps) {
   const disabled = !model.available;
   return (
     <button
@@ -95,12 +106,17 @@ function ModelCard({ model, onSelect }: CardProps) {
         "group relative w-full rounded-2xl overflow-hidden bg-card border border-card-border text-left transition-all",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600",
         !disabled &&
-          "hover:-translate-y-0.5 hover:shadow-md active:translate-y-0",
+          "hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0",
         disabled && "opacity-75 cursor-not-allowed"
       )}
       style={{ minHeight: 56 }}
     >
-      <div className="relative aspect-[3/4] w-full bg-stone-200 overflow-hidden">
+      <div
+        className={cn(
+          "relative w-full bg-stone-200 overflow-hidden",
+          aspectClass
+        )}
+      >
         {model.image ? (
           <img
             src={model.image}
@@ -113,7 +129,7 @@ function ModelCard({ model, onSelect }: CardProps) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-stone-400 to-stone-700 text-stone-100">
-            <Landmark size={76} strokeWidth={1.1} aria-hidden />
+            <Landmark size={88} strokeWidth={1.1} aria-hidden />
           </div>
         )}
         {disabled && (
@@ -124,8 +140,8 @@ function ModelCard({ model, onSelect }: CardProps) {
           </div>
         )}
       </div>
-      <div className="p-4">
-        <h3 className="font-serif text-lg font-bold text-stone-900 leading-tight">
+      <div className="p-4 sm:p-5">
+        <h3 className="font-serif text-lg sm:text-xl font-bold text-stone-900 leading-tight">
           {model.title}
         </h3>
         <p className="mt-1 font-sans text-sm text-stone-500">
