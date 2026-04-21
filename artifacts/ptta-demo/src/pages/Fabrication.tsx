@@ -3,14 +3,12 @@ import { useLocation } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import { MODELS, type ModelId } from "@/content/models";
 import { FabricationPicker } from "@/components/fabrication/FabricationPicker";
-import { DispatchStage } from "@/components/fabrication/DispatchStage";
 import { FabricateStage } from "@/components/fabrication/FabricateStage";
 import { PolishStage } from "@/components/fabrication/PolishStage";
 import { RevealStage } from "@/components/fabrication/RevealStage";
 
 type Stage =
   | { stage: "picker" }
-  | { stage: "dispatch"; modelId: ModelId }
   | { stage: "fabricate"; modelId: ModelId }
   | { stage: "polish"; modelId: ModelId }
   | { stage: "reveal"; modelId: ModelId };
@@ -27,15 +25,7 @@ export default function Fabrication() {
   const [state, setState] = useState<Stage>({ stage: "picker" });
 
   const handleSelect = useCallback((id: ModelId) => {
-    setState({ stage: "dispatch", modelId: id });
-  }, []);
-
-  const toFabricate = useCallback(() => {
-    setState((prev) =>
-      prev.stage === "dispatch"
-        ? { stage: "fabricate", modelId: prev.modelId }
-        : prev
-    );
+    setState({ stage: "fabricate", modelId: id });
   }, []);
 
   const toPolish = useCallback(() => {
@@ -68,15 +58,6 @@ export default function Fabrication() {
 
   return (
     <AnimatePresence mode="wait">
-      {state.stage === "dispatch" && (
-        <motion.div key="dispatch" {...FADE}>
-          <DispatchStage
-            model={model}
-            onDone={toFabricate}
-            onBack={toPicker}
-          />
-        </motion.div>
-      )}
       {state.stage === "fabricate" && (
         <motion.div key="fabricate" {...FADE}>
           <FabricateStage

@@ -85,11 +85,14 @@ export function PolishStage({ model, onDone, onBack }: Props) {
         >
           {model.image && (
             <>
-              {/* Sharp/final painting (bottom layer) */}
+              {/* Sharp/final painting (bottom layer).  Grayscale because
+                  the actual fabricated relief isn't coloured — the polish
+                  reveals the physical object, not a paint-faithful print. */}
               <img
                 src={model.image}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
+                style={{ filter: "grayscale(1) contrast(1.05) brightness(0.98)" }}
               />
               {/* Matte/dusty overlay — blur + desaturate.  Filter strength
                   animates from heavy to none over the stage so the painting
@@ -100,15 +103,15 @@ export function PolishStage({ model, onDone, onBack }: Props) {
                 aria-hidden
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 initial={{
-                  filter: "blur(7px) saturate(0.35) brightness(0.8)",
+                  filter: "blur(7px) grayscale(1) brightness(0.6)",
                   opacity: 1,
                 }}
                 animate={{
                   filter: [
-                    "blur(7px) saturate(0.35) brightness(0.8)",
-                    "blur(4px) saturate(0.6) brightness(0.88)",
-                    "blur(1.5px) saturate(0.85) brightness(0.95)",
-                    "blur(0px) saturate(1) brightness(1)",
+                    "blur(7px) grayscale(1) brightness(0.6)",
+                    "blur(4px) grayscale(1) brightness(0.75)",
+                    "blur(1.5px) grayscale(1) brightness(0.9)",
+                    "blur(0px) grayscale(1) brightness(0.98)",
                   ],
                   opacity: [1, 0.85, 0.55, 0],
                 }}

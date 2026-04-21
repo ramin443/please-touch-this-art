@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import type { ModelEntry } from "@/content/models";
@@ -10,16 +10,13 @@ interface Props {
   onBack: () => void;
 }
 
-const FABRICATE_MS = 4000;
-const TOTAL_LAYERS_SHOWN = 18;   // visible horizontal lines that stack up
-const LAYER_THICKNESS_PCT = 1.6; // vertical spacing between layers, % of chamber height
-const STACK_BASE_BOTTOM_PCT = 11; // stack sits on the build plate at 11% from bottom
-const TOTAL_LAYERS_FAKE = 240;    // pretty number for the "layer N of 240" readout
-const START_LAYER_FAKE = 87;
+const FABRICATE_MS = 5500;
+const TOTAL_LAYERS_FAKE = 240;
+const START_LAYER_FAKE = 1;
 
 export function FabricateStage({ model, onDone, onBack }: Props) {
+  const [progress, setProgress] = useState(0); // 0 → 1, drives the reveal
   const [layerFake, setLayerFake] = useState(START_LAYER_FAKE);
-  const [layerIdx, setLayerIdx] = useState(0); // 0…TOTAL_LAYERS_SHOWN
   const startedAt = useRef<number>(Date.now());
 
   useEffect(() => {
@@ -30,35 +27,21 @@ export function FabricateStage({ model, onDone, onBack }: Props) {
   useEffect(() => {
     const id = window.setInterval(() => {
       const elapsed = Date.now() - startedAt.current;
-      const progress = Math.min(1, elapsed / FABRICATE_MS);
+      const p = Math.min(1, elapsed / FABRICATE_MS);
+      setProgress(p);
       setLayerFake(
         Math.round(
-          START_LAYER_FAKE + progress * (TOTAL_LAYERS_FAKE - START_LAYER_FAKE)
+          START_LAYER_FAKE + p * (TOTAL_LAYERS_FAKE - START_LAYER_FAKE)
         )
       );
-      setLayerIdx(Math.min(TOTAL_LAYERS_SHOWN, Math.floor(progress * TOTAL_LAYERS_SHOWN)));
     }, 60);
     return () => window.clearInterval(id);
   }, []);
 
-  // The stack-top Y (as percentage-from-bottom) tracks the number of layers
-  // already laid. The nozzle sits directly above this — so it literally moves
-  // up as the stack grows, and its vertical position is the line it is
-  // currently depositing.
-  const stackTopPct = STACK_BASE_BOTTOM_PCT + layerIdx * LAYER_THICKNESS_PCT;
-
-  // Horizontal oscillation of the nozzle — keyframe list sized so Framer
-  // interpolates smoothly across the whole stage duration.
-  const { xKeyframes, xTimes } = useMemo(() => {
-    const steps = 9;
-    const kf: string[] = [];
-    const times: number[] = [];
-    for (let i = 0; i <= steps; i += 1) {
-      kf.push(i % 2 === 0 ? "20%" : "80%");
-      times.push(i / steps);
-    }
-    return { xKeyframes: kf, xTimes: times };
-  }, []);
+  // Percentage of the painting still hidden (from the top). Starts at 100%,
+  // shrinks to 0% as the build completes. The build front (where the nozzle
+  // sits and the scan line runs) is at this Y position.
+  const hiddenPct = (1 - progress) * 100;
 
   return (
     <div className="min-h-[100dvh] bg-stone-950 text-cream flex flex-col overflow-hidden relative">
@@ -85,7 +68,6 @@ export function FabricateStage({ model, onDone, onBack }: Props) {
 
       <ReferenceCard model={model} />
 
-      {/* Announces the stage explicitly */}
       <p
         className="relative z-20 text-center font-serif italic text-white/85 px-5 mt-1"
         style={{ fontSize: "14pt", letterSpacing: "-0.01em" }}
@@ -94,104 +76,128 @@ export function FabricateStage({ model, onDone, onBack }: Props) {
         — Being fabricated…
       </p>
 
-      {/* Build chamber */}
+      {/* Build chamber — the painting is built up from the plate in grayscale */}
       <div
         className="relative flex-1 mx-5 my-3 rounded-sm border border-white/10 overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(to right, rgba(245,241,234,0.04) 0%, transparent 15%, transparent 85%, rgba(245,241,234,0.04) 100%), #0f0c0a",
-        }}
+        style={{ background: "#0a0806" }}
       >
-        {/* Build bed — horizontal tick rule at the bottom of the chamber */}
-        <div
-          className="absolute"
-          style={{
-            left: "15%",
-            right: "15%",
-            bottom: `${STACK_BASE_BOTTOM_PCT - 1}%`,
-            height: "3px",
-            backgroundImage:
-              "repeating-linear-gradient(90deg, rgba(245,241,234,0.4) 0 1px, transparent 1px 6px)",
-          }}
-        />
+        {model.image && (
+          <>
+            {/* Finished model underneath — grayscale, matches the final print */}
+            <img
+              src={model.image}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "grayscale(1) contrast(1.05) brightness(0.95)" }}
+            />
 
-        {/* Layer stack — anchored at the build plate, grows upward */}
-        <div
-          className="absolute flex flex-col-reverse"
-          style={{
-            left: "22%",
-            right: "22%",
-            bottom: `${STACK_BASE_BOTTOM_PCT}%`,
-            gap: 1,
-          }}
-        >
-          {Array.from({ length: TOTAL_LAYERS_SHOWN }).map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{
-                opacity: [0, 1, 0.6],
-                scaleX: [0, 1, 1],
-              }}
-              transition={{
-                duration: 0.7,
-                delay: 0.15 + i * (FABRICATE_MS / 1000 / (TOTAL_LAYERS_SHOWN + 2)),
-                times: [0, 0.3, 1],
-                ease: "easeOut",
-              }}
-              className="origin-left"
+            {/* Dark overlay hiding the un-printed portion.  Shrinks from
+                top:0;height:100% to top:0;height:0% as progress → 1 so the
+                model is revealed from the bottom up. */}
+            <div
+              className="absolute left-0 right-0 top-0 pointer-events-none"
               style={{
-                height: 2,
+                height: `${hiddenPct}%`,
                 background:
-                  "linear-gradient(90deg, transparent, rgba(214,67,36,0.85), transparent)",
+                  "linear-gradient(to bottom, #0a0806 0%, #0a0806 75%, rgba(10,8,6,0.92) 100%)",
+                transition: "height 0.08s linear",
               }}
             />
-          ))}
-        </div>
 
-        {/* Nozzle — Y tied to stack top so it sits right above the line it
-            is depositing. X oscillates independently. */}
-        <motion.div
-          className="absolute z-10"
-          style={{
-            width: 14,
-            height: 16,
-            bottom: `${stackTopPct + 0.8}%`,
-            left: 0,
-            transform: "translateX(-50%)",
-            background: "linear-gradient(to bottom, #2a2520, #0a0806)",
-            border: "1px solid rgba(245,241,234,0.45)",
-            borderBottom: "2px solid #D64324",
-            transition: "bottom 0.25s linear",
-          }}
-          animate={{ left: xKeyframes }}
-          transition={{
-            duration: FABRICATE_MS / 1000,
-            ease: "easeInOut",
-            times: xTimes,
-          }}
-        >
-          {/* Feed tube going up out of frame */}
-          <span
-            aria-hidden
-            className="absolute left-1/2 -translate-x-1/2 bg-white/35"
-            style={{ top: -40, width: 2, height: 40 }}
-          />
-          {/* Hot tip — glowing */}
-          <span
-            aria-hidden
-            className="absolute left-1/2 -translate-x-1/2 bg-accent"
-            style={{
-              bottom: -4,
-              width: 3,
-              height: 4,
-              boxShadow: "0 0 6px #D64324",
-            }}
-          />
-        </motion.div>
+            {/* Scan line / fresh-layer accent at the build front */}
+            <div
+              className="absolute left-0 right-0 pointer-events-none"
+              style={{
+                top: `${hiddenPct}%`,
+                height: 2,
+                background:
+                  "linear-gradient(90deg, transparent, #D64324, transparent)",
+                boxShadow: "0 0 10px #D64324, 0 0 20px rgba(214,67,36,0.5)",
+                transform: "translateY(-1px)",
+                transition: "top 0.08s linear",
+              }}
+            />
+
+            {/* Fresh-layer glow band — short gradient just above the build
+                front, suggests warm material being laid down */}
+            <div
+              className="absolute left-0 right-0 pointer-events-none"
+              style={{
+                top: `${hiddenPct}%`,
+                height: 16,
+                background:
+                  "linear-gradient(to bottom, rgba(214,67,36,0.35), transparent)",
+                transform: "translateY(-16px)",
+                transition: "top 0.08s linear",
+                mixBlendMode: "screen",
+              }}
+            />
+
+            {/* Nozzle — sits just above the build front; zig-zags horizontally */}
+            <motion.div
+              className="absolute z-10 pointer-events-none"
+              style={{
+                width: 18,
+                height: 22,
+                top: `${hiddenPct}%`,
+                transform: "translate(-50%, -100%)",
+                transition: "top 0.08s linear",
+              }}
+              animate={{
+                left: [
+                  "24%", "76%", "76%", "24%", "24%", "76%", "76%", "24%", "24%",
+                ],
+              }}
+              transition={{
+                duration: FABRICATE_MS / 1000,
+                ease: "linear",
+                times: [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1],
+              }}
+            >
+              {/* Nozzle body */}
+              <div
+                className="w-full h-full rounded-sm"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, #3a3028 0%, #1c1814 60%, #0a0806 100%)",
+                  border: "1px solid rgba(245,241,234,0.45)",
+                }}
+              />
+              {/* Hot tip */}
+              <span
+                aria-hidden
+                className="absolute left-1/2 -translate-x-1/2 bg-accent"
+                style={{
+                  bottom: -4,
+                  width: 3,
+                  height: 5,
+                  boxShadow: "0 0 6px #D64324, 0 0 12px #D64324",
+                }}
+              />
+              {/* Feed tube extending upward out of frame */}
+              <span
+                aria-hidden
+                className="absolute left-1/2 -translate-x-1/2 bg-white/30"
+                style={{ top: -120, width: 2, height: 120 }}
+              />
+              {/* Small ambient glow under the nozzle */}
+              <span
+                aria-hidden
+                className="absolute left-1/2 -translate-x-1/2 rounded-full"
+                style={{
+                  bottom: -8,
+                  width: 16,
+                  height: 6,
+                  background:
+                    "radial-gradient(ellipse, rgba(214,67,36,0.55), transparent 70%)",
+                }}
+              />
+            </motion.div>
+          </>
+        )}
       </div>
 
-      {/* Readout */}
       <div
         className="px-5 pb-10 flex justify-between items-center font-mono text-white/75"
         style={{ fontSize: "10pt" }}
