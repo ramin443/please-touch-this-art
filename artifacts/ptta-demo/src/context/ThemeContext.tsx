@@ -13,10 +13,10 @@ const STORAGE_KEY = "ptta-theme";
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function readInitial(): Theme {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") return "dark";
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored === "light" || stored === "dark") return stored;
-  return "light";
+  return "dark";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

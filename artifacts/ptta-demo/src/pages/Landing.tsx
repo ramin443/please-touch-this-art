@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Header } from "@/components/Header";
 import { CyclingText } from "@/components/CyclingText";
-import { SectionLabel, AlertBanner, Marker } from "@/components/editorial";
+import { SectionLabel, Marker } from "@/components/editorial";
 import { useLanguage } from "@/context/LanguageContext";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -289,19 +289,26 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="w-full" role="contentinfo">
-        <AlertBanner tone="accent">Demo prototype — transmission log</AlertBanner>
-        <div className="bg-stone-950 py-12 px-5 text-center">
-          <a
-            href={`mailto:${t.footer.email}`}
-            className="font-serif italic text-accent text-xl md:text-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            aria-label={`Email us at ${t.footer.email}`}
+      {/* FOOTER — quiet brand closer */}
+      <footer
+        className="w-full border-t border-hairline bg-surface-muted"
+        role="contentinfo"
+      >
+        <div className="mx-auto max-w-[440px] px-5 py-16 md:py-20 text-center">
+          <div className="flex justify-center mb-6">
+            <Marker className="!bg-accent" />
+          </div>
+          <p
+            className="font-serif italic text-ink text-3xl md:text-4xl leading-[1.1] mb-8"
+            style={{ letterSpacing: "-0.02em" }}
           >
-            — {t.footer.email}
-          </a>
-          <p className="mt-5 text-stone-400 text-sm max-w-[440px] mx-auto leading-relaxed">
-            {t.footer.disclaimer}
+            Please touch.
+          </p>
+          <p
+            className="ptta-label text-muted-fg"
+            style={{ fontSize: "10pt" }}
+          >
+            PTTA · 2026
           </p>
         </div>
       </footer>
