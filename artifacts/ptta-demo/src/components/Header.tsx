@@ -18,11 +18,11 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
 
   return (
     <header
-      className="sticky top-0 left-0 right-0 z-50 grid grid-cols-[1fr_auto] items-stretch bg-page border-b border-hairline"
+      className="sticky top-0 left-0 right-0 z-50 grid grid-cols-[minmax(0,1fr)_auto] items-stretch bg-page border-b border-hairline"
       role="banner"
     >
       {/* Left: back arrow (if present) + Courier editorial label */}
-      <div className="flex items-center gap-3 px-5 md:px-8 py-3">
+      <div className="flex items-center gap-3 px-5 md:px-8 py-3 min-w-0">
         {showBack && (
           <button
             type="button"

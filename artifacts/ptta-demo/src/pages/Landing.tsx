@@ -48,7 +48,7 @@ export default function Landing() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl bg-stone-950 mx-auto"
+          className="relative w-full aspect-video overflow-hidden rounded-[22px] md:rounded-[32px] bg-stone-950 mx-auto"
           style={{ maxWidth: "calc(50dvh * 16 / 9)" }}
         >
           <video

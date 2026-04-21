@@ -361,6 +361,7 @@
     scroll-behavior: smooth;
     background-color: var(--ptta-page);
     color: var(--ptta-ink);
+    overflow-x: clip;
   }
 
   body {
@@ -368,6 +369,7 @@
     background-color: var(--ptta-page);
     color: var(--ptta-ink);
     font-feature-settings: "kern", "liga", "calt";
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6, .ptta-title {
