@@ -15,6 +15,7 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
   const [, navigate] = useLocation();
 
   const tagText = tag ?? "PLEASE TOUCH THIS ART";
+  const isDefaultTag = tag === undefined;
 
   return (
     <header
@@ -52,10 +53,18 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
             e.preventDefault();
             navigate("/");
           }}
-          className="ptta-label text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent whitespace-nowrap text-[8pt] md:text-[10pt]"
+          className="ptta-label text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-left text-[10pt] leading-[1.1]"
           aria-label="Please Touch This Art – home"
         >
-          {tagText}
+          {isDefaultTag ? (
+            <>
+              <span className="block md:inline">PLEASE TOUCH</span>
+              <span className="hidden md:inline"> </span>
+              <span className="block md:inline">THIS ART</span>
+            </>
+          ) : (
+            tagText
+          )}
         </a>
       </div>
 

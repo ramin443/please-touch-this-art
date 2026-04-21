@@ -87,7 +87,7 @@ export default function Landing() {
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 0.8, y: 0 }}
             transition={{ duration: 0.45, delay: 0.14 }}
             className="text-ink text-base md:text-lg leading-snug mb-8 max-w-xl mx-auto"
           >
@@ -105,7 +105,7 @@ export default function Landing() {
             type="button"
             onClick={handleCta}
             aria-label={t.hero.cta}
-            className="w-full max-w-sm mx-auto px-8 py-4 rounded-full bg-ink text-page text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="w-full max-w-sm mx-auto px-8 py-4 rounded-full bg-accent text-black text-lg font-sans font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             style={{ minHeight: 56, letterSpacing: "-0.02em" }}
           >
             {t.hero.cta}
