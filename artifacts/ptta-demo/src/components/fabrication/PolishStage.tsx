@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import type { ModelEntry } from "@/content/models";
+import { polishRender } from "@/content/fabrication-images";
 import { ReferenceCard } from "./ReferenceCard";
 
 interface Props {
@@ -15,6 +16,15 @@ const POLISH_MS = 3000;
 export function PolishStage({ model, onDone, onBack }: Props) {
   const [pass, setPass] = useState(1);
   const startedAt = useRef<number>(Date.now());
+
+  // Use the dedicated polish render if the model ships one, else fall
+  // back to the painting (forced grayscale below to match the physical
+  // print appearance).
+  const polishSrc = useMemo(() => polishRender(model.id), [model.id]);
+  const baseSrc = polishSrc ?? model.image;
+  const baseFilter = polishSrc
+    ? undefined
+    : "grayscale(1) contrast(1.05) brightness(0.98)";
 
   useEffect(() => {
     const t = setTimeout(onDone, POLISH_MS);
@@ -83,36 +93,43 @@ export function PolishStage({ model, onDone, onBack }: Props) {
             boxShadow: "0 14px 36px rgba(0,0,0,0.7)",
           }}
         >
-          {model.image && (
+          {baseSrc && (
             <>
-              {/* Sharp/final painting (bottom layer).  Grayscale because
-                  the actual fabricated relief isn't coloured — the polish
-                  reveals the physical object, not a paint-faithful print. */}
+              {/* Sharp/final base image — render if available, else the
+                  painting with a forced grayscale filter. */}
               <img
-                src={model.image}
+                src={baseSrc}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ filter: "grayscale(1) contrast(1.05) brightness(0.98)" }}
+                style={baseFilter ? { filter: baseFilter } : undefined}
               />
-              {/* Matte/dusty overlay — blur + desaturate.  Filter strength
-                  animates from heavy to none over the stage so the painting
-                  literally clears as the polisher works. */}
+              {/* Matte/dusty overlay — blur + dim.  Fades out as the
+                  polisher works so the piece "clears" in real time. */}
               <motion.img
-                src={model.image}
+                src={baseSrc}
                 alt=""
                 aria-hidden
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 initial={{
-                  filter: "blur(7px) grayscale(1) brightness(0.6)",
+                  filter: baseFilter
+                    ? "blur(7px) grayscale(1) brightness(0.6)"
+                    : "blur(7px) brightness(0.55) contrast(0.9)",
                   opacity: 1,
                 }}
                 animate={{
-                  filter: [
-                    "blur(7px) grayscale(1) brightness(0.6)",
-                    "blur(4px) grayscale(1) brightness(0.75)",
-                    "blur(1.5px) grayscale(1) brightness(0.9)",
-                    "blur(0px) grayscale(1) brightness(0.98)",
-                  ],
+                  filter: baseFilter
+                    ? [
+                        "blur(7px) grayscale(1) brightness(0.6)",
+                        "blur(4px) grayscale(1) brightness(0.75)",
+                        "blur(1.5px) grayscale(1) brightness(0.9)",
+                        "blur(0px) grayscale(1) brightness(0.98)",
+                      ]
+                    : [
+                        "blur(7px) brightness(0.55) contrast(0.9)",
+                        "blur(4px) brightness(0.72) contrast(0.95)",
+                        "blur(1.5px) brightness(0.88) contrast(1)",
+                        "blur(0px) brightness(1) contrast(1)",
+                      ],
                   opacity: [1, 0.85, 0.55, 0],
                 }}
                 transition={{

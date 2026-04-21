@@ -1,33 +1,73 @@
 import type { ModelId } from "@/content/models";
 
 /**
- * Finished-piece photos shown on the RevealStage of the Fabrication flow.
- * Kept in a separate module (not on ModelEntry) so the cofounder's edits to
- * models.ts and this branch's fabrication work don't collide on merge.
+ * Photo / render paths used throughout the Fabrication flow.
  *
- * Values are relative paths — use `fabricationImage(id)` to get a final URL
- * that respects Vite's BASE_URL.
+ * - `fabricate` — three angles of the final 3D-printed piece, cycled
+ *   during the build so the reveal shows the actual physical object
+ *   materialising on the plate instead of a grayscale painting.
+ * - `polish`    — single side-angle render used as the base image for
+ *   the polishing stage. Fades in from a blurred/dim state as the
+ *   buffer does its passes.
+ * - `reveal`    — the finished-piece "in the wild" photo shown on the
+ *   final stage.
+ *
+ * All paths are relative to Vite's BASE_URL. Use the helpers below
+ * rather than consuming the map directly.
+ *
+ * Only Mona Lisa ships with render angles today; other models fall
+ * back to rendering `model.image` with a grayscale filter inside the
+ * Fabricate / Polish stages.
  */
-const IMAGES: Record<ModelId, string | undefined> = {
-  "mona-lisa":             "printed/mona-lisa.jpg",
-  "van-gogh":              "printed/van-gogh.png",
-  "the-scream":            "printed/the-scream.png",
-  "persistence-of-memory": "printed/persistence-of-memory.png",
-  "st-nikolai":            "printed/st-nikolai.png",
-  "eiffel-tower":          "printed/eiffel-tower.png",
+interface ModelImages {
+  fabricate?: [string, string, string];
+  polish?: string;
+  reveal?: string;
+}
+
+const IMAGES: Record<ModelId, ModelImages> = {
+  "mona-lisa": {
+    fabricate: [
+      "printed/renders/mona-lisa-01.png",
+      "printed/renders/mona-lisa-02.png",
+      "printed/renders/mona-lisa-03.png",
+    ],
+    polish: "printed/renders/mona-lisa-04-polish.png",
+    reveal: "printed/mona-lisa.jpg",
+  },
+  "van-gogh": { reveal: "printed/van-gogh.png" },
+  "the-scream": { reveal: "printed/the-scream.png" },
+  "persistence-of-memory": { reveal: "printed/persistence-of-memory.png" },
+  "st-nikolai": { reveal: "printed/st-nikolai.png" },
+  "eiffel-tower": { reveal: "printed/eiffel-tower.png" },
 };
 
-export function fabricationImage(id: ModelId): string | undefined {
-  const rel = IMAGES[id];
-  if (!rel) return undefined;
+function withBase(path: string): string {
   const base = import.meta.env.BASE_URL || "/";
-  return `${base}${rel}`.replace(/\/{2,}/g, "/");
+  return `${base}${path}`.replace(/\/{2,}/g, "/");
+}
+
+export function fabricationImage(id: ModelId): string | undefined {
+  const r = IMAGES[id]?.reveal;
+  return r ? withBase(r) : undefined;
+}
+
+export function fabricateRenders(
+  id: ModelId
+): [string, string, string] | undefined {
+  const r = IMAGES[id]?.fabricate;
+  return r ? [withBase(r[0]), withBase(r[1]), withBase(r[2])] : undefined;
+}
+
+export function polishRender(id: ModelId): string | undefined {
+  const r = IMAGES[id]?.polish;
+  return r ? withBase(r) : undefined;
 }
 
 /**
- * Deterministic job-docket fields for the Dispatch stage. Values derive
- * from the model id so the same model always renders with the same docket
- * across visits, without persisting state.
+ * Deterministic job-docket fields. Kept so FabricateStage / other bits
+ * can display a stable "layer N of 240" / "Bay 02" without persisting
+ * any state between visits.
  */
 export function dispatchDocket(id: ModelId): {
   jobNumber: string;
