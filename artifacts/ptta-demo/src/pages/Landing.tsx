@@ -8,6 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const VIDEO_SRC = `${BASE}/videos/people-using-tactile.mp4`;
+const VIDEO_POSTER = `${BASE}/posters/people-using-tactile.jpg`;
 const SOLUTION_IMG = `${BASE}/printed/st-nikolai.png`;
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
@@ -55,11 +56,12 @@ export default function Landing() {
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             src={VIDEO_SRC}
+            poster={VIDEO_POSTER}
             autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             aria-label="Please Touch This Art — people testing tactile art models in a museum"
           />
         </motion.div>

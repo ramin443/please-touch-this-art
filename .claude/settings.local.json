@@ -46,7 +46,25 @@
       "Bash(sips -Z 1600 -s format jpeg -s formatOptions 78 '/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/images/3D Printed Images/St Nikolai/DSCF3652.JPG' --out /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/printed/st-nikolai-photo.jpg)",
       "Bash(sips -Z 1600 -s format jpeg -s formatOptions 78 '/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/images/3D Printed Images/Van Gogh/DSCF3665.JPG' --out /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/printed/van-gogh-photo.jpg)",
       "Bash(npm run *)",
-      "Bash(PORT=5173 BASE_PATH=/ npm run dev)"
+      "Bash(PORT=5173 BASE_PATH=/ npm run dev)",
+      "Bash(curl -sI http://localhost:5173/__TRACKED_VAR__)",
+      "Bash(cp people-using-tactile.mp4 people-using-tactile.original.mp4)",
+      "Bash(cp testimonials.mp4 testimonials.original.mp4)",
+      "Bash(ffmpeg -y -i people-using-tactile.original.mp4 -vf \"scale='min\\(1280,iw\\)':-2\" -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -profile:v high -level 4.0 -movflags +faststart -an people-using-tactile.compressed.mp4)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"ffmpeg.*people-using-tactile\")",
+      "Bash(ffmpeg -y -ss 1.5 -i /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/videos/people-using-tactile.original.mp4 -frames:v 1 -q:v 5 -vf 'scale='\\\\''min\\(1280,iw\\)'\\\\'':-2' /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/posters/people-using-tactile.jpg)",
+      "Bash(ffmpeg -y -i /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/videos/testimonials.original.mp4 -vf 'scale='\\\\''min\\(1280,iw\\)'\\\\'':-2' -c:v libx264 -preset medium -crf 26 -pix_fmt yuv420p -profile:v high -level 4.0 -c:a aac -b:a 96k -movflags +faststart /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/videos/testimonials.compressed.mp4)",
+      "Bash(npm --version)",
+      "Bash(mkdir -p /tmp/img-check)",
+      "Read(//tmp/**)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Read(//private/tmp/img-check/**)",
+      "Bash(npx playwright *)",
+      "Bash(node check.js)",
+      "Bash(curl -sI \"http://localhost:5173/posters/people-using-tactile.jpg\")",
+      "Bash(curl -sI \"http://localhost:5173/videos/people-using-tactile.mp4\")"
     ]
   }
 }
