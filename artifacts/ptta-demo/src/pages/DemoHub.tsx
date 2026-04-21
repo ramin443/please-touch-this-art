@@ -216,26 +216,21 @@ export default function DemoHub() {
           animate="show"
           className="grid grid-cols-2 gap-3"
         >
-          {demoHub.cards.map((card, i) => {
-            const isFuture = card.variant === "future";
-            return (
-              <DemoHubCard
-                key={card.slug}
-                card={card}
-                index={i}
-                onOpen={handleOpen}
-                ariaLabel={demoHub.ariaOpenModule(card.title)}
-                openLabel={demoHub.openLabel}
-                reduceMotion={reduceMotion}
-                wide={isFuture}
-              />
-            );
-          })}
+          {demoHub.cards.map((card, i) => (
+            <DemoHubCard
+              key={card.slug}
+              card={card}
+              index={i}
+              onOpen={handleOpen}
+              ariaLabel={demoHub.ariaOpenModule(card.title)}
+              openLabel={demoHub.openLabel}
+              reduceMotion={reduceMotion}
+            />
+          ))}
         </motion.div>
 
         {/* FOOTER STRIP */}
         <div className="mt-8 flex flex-col items-center gap-2 text-center">
-          <p className="text-muted-fg text-xs">{demoHub.footer.note}</p>
           <button
             type="button"
             onClick={handleReturn}

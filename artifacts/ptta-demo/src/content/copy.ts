@@ -210,14 +210,6 @@ const en: PageCopy = {
         route: "/audio-guide",
       },
       {
-        slug: "showcase",
-        title: "Full Product Showcase",
-        description: "The finished installation in a museum gallery.",
-        illoAlt:
-          "Tactile model on a pedestal with the PTTA braille plaque",
-        imageSrc: "images/model-with-plaque.jpeg",
-      },
-      {
         slug: "future",
         title: "Future Features",
         description:

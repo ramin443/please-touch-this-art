@@ -52,8 +52,7 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
             e.preventDefault();
             navigate("/");
           }}
-          className="ptta-label text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent truncate"
-          style={{ fontSize: "10pt" }}
+          className="ptta-label text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent whitespace-nowrap text-[8pt] md:text-[10pt]"
           aria-label="Please Touch This Art – home"
         >
           {tagText}
