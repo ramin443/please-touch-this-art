@@ -133,19 +133,15 @@ export function ViewerStage({ model, onBack }: Props) {
   const envUrl = `${import.meta.env.BASE_URL || "/"}environments/studio.hdr`
     .replace(/\/{2,}/g, "/");
 
-  // Paintings are low-relief: start the camera at a steep angle so the
-  // first frame reads as 3D under raking light, push the exposure down
-  // so shadows on the relief actually read, and stretch the model's
-  // depth (Z-axis) by 2.5× so millimetre surface variation casts
-  // shadows visible at the viewing distance. The silhouette (X/Y)
-  // stays true; only depth is exaggerated. This is what relief-
-  // photography studios do physically with oblique lighting.
-  // Monuments already have real geometric depth and need no stretch.
-  const isLowRelief = model.type === "painting";
-  const cameraOrbit = isLowRelief ? "-55deg 82deg auto" : "-25deg 76deg auto";
-  const exposure = isLowRelief ? "0.8" : "0.95";
-  const shadowIntensity = isLowRelief ? "2.6" : "2.0";
-  const modelScale = model.modelScale ?? (isLowRelief ? "1 1 2.5" : "1 1 1");
+  // Paintings are low-relief and look best from an angled opening
+  // frame under slightly lower exposure so shadows on the shallow
+  // surface variation can read. Monuments look great near front-on
+  // with brighter exposure. No non-uniform scaling — the GLBs are
+  // rendered at true proportions and auto-framed to the viewport.
+  const isPainting = model.type === "painting";
+  const cameraOrbit = isPainting ? "-55deg 82deg auto" : "-25deg 76deg auto";
+  const exposure = isPainting ? "0.8" : "0.95";
+  const shadowIntensity = isPainting ? "2.6" : "2.0";
   const orientation = model.orientation ?? "0 0 0";
 
   return (
@@ -153,7 +149,6 @@ export function ViewerStage({ model, onBack }: Props) {
       <model-viewer
         ref={viewerRef}
         alt={`3D tactile model of ${model.title} by ${model.artist}`}
-        scale={modelScale}
         orientation={orientation}
         camera-controls
         auto-rotate
