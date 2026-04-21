@@ -56,6 +56,9 @@ export const MODELS: ModelEntry[] = [
     image: publicPath("paintings/the-scream.jpg"),
     glb: publicPath("models/the-scream.glb"),
     available: true,
+    // Authored lying flat (Y = shallow depth, Z = tall). Rotate 90°
+    // around X so it stands upright with its face toward the camera.
+    orientation: "0 -90 0",
   },
   {
     id: "persistence-of-memory",
@@ -66,6 +69,8 @@ export const MODELS: ModelEntry[] = [
     image: publicPath("paintings/persistence-of-memory.jpeg"),
     glb: publicPath("models/persistence-of-memory.glb"),
     available: true,
+    // Same axis convention as The Scream — stand it up via X rotation.
+    orientation: "0 -90 0",
   },
   {
     id: "st-nikolai",
