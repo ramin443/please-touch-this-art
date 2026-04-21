@@ -25,7 +25,7 @@ export function ModelPicker({ onSelect }: Props) {
 
         <div className="text-center mb-6">
           <h1
-            className="font-sans italic text-ink text-3xl md:text-4xl leading-[1.02]"
+            className="font-serif text-ink text-3xl md:text-4xl leading-[1.02]"
             style={titleStyle}
           >
             — Pick a piece to touch.

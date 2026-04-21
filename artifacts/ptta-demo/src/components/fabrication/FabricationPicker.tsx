@@ -7,7 +7,7 @@ import {
 } from "@/content/models";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/Header";
-import { SectionLabel } from "@/components/editorial";
+import { SectionLabel, Marker } from "@/components/editorial";
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
 
@@ -28,53 +28,50 @@ export function FabricationPicker({ onSelect }: Props) {
       <div className="mx-auto w-full max-w-[440px] px-5 pt-6 pb-10">
         <SectionLabel label="Fabrication" tag="Module · 02" />
 
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h1
-            className="font-serif text-ink text-3xl md:text-4xl leading-[1.02] mb-2"
+            className="font-serif text-ink text-3xl md:text-4xl leading-[1.02]"
             style={titleStyle}
           >
             — Pick a piece to fabricate.
           </h1>
-          <p className="text-body-fg text-sm leading-snug">
-            Watch how we build the tactile relief — from dispatch to finished
-            piece.
-          </p>
         </div>
 
-        <section className="mb-8" aria-label="Paintings">
-          <div className="flex items-center justify-between mb-4">
+        {/* Paintings — 2-col grid (matches ModelPicker) */}
+        <section className="mb-6" aria-label="Paintings">
+          <div className="flex items-center justify-between mb-3">
             <span className="ptta-label text-ink" style={{ fontSize: "10pt" }}>
               Paintings
             </span>
-            <span
-              className="ptta-label text-muted-fg"
-              style={{ fontSize: "10pt" }}
-            >
+            <span className="ptta-label text-muted-fg" style={{ fontSize: "10pt" }}>
               {PAINTINGS.length} available
             </span>
           </div>
-          <div className="flex flex-col gap-4">
-            {PAINTINGS.map((m) => (
-              <ModelCard key={m.id} model={m} onSelect={onSelect} />
+          <div className="grid grid-cols-2 gap-3">
+            {PAINTINGS.map((m, i) => (
+              <ModelCard key={m.id} model={m} index={i} onSelect={onSelect} />
             ))}
           </div>
         </section>
 
+        {/* Monuments — 2-col grid */}
         <section aria-label="Monuments">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <span className="ptta-label text-ink" style={{ fontSize: "10pt" }}>
               Monuments
             </span>
-            <span
-              className="ptta-label text-muted-fg"
-              style={{ fontSize: "10pt" }}
-            >
+            <span className="ptta-label text-muted-fg" style={{ fontSize: "10pt" }}>
               {MONUMENTS.length} available
             </span>
           </div>
-          <div className="flex flex-col gap-4">
-            {MONUMENTS.map((m) => (
-              <ModelCard key={m.id} model={m} onSelect={onSelect} />
+          <div className="grid grid-cols-2 gap-3">
+            {MONUMENTS.map((m, i) => (
+              <ModelCard
+                key={m.id}
+                model={m}
+                index={PAINTINGS.length + i}
+                onSelect={onSelect}
+              />
             ))}
           </div>
         </section>
@@ -85,10 +82,11 @@ export function FabricationPicker({ onSelect }: Props) {
 
 interface CardProps {
   model: ModelEntry;
+  index: number;
   onSelect: (id: ModelId) => void;
 }
 
-function ModelCard({ model, onSelect }: CardProps) {
+function ModelCard({ model, index, onSelect }: CardProps) {
   const disabled = !model.available;
   return (
     <button
@@ -103,10 +101,9 @@ function ModelCard({ model, onSelect }: CardProps) {
           : `Fabricate ${model.title} by ${model.artist}`
       }
       className={cn(
-        "group relative w-full rounded-2xl overflow-hidden bg-surface border border-hairline text-left transition-all",
+        "group relative w-full flex flex-col text-left rounded-2xl overflow-hidden bg-surface border border-hairline shadow-sm transition-all",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
-        !disabled &&
-          "hover:-translate-y-0.5 hover:shadow-md active:translate-y-0",
+        !disabled && "hover:-translate-y-0.5 hover:shadow-md active:translate-y-0",
         disabled && "opacity-70 cursor-not-allowed"
       )}
       style={{ minHeight: 56 }}
@@ -124,35 +121,44 @@ function ModelCard({ model, onSelect }: CardProps) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-stone-800 text-cream">
-            <Landmark size={88} strokeWidth={1.1} aria-hidden />
+            <Landmark size={60} strokeWidth={1.1} aria-hidden />
           </div>
         )}
         {disabled && (
-          <div className="absolute inset-0 flex items-start justify-end p-3 bg-stone-950/40">
+          <div className="absolute inset-0 flex items-start justify-end p-2 bg-stone-950/40">
             <span
-              className="ptta-label inline-flex items-center px-3 py-1 rounded-full bg-stone-950 text-accent"
-              style={{ fontSize: "10pt" }}
+              className="ptta-label inline-flex items-center px-2 py-0.5 rounded-full bg-stone-950 text-accent"
+              style={{ fontSize: "9pt" }}
             >
-              Coming soon
+              Soon
             </span>
           </div>
         )}
       </div>
-      <div className="p-5">
+
+      <div className="p-3">
+        <div className="flex items-center justify-between mb-2">
+          <Marker size={6} />
+          <span className="ptta-label text-muted-fg" style={{ fontSize: "9pt" }}>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
         <h3
-          className="font-serif text-ink text-xl leading-tight mb-1"
+          className="font-sans text-ink text-sm md:text-base leading-tight"
           style={titleStyle}
         >
           — {model.title}
         </h3>
-        <p className="text-muted-fg text-sm">
-          {model.artist} <span aria-hidden>·</span> {model.year}
+        <p className="text-muted-fg text-xs mt-0.5 truncate">
+          {model.artist} · {model.year}
         </p>
+
         {!disabled && (
           <span
             aria-hidden="true"
-            className="ptta-label text-accent inline-block mt-3 transition-transform duration-200 group-hover:translate-x-0.5"
-            style={{ fontSize: "10pt" }}
+            className="ptta-label text-accent inline-block mt-2 transition-transform duration-200 group-hover:translate-x-0.5"
+            style={{ fontSize: "9pt" }}
           >
             Fabricate →
           </span>
