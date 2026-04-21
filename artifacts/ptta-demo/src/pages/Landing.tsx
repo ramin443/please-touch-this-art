@@ -34,14 +34,22 @@ export default function Landing() {
     <div className="ptta-root min-h-screen bg-page text-ink">
       <Header />
 
-      {/* Phone-width app column */}
-      <div className="w-full mx-auto max-w-[440px] px-5 pt-6 pb-8">
-        {/* HERO VIDEO */}
+      {/* App column — phone-width on mobile, grows on tablet/desktop */}
+      <div className="w-full mx-auto max-w-[440px] md:max-w-3xl lg:max-w-5xl px-5 md:px-8 pt-6 md:pt-10 pb-8 md:pb-14">
+        {/*
+          HERO VIDEO — responsive height.
+          `aspect-video` (16:9) + `maxWidth: calc(50dvh * 16/9)` ensures the
+          video's height never exceeds 50% of the viewport, so the headline
+          and CTA stay on-screen even when the browser window is partially
+          maximised or shorter than usual. On tall viewports, the video
+          still grows with the column up to its lg:max-w-5xl cap.
+        */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="relative w-full aspect-video overflow-hidden rounded-2xl bg-stone-950"
+          className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl bg-stone-950 mx-auto"
+          style={{ maxWidth: "calc(50dvh * 16 / 9)" }}
         >
           <video
             ref={videoRef}
@@ -56,13 +64,13 @@ export default function Landing() {
           />
         </motion.div>
 
-        {/* HERO TEXT */}
-        <div className="text-center pt-8 pb-2">
+        {/* HERO TEXT — constrained for readability even when container grows */}
+        <div className="text-center pt-8 md:pt-12 pb-2 mx-auto max-w-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.08 }}
-            className="font-serif text-ink text-4xl md:text-5xl leading-[1.05] mb-4"
+            className="font-serif text-ink text-4xl md:text-6xl leading-[1.05] mb-4"
             style={titleStyle}
             aria-label={`${t.hero.headline.leading}${t.hero.headline.emphasis}`}
           >
@@ -79,7 +87,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.14 }}
-            className="text-ink text-base leading-snug mb-8"
+            className="text-ink text-base md:text-lg leading-snug mb-8 max-w-xl mx-auto"
           >
             {t.hero.subline.leading}
             <strong className="font-bold">{t.hero.subline.emphasis}</strong>
@@ -95,7 +103,7 @@ export default function Landing() {
             type="button"
             onClick={handleCta}
             aria-label={t.hero.cta}
-            className="w-full px-8 py-4 rounded-full bg-ink text-page text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="w-full max-w-sm mx-auto px-8 py-4 rounded-full bg-ink text-page text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             style={{ minHeight: 56, letterSpacing: "-0.02em" }}
           >
             {t.hero.cta}
@@ -105,10 +113,10 @@ export default function Landing() {
 
       {/* SLOGAN */}
       <section
-        className="w-full py-14 px-5 border-t border-hairline"
+        className="w-full py-14 md:py-20 px-5 md:px-8 border-t border-hairline"
         aria-label="Mission statement"
       >
-        <div className="mx-auto max-w-[440px]">
+        <div className="mx-auto max-w-[440px] md:max-w-2xl">
           <SectionLabel label="Epigraph" tag="Edition 01" />
           <blockquote className="text-center">
             <p
@@ -128,12 +136,12 @@ export default function Landing() {
 
       {/* PROBLEM / SOLUTION */}
       <section
-        className="w-full py-12 px-5 border-t border-hairline"
+        className="w-full py-12 md:py-20 px-5 md:px-8 border-t border-hairline"
         aria-label="Problem and solution"
       >
-        <div className="mx-auto max-w-[440px]">
+        <div className="mx-auto max-w-[440px] md:max-w-5xl">
           <SectionLabel label="Dispatch" tag="Brief · 02" />
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
             {/* PROBLEM — stat-forward, minimal body */}
             <article className="bg-surface border border-hairline rounded-2xl p-5 md:p-6">
               <div className="flex items-center justify-between mb-4">
@@ -294,7 +302,7 @@ export default function Landing() {
         className="w-full border-t border-hairline bg-surface-muted"
         role="contentinfo"
       >
-        <div className="mx-auto max-w-[440px] px-5 py-16 md:py-20 text-center">
+        <div className="mx-auto max-w-[440px] md:max-w-2xl px-5 md:px-8 py-16 md:py-24 text-center">
           <div className="flex justify-center mb-6">
             <Marker className="!bg-accent" />
           </div>
@@ -302,7 +310,7 @@ export default function Landing() {
             className="font-serif italic text-ink text-3xl md:text-4xl leading-[1.1] mb-8"
             style={{ letterSpacing: "-0.02em" }}
           >
-            Please touch.
+            Please touch this art.
           </p>
           <p
             className="ptta-label text-muted-fg"
