@@ -40,7 +40,9 @@
       "Bash('~/.local/bin/pnpm' --filter @workspace/ptta-demo dev)",
       "Bash(echo \"started bg pid $!\")",
       "Bash(node -e 'console.log\\('\\\\''node'\\\\'', process.version, '\\\\''works'\\\\''\\)')",
-      "Bash('~/.local/bin/pnpm' install *)"
+      "Bash('~/.local/bin/pnpm' install *)",
+      "Bash(git update-ref *)",
+      "Bash(git ls-tree *)"
     ]
   }
 }
