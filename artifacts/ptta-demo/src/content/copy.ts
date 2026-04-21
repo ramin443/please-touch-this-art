@@ -240,7 +240,9 @@ const en: PageCopy = {
         title: "Future Features",
         description:
           "What’s next: scaling to more museums, more languages, more formats.",
-        illoAlt: "Abstract roadmap visualisation",
+        illoAlt:
+          "Surrealist portrait of a woman wearing a VR headset surrounded by floating museum objects",
+        imageSrc: "images/future-of-art.jpg",
         variant: "future",
         route: "/future-features",
       },
