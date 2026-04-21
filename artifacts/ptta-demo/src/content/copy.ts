@@ -222,7 +222,7 @@ const en: PageCopy = {
         description:
           "Talk with Leonardo, Vincent, Salvador or Edvard — in their own voice, about their own work.",
         illoAlt: "Engraved portrait of Leonardo da Vinci",
-        imageSrc: "artists/leonardo.jpg",
+        imageSrc: "artists/leonardo.webp",
         route: "/artist-persona",
         nextModule: "future",
       },

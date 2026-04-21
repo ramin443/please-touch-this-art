@@ -35,7 +35,7 @@ export const ARTISTS: Record<ArtistId, ArtistMeta> = {
       "Why does the Mona Lisa smile?",
       "What did you learn from dissecting bodies?",
     ],
-    portrait: "artists/leonardo.jpg",
+    portrait: "artists/leonardo.webp",
     portraitAlt: "Engraved portrait of Leonardo da Vinci",
     lifespan: "1452–1519",
     tagline: "Amboise, 1517",
