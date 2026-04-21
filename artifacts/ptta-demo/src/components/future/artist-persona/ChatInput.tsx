@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Send } from "lucide-react";
 
@@ -25,10 +25,6 @@ export function ChatInput({
   const [focused, setFocused] = useState(false);
   const reduceMotion = useReducedMotion() ?? false;
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (!disabled) inputRef.current?.focus();
-  }, [disabled]);
 
   const submit = () => {
     const trimmed = text.trim();
