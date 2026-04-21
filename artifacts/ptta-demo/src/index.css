@@ -4,6 +4,78 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/HelveticaNeue-Thin.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/HelveticaNeue-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/HelveticaNeue-Medium.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/HelveticaNeue-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/HelveticaNeue-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("/fonts/Aeonik-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -120,8 +192,9 @@
   --chart-4: 38 75% 70%;
   --chart-5: 20 35% 55%;
 
-  --app-font-sans: 'Inter', system-ui, sans-serif;
-  --app-font-serif: 'Georgia', 'Times New Roman', serif;
+  --app-font-sans: 'Aeonik', 'Helvetica', 'Arial', system-ui, sans-serif;
+  --app-font-serif: 'Aeonik', 'Helvetica', 'Arial', system-ui, sans-serif;
+  --app-font-display: 'Helvetica Neue', 'Helvetica', 'Arial', system-ui, sans-serif;
   --app-font-mono: 'Menlo', monospace;
   --radius: 0.5rem;
 
@@ -241,6 +314,14 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+
+  h1, h2, h3, h4, h5, h6, .ptta-title {
+    font-family: var(--app-font-display);
+    font-weight: 400;
+    letter-spacing: -0.05em;
+    font-feature-settings: "kern", "liga";
   }
 }
 

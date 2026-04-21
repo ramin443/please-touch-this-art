@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm -v)",
+      "Bash(mkdir -p /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/videos /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/fonts)",
+      "Bash(cp \"/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/videos/Testimonials compressed.mp4\" /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/videos/testimonials.mp4)",
+      "Bash(cp \"/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/fonts/helvetica-neue/HelveticaNeue Thin.ttf\" /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/fonts/HelveticaNeue-Thin.ttf)",
+      "Bash(cp \"/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/fonts/helvetica-neue/HelveticaNeue Light.ttf\" /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/fonts/HelveticaNeue-Light.ttf)",
+      "Bash(cp \"/Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/assets/fonts/helvetica-neue/HelveticaNeue Medium.ttf\" /Users/raminudash/Desktop/PTTA_Web_App/please-touch-this-art/artifacts/ptta-demo/public/fonts/HelveticaNeue-Medium.ttf)",
+      "Read(//Users/raminudash/.nvm/versions/**)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(command -v corepack)",
+      "Bash(corepack enable *)",
+      "Bash(mkdir -p ~/.local/bin)",
+      "Read(//Users/raminudash/.local/bin/**)",
+      "Bash(~/.local/bin/pnpm -v)",
+      "Bash(~/.local/bin/pnpm install *)",
+      "Bash(PORT=5173 BASE_PATH=/ ~/.local/bin/pnpm *)",
+      "Bash(command -v nvm)",
+      "Bash([ -s \"$HOME/.nvm/nvm.sh\" ])",
+      "Bash([ -d \"$HOME/.nvm\" ])",
+      "Read(//Users/raminudash/**)",
+      "Bash(command -v fnm)",
+      "Bash(command -v volta)",
+      "Bash(command -v asdf)",
+      "Bash(brew upgrade *)"
+    ]
+  }
+}

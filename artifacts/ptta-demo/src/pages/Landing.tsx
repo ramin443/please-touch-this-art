@@ -1,74 +1,42 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { copy } from "@/content/copy";
+import { Header } from "@/components/Header";
+import { useLanguage } from "@/context/LanguageContext";
 
-const YOUTUBE_VIDEO_ID = "uLaldrzO8PM";
+const VIDEO_SRC = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/videos/testimonials.mp4`;
 
-function ytCmd(iframe: HTMLIFrameElement | null, func: string) {
-  if (!iframe?.contentWindow) return;
-  iframe.contentWindow.postMessage(
-    JSON.stringify({ event: "command", func, args: "" }),
-    "*"
-  );
-}
+const titleStyle = { letterSpacing: "-0.05em" } as const;
+const eyebrowStyle = { letterSpacing: "0.18em" } as const;
 
 export default function Landing() {
-  const [lang, setLang] = useState<"en" | "de">("en");
+  const { t } = useLanguage();
   const [muted, setMuted] = useState(true);
-  const [scrolled, setScrolled] = useState(false);
-  const [heroPast, setHeroPast] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [, navigate] = useLocation();
-
-  const t = copy[lang] ?? copy.en;
-
-  const youtubeSrc = [
-    `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}`,
-    `?autoplay=${prefersReducedMotion ? 0 : 1}`,
-    `&mute=1`,
-    `&loop=1`,
-    `&playlist=${YOUTUBE_VIDEO_ID}`,
-    `&controls=0`,
-    `&playsinline=1`,
-    `&modestbranding=1`,
-    `&rel=0`,
-    `&enablejsapi=1`,
-  ].join("");
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const handler = (e: MediaQueryListEvent) => {
       setPrefersReducedMotion(e.matches);
-      ytCmd(iframeRef.current, e.matches ? "pauseVideo" : "playVideo");
+      const video = videoRef.current;
+      if (!video) return;
+      if (e.matches) video.pause();
+      else video.play().catch(() => {});
     };
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-      if (heroRef.current) {
-        setHeroPast(heroRef.current.getBoundingClientRect().bottom < 0);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const toggleMute = useCallback(() => {
-    if (muted) {
-      ytCmd(iframeRef.current, "unMute");
-      setMuted(false);
-    } else {
-      ytCmd(iframeRef.current, "mute");
-      setMuted(true);
-    }
+    const video = videoRef.current;
+    if (!video) return;
+    const next = !muted;
+    video.muted = next;
+    setMuted(next);
   }, [muted]);
 
   const handleCta = useCallback(() => {
@@ -76,78 +44,26 @@ export default function Landing() {
   }, [navigate]);
 
   return (
-    <div className="ptta-root min-h-screen" style={{ scrollBehavior: "smooth" }}>
+    <div className="ptta-root min-h-screen bg-stone-50 text-stone-900">
 
-      {/* HEADER */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
-          scrolled ? "bg-white/90 backdrop-blur shadow-sm" : "bg-transparent"
-        }`}
-        role="banner"
-      >
-        {/*
-          LOGO: Replace this text element with your actual logo file once available.
-          e.g.: <img src={logo} alt="Please Touch This Art" className="h-8" />
-        */}
-        <a
-          href="/"
-          className={`font-serif text-lg font-bold tracking-tight transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
-            scrolled ? "text-stone-900" : "text-white"
-          }`}
-          aria-label="Please Touch This Art – home"
-        >
-          {t.header.logoText}
-        </a>
-
-        <nav aria-label="Language selection">
-          <div className="flex gap-1 text-sm font-medium" role="group">
-            <button
-              onClick={() => setLang("en")}
-              aria-label="Switch to English"
-              aria-pressed={lang === "en"}
-              className={`px-3 py-1.5 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
-                lang === "en"
-                  ? "bg-amber-500 text-stone-900"
-                  : scrolled
-                  ? "text-stone-600 hover:text-stone-900"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => setLang("de")}
-              aria-label="Zur deutschen Sprache wechseln"
-              aria-pressed={lang === "de"}
-              className={`px-3 py-1.5 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
-                lang === "de"
-                  ? "bg-amber-500 text-stone-900"
-                  : scrolled
-                  ? "text-stone-600 hover:text-stone-900"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              DE
-            </button>
-          </div>
-        </nav>
-      </header>
+      <Header />
 
       {/* HERO VIDEO */}
       <section
-        ref={heroRef}
         className="relative w-full bg-stone-950 overflow-hidden"
         style={{ aspectRatio: "16/9", maxHeight: "70vh" }}
         aria-label="Hero video"
       >
-        <iframe
-          ref={iframeRef}
-          className="absolute inset-0 w-full h-full"
-          src={youtubeSrc}
-          title="Please Touch This Art — blind visitors experiencing tactile art models in a museum"
-          allow="autoplay; fullscreen"
-          allowFullScreen
-          style={{ border: "none", pointerEvents: "none" }}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src={VIDEO_SRC}
+          autoPlay={!prefersReducedMotion}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label="Please Touch This Art — blind visitors experiencing tactile art models in a museum"
         />
 
         <div
@@ -162,7 +78,7 @@ export default function Landing() {
         <button
           onClick={toggleMute}
           aria-label={muted ? "Unmute video" : "Mute video"}
-          className="absolute bottom-4 right-4 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+          className="absolute bottom-4 right-4 z-10 flex items-center justify-center w-10 h-10 bg-black/60 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
         >
           {muted ? (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -181,20 +97,20 @@ export default function Landing() {
 
         {/* Hero copy — desktop: overlaid on bottom of video */}
         <div className="absolute inset-x-0 bottom-0 z-10 hidden md:flex flex-col items-start p-10 lg:p-16 max-w-3xl">
-          <p className="text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
+          <p className="text-amber-400 text-xs font-medium uppercase mb-4" style={eyebrowStyle}>
             {t.hero.eyebrow}
           </p>
-          <h1 className="font-serif text-white text-4xl lg:text-6xl font-bold leading-tight mb-4">
+          <h1 className="text-white text-5xl lg:text-7xl leading-[0.95] mb-6" style={titleStyle}>
             {t.hero.headline}
           </h1>
-          <p className="font-sans text-white/80 text-base lg:text-lg leading-relaxed mb-8 max-w-xl">
+          <p className="text-white/80 text-base lg:text-lg leading-relaxed mb-8 max-w-xl">
             {t.hero.subline}
           </p>
           <button
             onClick={handleCta}
             aria-label={t.hero.cta}
-            className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            style={{ minHeight: 56 }}
+            className="px-10 py-4 bg-amber-400 text-stone-900 font-bold text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ minHeight: 56, letterSpacing: "-0.02em" }}
           >
             {t.hero.cta}
           </button>
@@ -202,54 +118,60 @@ export default function Landing() {
       </section>
 
       {/* Hero copy — mobile: below video */}
-      <section className="md:hidden bg-stone-950 px-6 pt-8 pb-10">
-        <p className="text-amber-400 text-xs font-sans font-semibold uppercase tracking-widest mb-3">
+      <section className="md:hidden bg-stone-950 px-6 pt-10 pb-12">
+        <p className="text-amber-400 text-xs font-medium uppercase mb-4" style={eyebrowStyle}>
           {t.hero.eyebrow}
         </p>
-        <h1 className="font-serif text-white text-4xl font-bold leading-tight mb-4">
+        <h1 className="text-white text-4xl leading-[0.95] mb-5" style={titleStyle}>
           {t.hero.headline}
         </h1>
-        <p className="font-sans text-white/75 text-base leading-relaxed mb-8">
+        <p className="text-white/75 text-base leading-relaxed mb-8">
           {t.hero.subline}
         </p>
         <button
           onClick={handleCta}
           aria-label={t.hero.cta}
-          className="w-full px-8 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
-          style={{ minHeight: 56 }}
+          className="w-full px-8 py-4 bg-amber-400 text-stone-900 font-bold text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
+          style={{ minHeight: 56, letterSpacing: "-0.02em" }}
         >
           {t.hero.cta}
         </button>
       </section>
 
       {/* SLOGAN */}
-      <section className="w-full bg-stone-50 py-16 px-6 text-center" aria-label="Mission statement">
+      <section className="w-full bg-stone-50 py-24 px-6 text-center border-b border-stone-200" aria-label="Mission statement">
         <blockquote>
-          <p className="font-serif text-stone-800 text-2xl md:text-4xl font-bold leading-snug max-w-3xl mx-auto">
+          <p className="text-stone-900 text-3xl md:text-5xl leading-[1.05] max-w-3xl mx-auto" style={titleStyle}>
             {t.slogan.quote}
           </p>
-          <footer className="mt-5 font-sans text-stone-500 text-sm tracking-wide">
+          <footer className="mt-8 text-stone-500 text-xs uppercase" style={eyebrowStyle}>
             {t.slogan.caption}
           </footer>
         </blockquote>
       </section>
 
       {/* PROBLEM / SOLUTION */}
-      <section className="w-full bg-stone-100 py-16 px-6" aria-label="Problem and solution">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          <article className="rounded-2xl p-8 md:p-10" style={{ background: "hsl(34 30% 94%)" }}>
-            <h2 className="font-serif text-stone-900 text-2xl font-bold mb-4">
+      <section className="w-full bg-stone-100 py-20 px-6" aria-label="Problem and solution">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-px bg-stone-200 border border-stone-200">
+          <article className="bg-stone-50 p-8 md:p-12">
+            <p className="text-stone-400 text-xs uppercase mb-4" style={eyebrowStyle}>
+              01
+            </p>
+            <h2 className="text-stone-900 text-3xl mb-5" style={titleStyle}>
               {t.problem.heading}
             </h2>
-            <p className="font-sans text-stone-700 text-base leading-relaxed">
+            <p className="text-stone-700 text-base leading-relaxed">
               {t.problem.body}
             </p>
           </article>
-          <article className="rounded-2xl p-8 md:p-10" style={{ background: "hsl(40 35% 91%)" }}>
-            <h2 className="font-serif text-stone-900 text-2xl font-bold mb-4">
+          <article className="bg-stone-50 p-8 md:p-12">
+            <p className="text-amber-600 text-xs uppercase mb-4" style={eyebrowStyle}>
+              02
+            </p>
+            <h2 className="text-stone-900 text-3xl mb-5" style={titleStyle}>
               {t.solution.heading}
             </h2>
-            <p className="font-sans text-stone-700 text-base leading-relaxed">
+            <p className="text-stone-700 text-base leading-relaxed">
               {t.solution.body}
             </p>
           </article>
@@ -257,56 +179,47 @@ export default function Landing() {
       </section>
 
       {/* CONTEXT STRIP */}
-      <section className="w-full bg-white py-12 px-6" aria-label="Key facts">
+      <section className="w-full bg-stone-50 py-16 px-6 border-t border-stone-200" aria-label="Key facts">
         <div className="max-w-5xl mx-auto">
-          <div className="flex gap-4 overflow-x-auto pb-2 md:overflow-visible md:grid md:grid-cols-4 md:pb-0 snap-x snap-mandatory md:snap-none">
+          <p className="text-stone-400 text-xs uppercase mb-8 text-center" style={eyebrowStyle}>
+            In numbers
+          </p>
+          <div className="flex gap-6 overflow-x-auto md:overflow-visible md:grid md:grid-cols-4 md:gap-6 snap-x snap-mandatory md:snap-none pb-2 md:pb-0">
             {t.facts.map((fact, i) => (
               <div
                 key={i}
-                className="snap-start shrink-0 w-44 md:w-auto rounded-xl border border-stone-200 bg-stone-50 px-5 py-5 text-center"
+                className="snap-start shrink-0 w-52 md:w-auto flex flex-col"
               >
-                <p className="font-sans text-stone-800 text-sm font-semibold leading-snug">
+                <div
+                  className="aspect-square w-full bg-stone-200 rounded-t-2xl"
+                  aria-hidden="true"
+                />
+                <p className="mt-4 text-stone-900 text-base leading-tight" style={titleStyle}>
                   {fact.label}
                 </p>
               </div>
             ))}
           </div>
-          <p className="mt-5 text-center font-sans text-stone-400 text-xs">
+          <p className="mt-6 text-center text-stone-400 text-xs uppercase" style={eyebrowStyle}>
             {t.factsCaption}
           </p>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full bg-stone-950 py-10 px-6 text-center" role="contentinfo">
+      <footer className="w-full bg-stone-950 py-16 px-6 text-center" role="contentinfo">
         <a
           href={`mailto:${t.footer.email}`}
-          className="font-sans text-amber-400 text-sm hover:text-amber-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+          className="text-amber-400 text-2xl md:text-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+          style={titleStyle}
           aria-label={`Email us at ${t.footer.email}`}
         >
           {t.footer.email}
         </a>
-        <p className="mt-4 font-sans text-stone-500 text-xs max-w-lg mx-auto leading-relaxed">
+        <p className="mt-6 text-stone-500 text-xs max-w-lg mx-auto leading-relaxed">
           {t.footer.disclaimer}
         </p>
       </footer>
-
-      {/* Fixed mobile CTA — appears after hero scrolls out of view */}
-      {heroPast && (
-        <div
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white/95 backdrop-blur border-t border-stone-200"
-          aria-label="Sticky call to action"
-        >
-          <button
-            onClick={handleCta}
-            aria-label={t.hero.cta}
-            className="w-full px-8 py-4 rounded-full bg-amber-400 text-stone-900 font-sans font-bold text-base tracking-wide hover:bg-amber-300 active:bg-amber-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
-            style={{ minHeight: 56 }}
-          >
-            {t.hero.cta}
-          </button>
-        </div>
-      )}
     </div>
   );
 }
