@@ -166,48 +166,58 @@ export default function Landing() {
                 people worldwide live with vision impairment.
               </p>
 
-              {/* Horizontal proportion bar — 300M of 8B ≈ 3.75% */}
+              {/* Dot pictogram — 30 dots, each ≈ 10M people */}
               <div
                 aria-hidden="true"
-                className="relative w-full h-2 bg-stone-300 rounded-full overflow-hidden mb-2"
+                className="grid grid-cols-10 gap-1.5 max-w-[240px] mb-2"
               >
-                <div
-                  className="absolute left-0 top-0 h-full bg-accent"
-                  style={{ width: "3.75%", minWidth: "6px" }}
-                />
+                {Array.from({ length: 30 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="aspect-square rounded-full bg-accent"
+                  />
+                ))}
               </div>
-              <div className="flex justify-between mb-5">
-                <span className="ptta-label text-accent" style={{ fontSize: "9pt" }}>
-                  300M
-                </span>
-                <span
-                  className="ptta-label text-muted-fg"
-                  style={{ fontSize: "9pt" }}
-                >
-                  8B global
-                </span>
-              </div>
+              <p
+                className="ptta-label text-muted-fg mb-5"
+                style={{ fontSize: "9pt" }}
+              >
+                Each dot ≈ 10M people
+              </p>
 
-              {/* Secondary stat — subset emphasis */}
-              <div className="flex items-center gap-3 pt-4 border-t border-hairline">
-                <span
-                  className="ptta-label text-muted-fg"
-                  style={{ fontSize: "9pt" }}
-                >
-                  Of which
-                </span>
-                <span
-                  className="font-serif italic text-ink leading-none"
-                  style={{ fontSize: "1.75rem", letterSpacing: "-0.02em" }}
-                >
-                  43M
-                </span>
-                <span
-                  className="ptta-label text-muted-fg"
-                  style={{ fontSize: "9pt" }}
-                >
-                  fully blind
-                </span>
+              {/* Secondary stat — fully-blind subset with its own mini dot cluster */}
+              <div className="pt-4 border-t border-hairline">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span
+                    className="ptta-label text-muted-fg"
+                    style={{ fontSize: "9pt" }}
+                  >
+                    Of which
+                  </span>
+                  <span
+                    className="font-serif italic text-ink leading-none"
+                    style={{ fontSize: "1.75rem", letterSpacing: "-0.02em" }}
+                  >
+                    43M
+                  </span>
+                  <span
+                    className="ptta-label text-muted-fg"
+                    style={{ fontSize: "9pt" }}
+                  >
+                    fully blind
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="flex items-center gap-1 ml-auto"
+                  >
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <span
+                        key={i}
+                        className="w-1.5 h-1.5 rounded-full bg-accent"
+                      />
+                    ))}
+                  </span>
+                </div>
               </div>
 
               <p
