@@ -125,7 +125,7 @@ const en: PageCopy = {
         num: "01",
         title: "High-resolution image acquisition",
         body:
-          "We start with a high-resolution scan or photograph of the artwork, sourced directly from the museum’s archive or captured on-site. Resolution and color fidelity at this stage determine everything downstream.",
+          "We begin with a high-resolution scan or photograph of the artwork.",
         illoAlt:
           "Museum-quality scan of a painting on an archival imaging rig",
         imageVariant: "dark",
@@ -134,7 +134,7 @@ const en: PageCopy = {
         num: "02",
         title: "AI-assisted image analysis",
         body:
-          "Computer vision and depth-estimation models analyze the image to identify foreground figures, background recession, textures, and compositional structure. The model proposes a depth interpretation that our team reviews.",
+          "Depth-estimation models read the image and propose a depth map our team reviews.",
         illoAlt:
           "Colorized depth map overlaid on the source painting",
         imageVariant: "accent",
@@ -151,8 +151,7 @@ const en: PageCopy = {
       {
         num: "04",
         title: "3D printing",
-        body:
-          "Models are printed in durable PLA, with the longest dimension at 35 cm. Print parameters are tuned for tactile clarity — layer heights, infill, and surface finish are all chosen to feel right under the hand, not to look right on a screen.",
+        body: "Printed in durable PLA, tuned for tactile clarity under the hand.",
         illoAlt: "Finished tactile relief in a golden display frame",
         imageSrc: "images/model-golden-frame.jpeg",
       },
@@ -160,7 +159,7 @@ const en: PageCopy = {
         num: "05",
         title: "Audio description curation",
         body:
-          "Each model is paired with a custom audio description developed using guidelines we built with blind audio film author Hela Michalski. The audio doesn’t replace the tactile experience — it complements it, adding color, light, mood, and historical context.",
+          "Each model ships with a custom audio description that complements the tactile experience.",
         illoAlt: "Over-ear headphones next to an audio waveform visualisation",
         imageVariant: "mid",
       },

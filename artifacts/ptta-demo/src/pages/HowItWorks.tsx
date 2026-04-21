@@ -35,7 +35,7 @@ function StepHeading({
         </span>
       </div>
       <h2
-        className="font-serif text-ink text-2xl md:text-4xl leading-[1.02]"
+        className="font-sans text-ink text-2xl md:text-4xl leading-[1.02]"
         style={titleStyle}
       >
         — {title}
@@ -54,16 +54,16 @@ function StepBody({ children, className = "" }: { children: ReactNode; className
 
 function StepMeta({ rows }: { rows: Array<[string, string]> }) {
   return (
-    <dl className="divide-y divide-hairline border-t border-b border-hairline">
+    <dl className="max-w-[260px] divide-y divide-hairline border-t border-b border-hairline">
       {rows.map(([k, v]) => (
         <div
           key={k}
-          className="flex items-baseline justify-between gap-4 py-2.5"
+          className="flex items-baseline justify-between gap-4 py-2"
         >
-          <dt className="text-sm text-ink">{k}</dt>
+          <dt className="text-xs text-ink">{k}</dt>
           <dd
             className="ptta-label text-body-fg text-right"
-            style={{ fontSize: "10pt" }}
+            style={{ fontSize: "9pt" }}
           >
             {v}
           </dd>
@@ -132,7 +132,7 @@ function AnalysisViz() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative w-full max-w-[360px] md:max-w-[420px] aspect-[3/4] rounded-2xl overflow-hidden bg-stone-950">
+      <div className="relative w-full max-w-[220px] md:max-w-[280px] aspect-[3/4] rounded-2xl overflow-hidden bg-stone-950">
         <img
           src={`${BASE}/paintings/van-gogh.webp`}
           alt=""
@@ -190,7 +190,7 @@ function AnalysisViz() {
       </div>
 
       {/* Phase indicator row */}
-      <div className="mt-6 grid grid-cols-4 gap-2 w-full max-w-[420px]">
+      <div className="mt-6 grid grid-cols-4 gap-2 w-full max-w-[280px]">
         {ANALYSIS_STEPS.map((s, idx) => {
           const state = idx < i ? "done" : idx === i ? "active" : "idle";
           return (
@@ -252,8 +252,8 @@ function AudioWaveform() {
     58, 84, 66, 46, 70, 88, 62, 44, 54, 78, 66, 50, 72, 40,
   ];
   return (
-    <div className="w-full max-w-[440px] md:max-w-md">
-      <div className="relative w-full aspect-[3/2] rounded-2xl bg-stone-950 overflow-hidden flex items-center justify-center px-6">
+    <div className="w-full max-w-[260px] md:max-w-[320px]">
+      <div className="relative w-full aspect-[3/2] rounded-2xl bg-stone-950 overflow-hidden flex items-center justify-center px-4">
         <div className="flex items-center gap-[3px] w-full h-[55%]">
           {heights.map((h, idx) => (
             <span
@@ -317,10 +317,12 @@ export default function HowItWorks() {
   }, [navigate]);
 
   const intro = t.howItWorks;
-  const [step1, step2, step3, step4, step5, step6] = intro.steps;
+  // Step 03 (3D model curation) is intentionally not rendered.
+  // Remaining five steps are renumbered in display for continuity.
+  const [step1, step2, , step4, step5, step6] = intro.steps;
 
   return (
-    <div className="ptta-root min-h-screen bg-page text-ink">
+    <div className="ptta-root min-h-screen bg-page text-ink pb-28 md:pb-32">
       <Header showBack backHref="/" />
 
       {/* INTRO */}
@@ -335,7 +337,7 @@ export default function HowItWorks() {
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="font-serif text-ink text-3xl md:text-5xl leading-[1.02] mb-3"
+              className="font-sans text-ink text-3xl md:text-5xl leading-[1.02] mb-3"
               style={titleStyle}
             >
               — {intro.headline}
@@ -364,24 +366,24 @@ export default function HowItWorks() {
               aria-labelledby="step-01"
               className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center"
             >
-              <div className="order-1 md:order-1">
-                <div className="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-stone-200 shadow-sm">
+              <div className="order-1 md:order-1 flex justify-center md:justify-start">
+                <div className="relative w-full max-w-[200px] md:max-w-[280px] aspect-[3/4] overflow-hidden rounded-2xl bg-stone-200 shadow-sm">
                   <img
                     src={`${BASE}/paintings/mona-lisa.webp`}
                     alt={step1.illoAlt}
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <div className="absolute bottom-3 left-3 bg-stone-950/80 text-cream px-3 py-1.5 backdrop-blur">
-                    <span className="ptta-label" style={{ fontSize: "9pt" }}>
-                      Mona Lisa · Leonardo · 1503
+                  <div className="absolute bottom-2 left-2 bg-stone-950/80 text-cream px-2 py-1 backdrop-blur">
+                    <span className="ptta-label" style={{ fontSize: "8pt" }}>
+                      Mona Lisa · 1503
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="order-2 md:order-2 flex flex-col gap-5">
+              <div className="order-2 md:order-2 flex flex-col gap-4">
                 <div id="step-01">
-                  <StepHeading num={step1.num} title={step1.title} />
+                  <StepHeading num="01" title={step1.title} />
                 </div>
                 <StepBody>{step1.body}</StepBody>
                 <StepMeta
@@ -399,10 +401,10 @@ export default function HowItWorks() {
 
           {/* ================= STEP 02 — Analysis ================= */}
           <ScrollIn reduceMotion={reduceMotion}>
-            <section aria-labelledby="step-02" className="flex flex-col gap-8 md:gap-10">
+            <section aria-labelledby="step-02" className="flex flex-col gap-6 md:gap-8">
               <div id="step-02" className="text-center max-w-2xl mx-auto">
-                <StepHeading num={step2.num} title={step2.title} align="center" />
-                <div className="mt-4">
+                <StepHeading num="02" title={step2.title} align="center" />
+                <div className="mt-3">
                   <StepBody className="text-center">{step2.body}</StepBody>
                 </div>
               </div>
@@ -414,63 +416,24 @@ export default function HowItWorks() {
 
           <FlowArrow next="03" />
 
-          {/* ================= STEP 03 — Curation (text left, image right on desktop) ================= */}
-          <ScrollIn reduceMotion={reduceMotion}>
-            <section
-              aria-labelledby="step-03"
-              className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center"
-            >
-              <div className="order-2 md:order-1 flex flex-col gap-5">
-                <div id="step-03">
-                  <StepHeading num={step3.num} title={step3.title} />
-                </div>
-                <StepBody>{step3.body}</StepBody>
-                <StepMeta
-                  rows={[
-                    ["Lead", "Human designer"],
-                    ["Tooling", "Blender + CAD"],
-                    ["Iterations", "3 – 5"],
-                  ]}
-                />
-              </div>
-              <div className="order-1 md:order-2">
-                <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-stone-200 shadow-sm">
-                  <img
-                    src={`${BASE}/images/hands-exploring-model.jpeg`}
-                    alt={step3.illoAlt}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute top-3 right-3 bg-stone-950/80 text-cream px-3 py-1.5 backdrop-blur">
-                    <span className="ptta-label" style={{ fontSize: "9pt" }}>
-                      Field review
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </ScrollIn>
-
-          <FlowArrow next="04" />
-
-          {/* ================= STEP 04 — Printing (placeholder with giant numeral) ================= */}
+          {/* ================= STEP 03 (was 04) — Printing (placeholder with giant numeral) ================= */}
           <ScrollIn reduceMotion={reduceMotion}>
             <section
               aria-labelledby="step-04"
               className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center"
             >
-              <div className="order-1">
+              <div className="order-1 flex justify-center md:justify-start">
                 {/* Placeholder — animated print-layer bars rising from the bottom */}
-                <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl bg-stone-950 text-cream flex items-center justify-center">
+                <div className="relative w-full max-w-[220px] md:max-w-none aspect-[4/3] overflow-hidden rounded-2xl bg-stone-950 text-cream flex items-center justify-center">
                   <span
                     aria-hidden="true"
                     className="font-serif italic leading-none"
                     style={{
-                      fontSize: "clamp(6rem, 16vw, 12rem)",
+                      fontSize: "clamp(5rem, 14vw, 10rem)",
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    04
+                    03
                   </span>
                   {/* Progressive print layer bars at the bottom */}
                   <div
@@ -493,33 +456,26 @@ export default function HowItWorks() {
                   </span>
                 </div>
               </div>
-              <div className="order-2 flex flex-col gap-5">
+              <div className="order-2 flex flex-col gap-4">
                 <div id="step-04">
-                  <StepHeading num={step4.num} title={step4.title} />
+                  <StepHeading num="03" title={step4.title} />
                 </div>
                 <StepBody>{step4.body}</StepBody>
-                <StepMeta
-                  rows={[
-                    ["Material", "Durable PLA"],
-                    ["Max dimension", "35 cm"],
-                    ["Layer passes", "1,200 – 1,800"],
-                  ]}
-                />
               </div>
             </section>
           </ScrollIn>
 
-          <FlowArrow next="05" />
+          <FlowArrow next="04" />
 
-          {/* ================= STEP 05 — Audio (waveform) ================= */}
+          {/* ================= STEP 04 (was 05) — Audio (waveform) ================= */}
           <ScrollIn reduceMotion={reduceMotion}>
             <section
               aria-labelledby="step-05"
               className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center"
             >
-              <div className="order-2 md:order-1 flex flex-col gap-5">
+              <div className="order-2 md:order-1 flex flex-col gap-4">
                 <div id="step-05">
-                  <StepHeading num={step5.num} title={step5.title} />
+                  <StepHeading num="04" title={step5.title} />
                 </div>
                 <StepBody>{step5.body}</StepBody>
                 <StepMeta
@@ -536,9 +492,9 @@ export default function HowItWorks() {
             </section>
           </ScrollIn>
 
-          <FlowArrow next="06" />
+          <FlowArrow next="05" />
 
-          {/* ================= STEP 06 — Installation (text-forward editorial) ================= */}
+          {/* ================= STEP 05 (was 06) — Installation (text-forward editorial) ================= */}
           <ScrollIn reduceMotion={reduceMotion}>
             <section
               aria-labelledby="step-06"
@@ -548,7 +504,7 @@ export default function HowItWorks() {
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Marker size={6} />
                   <span className="ptta-label text-accent" style={{ fontSize: "10pt" }}>
-                    Step · {step6.num}
+                    Step · 05
                   </span>
                 </div>
                 <h2
@@ -573,22 +529,29 @@ export default function HowItWorks() {
             </section>
           </ScrollIn>
 
-          {/* Continue CTA */}
-          <div className="pt-10 md:pt-14 flex justify-center">
-            <motion.button
-              whileHover={reduceMotion ? undefined : { scale: 1.02 }}
-              whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-              type="button"
-              onClick={handleContinue}
-              aria-label={intro.continueCta}
-              className="w-full md:w-auto md:px-12 px-6 py-4 rounded-full bg-ink text-page text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{ minHeight: 56, letterSpacing: "-0.02em" }}
-            >
-              {intro.continueCta} →
-            </motion.button>
-          </div>
         </div>
       </main>
+
+      {/* Floating continue CTA — fixed bottom, phone-app style */}
+      <div
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-[440px] px-5 pointer-events-none"
+        aria-label="Continue to demo"
+      >
+        <motion.button
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.3 }}
+          whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+          type="button"
+          onClick={handleContinue}
+          aria-label={intro.continueCta}
+          className="pointer-events-auto w-full px-6 py-4 rounded-full bg-ink text-page text-base shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          style={{ minHeight: 56, letterSpacing: "-0.02em" }}
+        >
+          {intro.continueCta} →
+        </motion.button>
+      </div>
     </div>
   );
 }
