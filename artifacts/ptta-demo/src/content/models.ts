@@ -9,6 +9,7 @@ export interface ModelEntry {
   image: string;
   glb?: string;
   available: boolean;
+  commissionedBy?: string;
 }
 
 function publicPath(relative: string): string {
@@ -26,6 +27,7 @@ export const MODELS: ModelEntry[] = [
     image: publicPath("paintings/mona-lisa.webp"),
     glb: publicPath("models/mona-lisa.glb"),
     available: true,
+    commissionedBy: "Commissioned by Tvibit Norway",
   },
   {
     id: "van-gogh",
@@ -46,6 +48,7 @@ export const MODELS: ModelEntry[] = [
     image: publicPath("paintings/st-nikolai.jpg"),
     glb: publicPath("models/st-nikolai.glb"),
     available: true,
+    commissionedBy: "Commissioned by St. Nikolai Church Museum",
   },
 ];
 
