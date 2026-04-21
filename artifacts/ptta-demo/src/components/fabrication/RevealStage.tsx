@@ -111,10 +111,10 @@ export function RevealStage({ model, onBack, onPickAnother }: Props) {
           </button>
           <button
             onClick={() => navigate("/audio-guide")}
-            aria-label="Continue to Audio Guide"
+            aria-label="Continue to AI Audio Guide Curator"
             className="pointer-events-auto mt-3 w-full px-6 py-3 rounded-full bg-white/10 border border-white/30 text-white/90 text-sm hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            Next: Audio Guide →
+            Next: AI Audio Guide Curator →
           </button>
         </div>
       </motion.div>

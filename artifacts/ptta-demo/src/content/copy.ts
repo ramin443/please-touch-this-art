@@ -208,7 +208,7 @@ const en: PageCopy = {
       },
       {
         slug: "audio-guide",
-        title: "Audio Guide",
+        title: "AI Audio Guide Curator",
         description:
           "Hear how audio descriptions are crafted alongside the tactile experience.",
         illoAlt: "Audio guide device and headphones for museum visitors",
