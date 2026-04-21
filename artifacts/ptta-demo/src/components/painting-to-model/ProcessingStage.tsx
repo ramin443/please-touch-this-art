@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { ArrowLeft } from "lucide-react";
 import { ProgressRing } from "./ProgressRing";
 import type { ModelEntry } from "@/content/models";
@@ -9,17 +9,43 @@ interface Props {
   onBack: () => void;
 }
 
+type StepId = "analyze" | "depth" | "mesh" | "refine";
+
 interface Step {
-  id: string;
+  id: StepId;
   label: string;
   hint: string;
+  filter: string;
 }
 
 const STEPS: Step[] = [
-  { id: "analyze", label: "Analyze", hint: "Reading brushstrokes and composition…" },
-  { id: "depth",   label: "Depth",   hint: "Mapping depth from surface cues…" },
-  { id: "mesh",    label: "Mesh",    hint: "Assembling 3D mesh…" },
-  { id: "refine",  label: "Refine",  hint: "Refining tactile detail…" },
+  {
+    id: "analyze",
+    label: "Analyze",
+    hint: "Reading brushstrokes and composition…",
+    // High-contrast desaturated — "looking closely"
+    filter: "contrast(1.55) saturate(0.4) brightness(1.02)",
+  },
+  {
+    id: "depth",
+    label: "Depth",
+    hint: "Mapping depth from surface cues…",
+    // Grayscale base for the heatmap overlay to colour
+    filter: "grayscale(1) contrast(1.3) brightness(1.08)",
+  },
+  {
+    id: "mesh",
+    label: "Mesh",
+    hint: "Assembling 3D mesh…",
+    // Inverted + high-contrast so the wireframe overlay pops
+    filter: "invert(1) contrast(2.3) brightness(1.3) saturate(0)",
+  },
+  {
+    id: "refine",
+    label: "Refine",
+    hint: "Refining tactile detail…",
+    filter: "contrast(1.1) saturate(1.15)",
+  },
 ];
 
 const STEP_MS = 2500;
@@ -45,6 +71,7 @@ export function ProcessingStage({ model, onDone, onBack }: Props) {
   }, [stepIndex, reducedMotion, onDone]);
 
   const currentStep = STEPS[stepIndex];
+  const isStep = (id: StepId) => currentStep.id === id;
 
   return (
     <div className="min-h-[100dvh] bg-stone-950 text-stone-100 flex flex-col">
@@ -64,12 +91,19 @@ export function ProcessingStage({ model, onDone, onBack }: Props) {
 
         <div className="flex-1 flex items-center justify-center px-6 py-4">
           <div className="relative w-full max-w-[320px] aspect-[3/4] rounded-md overflow-hidden">
+            {/* Painting — CSS filter changes per step */}
             <img
               src={model.image}
               alt=""
               aria-hidden
               className="w-full h-full object-cover"
+              style={{
+                filter: reducedMotion ? undefined : currentStep.filter,
+                transition: "filter 1.1s ease",
+              }}
             />
+
+            {/* Gold frame */}
             <div
               className="absolute inset-0 rounded-md pointer-events-none"
               style={{
@@ -77,18 +111,50 @@ export function ProcessingStage({ model, onDone, onBack }: Props) {
                   "inset 0 0 0 2px rgba(245,158,11,0.35), 0 18px 50px rgba(0,0,0,0.65)",
               }}
             />
+
             {!reducedMotion && (
               <>
-                <div
-                  className="absolute inset-0 pointer-events-none"
+                {/* Depth-sample dot grid — visible during Analyze + Depth */}
+                <FadeLayer
+                  visible={isStep("analyze") || isStep("depth")}
                   style={{
                     backgroundImage:
-                      "radial-gradient(circle, rgba(245,158,11,0.65) 1px, transparent 1.6px)",
+                      "radial-gradient(circle, rgba(245,158,11,0.7) 1px, transparent 1.6px)",
                     backgroundSize: "14px 14px",
-                    animation: "ptta-dots-in 2.8s linear infinite",
                     mixBlendMode: "screen",
                   }}
                 />
+
+                {/* Depth heatmap — visible during Depth */}
+                <FadeLayer
+                  visible={isStep("depth")}
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 58% 52% at 50% 42%, rgba(254,240,138,0.85) 0%, rgba(249,115,22,0.7) 30%, rgba(217,70,239,0.55) 65%, rgba(30,64,175,0.5) 100%)",
+                    mixBlendMode: "color",
+                  }}
+                />
+
+                {/* Wireframe grid — visible during Mesh */}
+                <FadeLayer
+                  visible={isStep("mesh")}
+                  style={{
+                    backgroundImage:
+                      "repeating-linear-gradient(0deg, rgba(245,158,11,0.7) 0 1px, transparent 1px 12px), repeating-linear-gradient(90deg, rgba(245,158,11,0.7) 0 1px, transparent 1px 12px)",
+                    mixBlendMode: "screen",
+                  }}
+                />
+
+                {/* Warm polish vignette — visible during Refine */}
+                <FadeLayer
+                  visible={isStep("refine")}
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(245,158,11,0.28) 100%)",
+                  }}
+                />
+
+                {/* Scan line — always on while processing */}
                 <div
                   className="absolute left-0 right-0 pointer-events-none"
                   style={{
@@ -130,6 +196,26 @@ export function ProcessingStage({ model, onDone, onBack }: Props) {
         </div>
       </div>
     </div>
+  );
+}
+
+function FadeLayer({
+  visible,
+  style,
+}: {
+  visible: boolean;
+  style: CSSProperties;
+}) {
+  return (
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        ...style,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.85s ease",
+      }}
+      aria-hidden
+    />
   );
 }
 
