@@ -58,13 +58,13 @@ export function ModelPicker({ onSelect }: Props) {
 
         <section className="px-5 sm:px-8 pb-12" aria-label="Monuments">
           <SectionHeading>Monuments</SectionHeading>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {MONUMENTS.map((m) => (
               <ModelCard
                 key={m.id}
                 model={m}
                 onSelect={onSelect}
-                aspectClass="aspect-[3/4] sm:aspect-[2/1]"
+                aspectClass="aspect-[3/4]"
               />
             ))}
           </div>

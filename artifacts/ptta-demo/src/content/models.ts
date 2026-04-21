@@ -1,4 +1,8 @@
-export type ModelId = "mona-lisa" | "van-gogh" | "st-nikolai";
+export type ModelId =
+  | "mona-lisa"
+  | "van-gogh"
+  | "st-nikolai"
+  | "eiffel-tower";
 
 export interface ModelEntry {
   id: ModelId;
@@ -49,6 +53,16 @@ export const MODELS: ModelEntry[] = [
     glb: publicPath("models/st-nikolai.glb"),
     available: true,
     commissionedBy: "Commissioned by St. Nikolai Church Museum",
+  },
+  {
+    id: "eiffel-tower",
+    type: "monument",
+    title: "Eiffel Tower",
+    artist: "Paris",
+    year: "1889",
+    image: publicPath("paintings/eiffel-tower.webp"),
+    glb: publicPath("models/eiffel-tower.glb"),
+    available: true,
   },
 ];
 
