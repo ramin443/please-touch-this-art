@@ -15,16 +15,17 @@ const FABRICATE_MS = 5500;
 const TOTAL_LAYERS_FAKE = 240;
 const START_LAYER_FAKE = 1;
 
-// Image wrapper: square, sized to fit its parent on both axes. height:100%
-// + aspectRatio gives a square as tall as the parent; maxWidth:100% clamps
-// the width if the parent is narrower than tall (mobile portrait), and
-// aspect-ratio then re-pins height to match. Works responsively without
-// container queries.
+// Image wrapper: square (1:1), sized to fit the stage on both axes.
+// height:100% + aspectRatio gives a square as tall as the parent;
+// maxWidth:100% clamps width on narrow viewports and aspect-ratio re-pins
+// height to match. overflow:hidden keeps the feed tube from drawing past
+// the image top.
 const IMAGE_WRAP_STYLE: CSSProperties = {
   aspectRatio: "1 / 1",
   height: "100%",
   maxWidth: "100%",
   maxHeight: "100%",
+  overflow: "hidden",
 };
 
 export function FabricateStage({ model, onDone, onBack }: Props) {

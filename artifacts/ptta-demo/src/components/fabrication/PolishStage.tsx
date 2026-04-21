@@ -20,6 +20,7 @@ const IMAGE_WRAP_STYLE: CSSProperties = {
   height: "100%",
   maxWidth: "100%",
   maxHeight: "100%",
+  overflow: "hidden",
 };
 
 export function PolishStage({ model, onDone, onBack }: Props) {
@@ -88,7 +89,7 @@ export function PolishStage({ model, onDone, onBack }: Props) {
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div
-            className="relative rounded-sm overflow-hidden"
+            className="relative rounded-sm"
             style={IMAGE_WRAP_STYLE}
           >
           {baseSrc && (
