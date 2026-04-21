@@ -14,7 +14,7 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
   const { theme, toggle } = useTheme();
   const [, navigate] = useLocation();
 
-  const tagText = tag ?? "PLEASE TOUCH THIS ART — 01";
+  const tagText = tag ?? "PLEASE TOUCH THIS ART";
 
   return (
     <header

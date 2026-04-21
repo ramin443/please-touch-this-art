@@ -98,7 +98,7 @@ const en: PageCopy = {
       emphasis: "We’re changing that",
       trailing: ".",
     },
-    caption: "Tactile 3D models · Audio guides · Braille plaques",
+    caption: "Barrier-free · Inclusive · Accessible to all",
   },
   problem: {
     heading: "The Problem",

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Header } from "@/components/Header";
@@ -6,14 +6,13 @@ import { CyclingText } from "@/components/CyclingText";
 import { SectionLabel, AlertBanner, Marker } from "@/components/editorial";
 import { useLanguage } from "@/context/LanguageContext";
 
-const VIDEO_SRC = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/videos/testimonials.mp4`;
+const VIDEO_SRC = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/videos/people-using-tactile.mp4`;
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
 const headingTight = { letterSpacing: "-0.02em" } as const;
 
 export default function Landing() {
   const { t } = useLanguage();
-  const [muted, setMuted] = useState(true);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [, navigate] = useLocation();
@@ -24,14 +23,6 @@ export default function Landing() {
     video.muted = true;
     video.play().catch(() => {});
   }, []);
-
-  const toggleMute = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const next = !muted;
-    video.muted = next;
-    setMuted(next);
-  }, [muted]);
 
   const handleCta = useCallback(() => {
     navigate("/how-it-works");
@@ -59,28 +50,8 @@ export default function Landing() {
             loop
             playsInline
             preload="auto"
-            aria-label="Please Touch This Art — blind visitors experiencing tactile art models in a museum"
+            aria-label="Please Touch This Art — people testing tactile art models in a museum"
           />
-          <button
-            type="button"
-            onClick={toggleMute}
-            aria-label={muted ? "Unmute video" : "Mute video"}
-            className="absolute bottom-3 right-3 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {muted ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              </svg>
-            )}
-          </button>
         </motion.div>
 
         {/* HERO TEXT */}
