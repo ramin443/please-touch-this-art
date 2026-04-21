@@ -59,9 +59,23 @@ export function ViewerStage({ model, onBack }: Props) {
       setStatus("ready");
       // GLBs have no embedded materials — model-viewer falls back to a
       // white PBR default that washes out in neutral lighting. Swap to a
-      // warm-stone, non-metallic, matte-but-not-dead material so the
-      // relief topography catches the HDR's directional light and casts
-      // readable shadows.
+      // warm-stone, non-metallic material so the relief topography
+      // catches the HDR's directional light and casts readable shadows.
+      //
+      // The right roughness depends on geometry. For the church (deep
+      // architectural geometry — spire, buttresses, windows) a lower
+      // roughness gives nice specular highlights on the edges without
+      // hiding detail. For paintings (low-relief, millimetre-scale
+      // surface variation) a much higher roughness is essential —
+      // specular reflections on a near-flat surface smear out the
+      // subtle normal gradients that are the only cue the viewer has
+      // for depth. Matte = the face reads; glossy = the face vanishes.
+      const isLowRelief = model.type === "painting";
+      const baseColor: [number, number, number, number] = isLowRelief
+        ? [0.72, 0.66, 0.57, 1] // mid warm stone, slight darker for contrast
+        : [0.82, 0.76, 0.67, 1];
+      const roughness = isLowRelief ? 0.95 : 0.4;
+
       try {
         type PBRSetters = {
           setBaseColorFactor?: (rgba: [number, number, number, number]) => void;
@@ -74,11 +88,9 @@ export function ViewerStage({ model, onBack }: Props) {
           ?.materials;
         if (materials && materials.length > 0) {
           for (const mat of materials) {
-            mat.pbrMetallicRoughness?.setBaseColorFactor?.([
-              0.78, 0.72, 0.63, 1,
-            ]);
+            mat.pbrMetallicRoughness?.setBaseColorFactor?.(baseColor);
             mat.pbrMetallicRoughness?.setMetallicFactor?.(0);
-            mat.pbrMetallicRoughness?.setRoughnessFactor?.(0.35);
+            mat.pbrMetallicRoughness?.setRoughnessFactor?.(roughness);
           }
         }
       } catch {
@@ -121,20 +133,35 @@ export function ViewerStage({ model, onBack }: Props) {
   const envUrl = `${import.meta.env.BASE_URL || "/"}environments/studio.hdr`
     .replace(/\/{2,}/g, "/");
 
+  // Paintings are low-relief: start the camera at a steep angle so the
+  // first frame reads as 3D under raking light, push the exposure down
+  // so shadows on the relief actually read, and stretch the model's
+  // depth (Z-axis) by 2.5× so millimetre surface variation casts
+  // shadows visible at the viewing distance. The silhouette (X/Y)
+  // stays true; only depth is exaggerated. This is what relief-
+  // photography studios do physically with oblique lighting.
+  // Monuments already have real geometric depth and need no stretch.
+  const isLowRelief = model.type === "painting";
+  const cameraOrbit = isLowRelief ? "-55deg 82deg auto" : "-25deg 76deg auto";
+  const exposure = isLowRelief ? "0.8" : "0.95";
+  const shadowIntensity = isLowRelief ? "2.6" : "2.0";
+  const modelScale = isLowRelief ? "1 1 2.5" : "1 1 1";
+
   return (
     <div className="fixed inset-0 bg-stone-950 text-stone-100 overflow-hidden">
       <model-viewer
         ref={viewerRef}
         alt={`3D tactile model of ${model.title} by ${model.artist}`}
+        scale={modelScale}
         camera-controls
         auto-rotate
         rotation-per-second="24deg"
-        camera-orbit="-40deg 78deg auto"
+        camera-orbit={cameraOrbit}
         min-camera-orbit="-120deg 40deg auto"
         max-camera-orbit="120deg 110deg auto"
-        shadow-intensity="2.0"
+        shadow-intensity={shadowIntensity}
         shadow-softness="0.4"
-        exposure="0.9"
+        exposure={exposure}
         environment-image={envUrl}
         touch-action="pan-y"
         interaction-prompt="none"

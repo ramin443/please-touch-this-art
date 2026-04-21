@@ -18,6 +18,8 @@ type ModelViewerAttributes = HTMLAttributes<HTMLElement> & {
   "camera-orbit"?: string;
   "min-camera-orbit"?: string;
   "max-camera-orbit"?: string;
+  scale?: string;
+  orientation?: string;
   ar?: boolean | "";
   "ar-modes"?: string;
   "environment-image"?: string;
