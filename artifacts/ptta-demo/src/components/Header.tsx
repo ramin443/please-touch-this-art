@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
-  const { lang, setLang, t } = useLanguage();
+  const { t } = useLanguage();
   const { theme, toggle } = useTheme();
   const [, navigate] = useLocation();
 
@@ -74,36 +74,6 @@ export function Header({ showBack = false, backHref = "/", tag }: HeaderProps) {
         className="flex items-stretch bg-accent text-accent-foreground"
       >
         <div className="flex items-center gap-3 md:gap-4 px-5 md:px-6" role="group">
-          <button
-            type="button"
-            onClick={() => setLang("en")}
-            aria-label="Switch to English"
-            aria-pressed={lang === "en"}
-            className={`ptta-label focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream ${
-              lang === "en"
-                ? "underline underline-offset-4"
-                : "opacity-60 hover:opacity-100"
-            }`}
-          >
-            EN
-          </button>
-          <button
-            type="button"
-            onClick={() => setLang("de")}
-            aria-label="Zur deutschen Sprache wechseln"
-            aria-pressed={lang === "de"}
-            className={`ptta-label focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream ${
-              lang === "de"
-                ? "underline underline-offset-4"
-                : "opacity-60 hover:opacity-100"
-            }`}
-          >
-            DE
-          </button>
-
-          {/* Divider */}
-          <span aria-hidden="true" className="h-4 w-px bg-cream/40" />
-
           {/* Theme toggle */}
           <button
             type="button"
