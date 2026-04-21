@@ -1,0 +1,451 @@
+<h2>Fabrication flow — storyboard, 4 stages</h2>
+<p class="subtitle">Option C (Working print) kept and enhanced as Fabricate. Dispatch stage gets its own animation, Polish gets a completely different one. Painting stays visible as a "reference card" pinned to the chamber so it's on screen throughout. Final Reveal is the printed-model photo.</p>
+
+<style>
+  .story {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .frame {
+    border: 1px solid #2a2520;
+    border-radius: 20px;
+    padding: 14px;
+    background: #14110e;
+  }
+  .frame-tag {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #D64324;
+    margin-bottom: 8px;
+  }
+  .frame-tag .num { color: #6a6058; }
+  .frame-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 20px;
+    color: #f5f1ea;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .frame-desc {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #a09890;
+    margin: 10px 0 0;
+  }
+
+  .phone {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/17;
+    background: #0a0806;
+    border-radius: 22px;
+    border: 5px solid #1c1814;
+    overflow: hidden;
+  }
+  .phone::before {
+    content: "";
+    position: absolute; top: 6px; left: 50%;
+    transform: translateX(-50%);
+    width: 56px; height: 14px;
+    background: #000; border-radius: 10px; z-index: 3;
+  }
+  .stage {
+    position: absolute; inset: 0;
+    padding: 34px 12px 12px;
+    display: flex; flex-direction: column; gap: 8px;
+    color: #f5f1ea;
+  }
+  .eyebrow {
+    font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700;
+    color: #D64324; font-family: 'Aeonik', system-ui, sans-serif;
+  }
+  .title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 12px; letter-spacing: -0.01em; margin: 0;
+  }
+  .ref-card {
+    position: absolute;
+    top: 38px; right: 10px;
+    width: 38px; height: 50px;
+    border: 0.5px solid rgba(245,241,234,0.3);
+    background: linear-gradient(135deg, #8a6a3a, #3a2810);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    z-index: 2;
+    border-radius: 1px;
+  }
+  .ref-card::after {
+    content: "";
+    position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #D64324;
+    box-shadow: 0 0 4px rgba(214,67,36,0.8);
+  }
+  .ref-label {
+    position: absolute;
+    bottom: -10px; left: 50%; transform: translateX(-50%);
+    font-size: 6px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(245,241,234,0.5);
+    white-space: nowrap;
+  }
+
+  /* === Stage 1: Dispatch === */
+  .dispatch-hero {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .dispatch-painting {
+    width: 65%; aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #8a6a3a, #2a1a08);
+    border: 1px solid rgba(214,67,36,0.4);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+    animation: stampIn 3.5s ease-in-out infinite;
+    position: relative;
+  }
+  .dispatch-painting::after {
+    content: "→ QUEUED";
+    position: absolute; bottom: 8px; right: 8px;
+    font-size: 7px; letter-spacing: 0.15em; font-weight: 700;
+    color: #D64324;
+    border: 1px solid #D64324;
+    padding: 2px 5px;
+    transform: rotate(-8deg);
+    opacity: 0;
+    animation: stampShow 3.5s ease-in-out infinite;
+  }
+  @keyframes stampIn {
+    0%   { transform: scale(1) translate(0, 0); }
+    60%  { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(0.3) translate(90%, -130%); }
+  }
+  @keyframes stampShow {
+    0%, 40% { opacity: 0; transform: rotate(-8deg) scale(1.4); }
+    55%     { opacity: 1; transform: rotate(-8deg) scale(1); }
+    100%    { opacity: 1; transform: rotate(-8deg) scale(1); }
+  }
+  .dispatch-order {
+    position: absolute; bottom: 12px; left: 12px; right: 12px;
+    font-size: 7px; font-family: ui-monospace, Menlo, monospace;
+    color: rgba(245,241,234,0.6);
+    line-height: 1.5;
+  }
+  .dispatch-order strong { color: #D64324; font-weight: 700; }
+
+  /* === Stage 2: Fabricate === */
+  .chamber {
+    flex: 1; position: relative;
+    border: 1px solid rgba(245,241,234,0.12);
+    background: #0f0c0a;
+    overflow: hidden;
+  }
+  .chamber-walls {
+    position: absolute;
+    inset: 0 0 0 0;
+    border-left: 1px solid rgba(245,241,234,0.08);
+    border-right: 1px solid rgba(245,241,234,0.08);
+    background-image:
+      linear-gradient(to right, rgba(245,241,234,0.04) 0%, transparent 15%, transparent 85%, rgba(245,241,234,0.04) 100%);
+  }
+  .chamber-bed {
+    position: absolute;
+    left: 15%; right: 15%; bottom: 8%;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, rgba(245,241,234,0.35) 0 1px, transparent 1px 5px);
+  }
+  .chamber-nozzle {
+    position: absolute;
+    width: 12px; height: 14px;
+    top: 10%; left: 50%;
+    transform: translateX(-50%);
+    background: #1c1814;
+    border: 1px solid rgba(245,241,234,0.4);
+    border-bottom: 2px solid #D64324;
+    animation: nozzleWork 4s ease-in-out infinite;
+    z-index: 2;
+  }
+  .chamber-nozzle::before {
+    content: "";
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 14px;
+    background: rgba(245,241,234,0.4);
+  }
+  .chamber-nozzle::after {
+    content: "";
+    position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 3px; background: #D64324;
+    box-shadow: 0 0 3px #D64324;
+  }
+  @keyframes nozzleWork {
+    0%   { left: 22%; top: 12%; }
+    15%  { left: 78%; top: 12%; }
+    18%  { left: 78%; top: 12%; }
+    30%  { left: 78%; top: 22%; }
+    45%  { left: 22%; top: 22%; }
+    60%  { left: 22%; top: 32%; }
+    75%  { left: 78%; top: 32%; }
+    90%  { left: 78%; top: 42%; }
+    100% { left: 22%; top: 42%; }
+  }
+  .chamber-layers {
+    position: absolute;
+    left: 20%; right: 20%;
+    bottom: 10%;
+    display: flex; flex-direction: column-reverse;
+    gap: 0.5px;
+  }
+  .chamber-layer {
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(214,67,36,0.85), transparent);
+    animation: layerEmit 4s linear infinite;
+    opacity: 0;
+  }
+  .chamber-layer:nth-child(1) { animation-delay: 0.2s; }
+  .chamber-layer:nth-child(2) { animation-delay: 0.55s; }
+  .chamber-layer:nth-child(3) { animation-delay: 0.85s; }
+  .chamber-layer:nth-child(4) { animation-delay: 1.1s; }
+  .chamber-layer:nth-child(5) { animation-delay: 1.4s; }
+  .chamber-layer:nth-child(6) { animation-delay: 1.65s; }
+  .chamber-layer:nth-child(7) { animation-delay: 1.9s; }
+  .chamber-layer:nth-child(8) { animation-delay: 2.2s; }
+  .chamber-layer:nth-child(9) { animation-delay: 2.5s; }
+  @keyframes layerEmit {
+    0%, 30%   { opacity: 0; width: 0; }
+    40%       { opacity: 1; width: 100%; background: linear-gradient(90deg, transparent, #D64324, transparent); }
+    100%      { opacity: 0.4; width: 100%; background: linear-gradient(90deg, transparent, rgba(214,67,36,0.4), transparent); }
+  }
+  .fab-stats {
+    padding: 4px 4px 0;
+    font-size: 7px; font-family: ui-monospace, Menlo, monospace;
+    color: rgba(245,241,234,0.7);
+    display: flex; justify-content: space-between;
+  }
+  .fab-stats span:last-child { color: #D64324; }
+
+  /* === Stage 3: Polish === */
+  .polish-stage {
+    flex: 1;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 40%, #2a1f14, #0a0806);
+    overflow: hidden;
+  }
+  .polish-model {
+    position: absolute;
+    inset: 18% 28% 22%;
+    background:
+      linear-gradient(135deg, rgba(245,230,200,0.95) 0%, rgba(200,180,150,0.85) 50%, rgba(120,100,70,0.8) 100%);
+    border-radius: 3px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  }
+  .polish-model::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(255,240,210,0.7) 0%, transparent 30%);
+    animation: polishShine 3s ease-in-out infinite;
+  }
+  @keyframes polishShine {
+    0%   { background: radial-gradient(circle at 20% 25%, rgba(255,240,210,0.8) 0%, transparent 30%); }
+    25%  { background: radial-gradient(circle at 75% 30%, rgba(255,240,210,0.9) 0%, transparent 30%); }
+    50%  { background: radial-gradient(circle at 65% 70%, rgba(255,240,210,0.85) 0%, transparent 30%); }
+    75%  { background: radial-gradient(circle at 25% 75%, rgba(255,240,210,0.9) 0%, transparent 30%); }
+    100% { background: radial-gradient(circle at 20% 25%, rgba(255,240,210,0.8) 0%, transparent 30%); }
+  }
+  .polish-buffer {
+    position: absolute;
+    width: 22px; height: 22px;
+    border: 1.5px solid #D64324;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(214,67,36,0.3), transparent);
+    animation: bufferPath 3s ease-in-out infinite;
+    z-index: 2;
+  }
+  .polish-buffer::before {
+    content: "";
+    position: absolute; inset: -2px;
+    border: 1px dashed rgba(214,67,36,0.5);
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+  }
+  @keyframes bufferPath {
+    0%   { top: 22%; left: 32%; }
+    25%  { top: 28%; left: 64%; }
+    50%  { top: 55%; left: 58%; }
+    75%  { top: 62%; left: 30%; }
+    100% { top: 22%; left: 32%; }
+  }
+  .polish-spark {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #fff; border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255,240,210,0.9);
+    animation: sparkFly 1.2s ease-out infinite;
+    opacity: 0;
+  }
+  .polish-spark:nth-child(3) { top: 28%; left: 45%; animation-delay: 0s; }
+  .polish-spark:nth-child(4) { top: 50%; left: 60%; animation-delay: 0.4s; }
+  .polish-spark:nth-child(5) { top: 58%; left: 38%; animation-delay: 0.8s; }
+  @keyframes sparkFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-8px, -8px) scale(0.3); }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .polish-stats {
+    padding: 4px 4px 0;
+    font-size: 7px; font-family: ui-monospace, Menlo, monospace;
+    color: rgba(245,241,234,0.7);
+    display: flex; justify-content: space-between;
+  }
+  .polish-stats span:last-child { color: #D64324; }
+
+  /* === Stage 4: Reveal === */
+  .reveal-stage {
+    flex: 1;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 40%, #1a0f08, #0a0806);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .reveal-photo {
+    width: 85%; aspect-ratio: 4/5;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(245,230,200,0.9) 0%, rgba(160,130,90,0.8) 60%, rgba(40,25,10,0.9) 100%);
+    border: 1px solid rgba(245,241,234,0.15);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  .reveal-caption {
+    position: absolute;
+    bottom: 14px; left: 14px; right: 14px;
+    text-align: center;
+    font-size: 8px;
+    color: #f5f1ea;
+  }
+  .reveal-caption small {
+    display: block;
+    font-size: 6.5px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #D64324;
+    margin-bottom: 3px;
+    font-family: 'Aeonik', system-ui, sans-serif;
+    font-weight: 700;
+  }
+  .reveal-caption em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<div class="story">
+
+  <!-- 1. Dispatch -->
+  <div class="frame">
+    <div class="frame-tag"><span>Stage</span><span class="num">01 / 03</span></div>
+    <h3 class="frame-title">Dispatch</h3>
+    <div class="phone">
+      <div class="stage">
+        <div class="eyebrow">Studio · Work Order</div>
+        <p class="title">— Mona Lisa</p>
+        <div class="dispatch-hero">
+          <div class="dispatch-painting"></div>
+        </div>
+        <div class="dispatch-order">
+          <strong>JOB #4812</strong> · Leonardo da Vinci · 1503<br/>
+          Queued · Bay 02 · Est. 4h 20m
+        </div>
+      </div>
+    </div>
+    <p class="frame-desc">Painting appears full-size, gets a hand-stamped "QUEUED" annotation, then slides up into the top-right corner where it stays pinned as a reference card for the next two stages. A monospace work-order docket sits at the bottom.</p>
+  </div>
+
+  <!-- 2. Fabricate -->
+  <div class="frame">
+    <div class="frame-tag"><span>Stage</span><span class="num">02 / 03</span></div>
+    <h3 class="frame-title">Fabricate</h3>
+    <div class="phone">
+      <div class="stage">
+        <div class="eyebrow">Fabrication · Bay 02</div>
+        <p class="title">— Mona Lisa</p>
+        <div class="chamber">
+          <div class="chamber-walls"></div>
+          <div class="chamber-bed"></div>
+          <div class="chamber-nozzle"></div>
+          <div class="chamber-layers">
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+            <div class="chamber-layer"></div>
+          </div>
+        </div>
+        <div class="fab-stats">
+          <span>layer 087 of 240</span>
+          <span>●&nbsp;live</span>
+        </div>
+      </div>
+      <div class="ref-card"></div>
+    </div>
+    <p class="frame-desc">Enhanced Option C. Proper chamber walls, nozzle with feed tube and heated tip, deliberately irregular back-and-forth passes (not smooth robot motion). Actual discrete layers accumulate beneath the bed level, not just a bar growing. Painting reference is now pinned top-right.</p>
+  </div>
+
+  <!-- 3. Polish -->
+  <div class="frame">
+    <div class="frame-tag"><span>Stage</span><span class="num">03 / 03</span></div>
+    <h3 class="frame-title">Polish</h3>
+    <div class="phone">
+      <div class="stage">
+        <div class="eyebrow">Finishing · Table 04</div>
+        <p class="title">— Mona Lisa</p>
+        <div class="polish-stage">
+          <div class="polish-model"></div>
+          <div class="polish-buffer"></div>
+          <div class="polish-spark"></div>
+          <div class="polish-spark"></div>
+          <div class="polish-spark"></div>
+        </div>
+        <div class="polish-stats">
+          <span>surface pass 02 of 04</span>
+          <span>●&nbsp;buffing</span>
+        </div>
+      </div>
+      <div class="ref-card"></div>
+    </div>
+    <p class="frame-desc">Completely different energy. Build chamber is gone; the now-solid relief rests on a dark finishing table, lit warmly. A circular buffer tool orbits the surface leaving a soft highlight trail, small sparks puff out at contact points. The tool's path is visibly hand-guided (figure-8, not a regular grid). Painting reference still visible.</p>
+  </div>
+
+  <!-- 4. Reveal -->
+  <div class="frame">
+    <div class="frame-tag"><span>Complete</span><span class="num">· delivered</span></div>
+    <h3 class="frame-title">Reveal</h3>
+    <div class="phone">
+      <div class="stage">
+        <div class="eyebrow">Finished Piece</div>
+        <p class="title">— Mona Lisa</p>
+        <div class="reveal-stage">
+          <div class="reveal-photo">
+            <div class="reveal-caption">
+              <small>This is how it looks in your hands</small>
+              <em>Mona Lisa · tactile relief</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="frame-desc">Hero photo of the actual finished piece fills the viewport (your 3D-printed model images go here). Small eyebrow copy underneath: "This is how it looks in your hands." "View another" button at the bottom returns to picker.</p>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 28px; text-align: center;">
+  This is the full flow end-to-end. Click any panel to flag concerns, or reply in terminal: "looks good", "change stage X to Y", etc.
+</p>

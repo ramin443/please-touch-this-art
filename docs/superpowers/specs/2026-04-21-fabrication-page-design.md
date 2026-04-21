@@ -46,6 +46,13 @@ type FabricationState =
 ```
 Transitions are all pure state updates returning new objects. No mutation.
 
+### Picker copy
+The forked `FabricationPicker` renders the same model cards as the model-conversion picker but with fabrication-specific heading text:
+- Eyebrow: **"Fabrication"**
+- Headline: **"Pick a piece to fabricate."**
+- Subline: **"Watch how we build the tactile relief — from dispatch to finished piece."**
+- Header tag (via shared `Header` component): **"FABRICATION · 02"**
+
 ### File layout
 ```
 artifacts/ptta-demo/
@@ -126,7 +133,7 @@ Bottom overlay (fades in at t=0.5 s, slightly later):
 - Eyebrow: **"This is how it looks in your hands"** (accent red, uppercase, tracked)
 - Model name, artist, year (serif)
 - If `ModelEntry.commissionedBy` exists, show it as a small caps line above the button
-- "View another" pill → returns state to `picker`
+- "View another" pill → returns state to `picker` with a 250 ms cross-fade
 
 ## Data
 
