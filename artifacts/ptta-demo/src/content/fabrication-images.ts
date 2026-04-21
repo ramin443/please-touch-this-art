@@ -25,21 +25,30 @@ interface ModelImages {
   reveal?: string;
 }
 
-const IMAGES: Record<ModelId, ModelImages> = {
-  "mona-lisa": {
+/**
+ * Helper so each entry stays readable — all six models follow the same
+ * render-file naming convention (`<id>-01.png` / `-02.png` / `-03.png`
+ * for fabricate angles and `-04-polish.png` for the polish angle).
+ */
+function standardRenders(id: string, revealFile: string): ModelImages {
+  return {
     fabricate: [
-      "printed/renders/mona-lisa-01.png",
-      "printed/renders/mona-lisa-02.png",
-      "printed/renders/mona-lisa-03.png",
+      `printed/renders/${id}-01.png`,
+      `printed/renders/${id}-02.png`,
+      `printed/renders/${id}-03.png`,
     ],
-    polish: "printed/renders/mona-lisa-04-polish.png",
-    reveal: "printed/mona-lisa.jpg",
-  },
-  "van-gogh": { reveal: "printed/van-gogh.png" },
-  "the-scream": { reveal: "printed/the-scream.png" },
-  "persistence-of-memory": { reveal: "printed/persistence-of-memory.png" },
-  "st-nikolai": { reveal: "printed/st-nikolai.png" },
-  "eiffel-tower": { reveal: "printed/eiffel-tower.png" },
+    polish: `printed/renders/${id}-04-polish.png`,
+    reveal: `printed/${revealFile}`,
+  };
+}
+
+const IMAGES: Record<ModelId, ModelImages> = {
+  "mona-lisa":             standardRenders("mona-lisa",             "mona-lisa.jpg"),
+  "van-gogh":              standardRenders("van-gogh",              "van-gogh.png"),
+  "the-scream":            standardRenders("the-scream",            "the-scream.png"),
+  "persistence-of-memory": standardRenders("persistence-of-memory", "persistence-of-memory.png"),
+  "st-nikolai":            standardRenders("st-nikolai",            "st-nikolai.png"),
+  "eiffel-tower":          standardRenders("eiffel-tower",          "eiffel-tower.png"),
 };
 
 function withBase(path: string): string {
