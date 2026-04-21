@@ -24,7 +24,9 @@
       "Bash(command -v fnm)",
       "Bash(command -v volta)",
       "Bash(command -v asdf)",
-      "Bash(brew upgrade *)"
+      "Bash(brew upgrade *)",
+      "Bash(curl -s -I http://localhost:5173/videos/testimonials.mp4)",
+      "Bash(defaults read *)"
     ]
   }
 }

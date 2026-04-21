@@ -1,5 +1,8 @@
 export interface CopyFact {
+  /** Tiny Courier label shown above the value. */
   label: string;
+  /** Big value shown in the metric card. */
+  value: string;
 }
 
 export interface HowItWorksStep {
@@ -7,6 +10,10 @@ export interface HowItWorksStep {
   title: string;
   body: string;
   illoAlt: string;
+  /** Path relative to BASE_URL, e.g. "images/hands-exploring-model.jpeg". Optional — if omitted, a styled abstract block is rendered. */
+  imageSrc?: string;
+  /** Tint for abstract blocks when no imageSrc. */
+  imageVariant?: "dark" | "accent" | "mid";
 }
 
 export interface DemoCard {
@@ -15,11 +22,22 @@ export interface DemoCard {
   description: string;
   illoAlt: string;
   variant?: "default" | "future";
+  imageSrc?: string;
 }
 
 export interface PageCopy {
   header: { logoText: string; backLabel: string };
-  hero: { eyebrow: string; headline: string; subline: string; cta: string };
+  hero: {
+    eyebrow: string;
+    headline: {
+      leading: string;
+      emphasis: string;
+      emphasisCycle?: string[];
+      trailing?: string;
+    };
+    subline: { leading: string; emphasis: string; trailing: string };
+    cta: string;
+  };
   slogan: { quote: string; caption: string };
   problem: { heading: string; body: string };
   solution: { heading: string; body: string };
@@ -56,9 +74,17 @@ const en: PageCopy = {
   },
   hero: {
     eyebrow: "Inclusive museum experiences",
-    headline: "Art you can finally touch.",
-    subline:
-      "AI-assisted tactile 3D models that make paintings, sculptures, and museum objects accessible to blind and visually impaired visitors.",
+    headline: {
+      leading: "Art, you can ",
+      emphasis: "touch",
+      emphasisCycle: ["touch", "feel", "connect with", "experience"],
+    },
+    subline: {
+      leading:
+        "AI-assisted tactile 3D models of museum artworks accessible to ",
+      emphasis: "blind and visually impaired",
+      trailing: " visitors.",
+    },
     cta: "Tap to start demo",
   },
   slogan: {
@@ -76,12 +102,12 @@ const en: PageCopy = {
       "We convert paintings and objects into precise tactile 3D models, paired with custom audio descriptions and braille plaques. Visitors explore the artwork with their hands, guided by audio crafted with blind collaborators.",
   },
   facts: [
-    { label: "27+ installations" },
-    { label: "Partner: BSVH & BSVB" },
-    { label: "ESA Mars surface commission" },
-    { label: "Overbeck-Museum Bremen — 20+ models" },
+    { label: "Installations", value: "27+" },
+    { label: "Partners", value: "BSVH · BSVB" },
+    { label: "ESA commission", value: "Mars surface" },
+    { label: "Overbeck Bremen", value: "20+ models" },
   ],
-  factsCaption: "Verified figures as of 2026",
+  factsCaption: "Verified figures · 2026",
   footer: {
     email: "contact@ptta.art",
     disclaimer:
@@ -100,6 +126,7 @@ const en: PageCopy = {
           "We start with a high-resolution scan or photograph of the artwork, sourced directly from the museum’s archive or captured on-site. Resolution and color fidelity at this stage determine everything downstream.",
         illoAlt:
           "Museum-quality scan of a painting on an archival imaging rig",
+        imageVariant: "dark",
       },
       {
         num: "02",
@@ -108,6 +135,7 @@ const en: PageCopy = {
           "Computer vision and depth-estimation models analyze the image to identify foreground figures, background recession, textures, and compositional structure. The model proposes a depth interpretation that our team reviews.",
         illoAlt:
           "Colorized depth map overlaid on the source painting",
+        imageVariant: "accent",
       },
       {
         num: "03",
@@ -115,14 +143,16 @@ const en: PageCopy = {
         body:
           "Our designers refine the AI-generated geometry into a tactile-first model. This is where artistic interpretation matters most — we adjust elevation, simplify visual noise, and design for fingers rather than eyes. Decisions like replacing horizon lines with subtle inclines come from years of testing with blind collaborators.",
         illoAlt:
-          "Tactile 3D model being refined inside CAD software",
+          "Hands exploring a finished tactile relief model",
+        imageSrc: "images/hands-exploring-model.jpeg",
       },
       {
         num: "04",
         title: "3D printing",
         body:
           "Models are printed in durable PLA, with the longest dimension at 35 cm. Print parameters are tuned for tactile clarity — layer heights, infill, and surface finish are all chosen to feel right under the hand, not to look right on a screen.",
-        illoAlt: "Industrial 3D printer mid-print on a tactile relief",
+        illoAlt: "Finished tactile relief in a golden display frame",
+        imageSrc: "images/model-golden-frame.jpeg",
       },
       {
         num: "05",
@@ -130,6 +160,7 @@ const en: PageCopy = {
         body:
           "Each model is paired with a custom audio description developed using guidelines we built with blind audio film author Hela Michalski. The audio doesn’t replace the tactile experience — it complements it, adding color, light, mood, and historical context.",
         illoAlt: "Over-ear headphones next to an audio waveform visualisation",
+        imageVariant: "mid",
       },
       {
         num: "06",
@@ -137,7 +168,8 @@ const en: PageCopy = {
         body:
           "The tactile model, mounting system, braille plaque, and audio guide ship to the museum together. We support installation and run a haptic quality check with blind partners on-site before the exhibit opens to the public.",
         illoAlt:
-          "Finished tactile artwork installed on a plinth in a museum gallery",
+          "Finished tactile artwork installed on a plinth with the PTTA braille plaque",
+        imageSrc: "images/model-with-plaque.jpeg",
       },
     ],
     continueCta: "Explore the demo",
@@ -154,13 +186,15 @@ const en: PageCopy = {
         slug: "3d-model",
         title: "3D Model Conversion",
         description: "See how a flat painting becomes a layered 3D form.",
-        illoAlt: "Side-by-side view of a painting and its tactile 3D model",
+        illoAlt: "Hands exploring a finished tactile relief on a pedestal",
+        imageSrc: "images/hands-touching-model.jpeg",
       },
       {
         slug: "3d-printing",
         title: "3D Printing",
         description: "Watch the model take physical shape, layer by layer.",
-        illoAlt: "3D printer mid-print on a tactile relief",
+        illoAlt: "Finished tactile relief in a golden display frame",
+        imageSrc: "images/model-golden-frame.jpeg",
       },
       {
         slug: "audio-guide",
@@ -174,7 +208,8 @@ const en: PageCopy = {
         title: "Full Product Showcase",
         description: "The finished installation in a museum gallery.",
         illoAlt:
-          "Visitor touching a finished tactile artwork on a plinth in a gallery",
+          "Tactile model on a pedestal with the PTTA braille plaque",
+        imageSrc: "images/model-with-plaque.jpeg",
       },
       {
         slug: "future",

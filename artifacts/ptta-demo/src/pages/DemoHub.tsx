@@ -2,23 +2,11 @@ import { useCallback } from "react";
 import { useLocation } from "wouter";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { Header } from "@/components/Header";
+import { SectionLabel, Marker } from "@/components/editorial";
 import { useLanguage } from "@/context/LanguageContext";
 import type { DemoCard as DemoCardType } from "@/content/copy";
 
-const titleStyle = { letterSpacing: "-0.05em" } as const;
-const eyebrowStyle = { letterSpacing: "0.18em" } as const;
-
-// col-span rules per card index so the 4th and 5th span wider to balance the grid
-// Mobile (1 col): each card = 1
-// Tablet (2 col): first four cards = 1 each, 5th spans both cols
-// Desktop (6 col): first three span 2 each (3-up row), last two span 3 each (2-up row)
-const CARD_SPAN_CLASSES = [
-  "md:col-span-1 lg:col-span-2",
-  "md:col-span-1 lg:col-span-2",
-  "md:col-span-1 lg:col-span-2",
-  "md:col-span-1 lg:col-span-3",
-  "md:col-span-2 lg:col-span-3",
-];
+const titleStyle = { letterSpacing: "-0.01em" } as const;
 
 function DemoHubCard({
   card,
@@ -40,11 +28,11 @@ function DemoHubCard({
   const cardVariants: Variants = reduceMotion
     ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
     : {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 12 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.45, ease: "easeOut" },
+          transition: { duration: 0.35, ease: "easeOut" },
         },
       };
 
@@ -53,57 +41,91 @@ function DemoHubCard({
       type="button"
       onClick={() => onOpen(card.slug)}
       variants={cardVariants}
-      whileHover={reduceMotion ? undefined : { scale: 1.02, y: -2 }}
+      whileHover={reduceMotion ? undefined : { y: -2 }}
       whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
       aria-label={ariaLabel}
       className={`
-        ${CARD_SPAN_CLASSES[index] ?? ""}
-        group relative flex flex-col text-left
-        rounded-2xl border shadow-sm
-        p-6 md:p-7 min-h-[220px]
+        group relative flex flex-col text-left w-full
+        rounded-2xl border shadow-sm overflow-hidden
         transition-shadow duration-200 hover:shadow-md
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
         ${
           isFuture
-            ? "bg-slate-50 border-slate-200"
-            : "bg-stone-50 border-stone-200"
+            ? "bg-stone-950 text-cream border-stone-950"
+            : "bg-surface text-ink border-hairline"
         }
       `}
     >
-      {/*
-        ILLUSTRATION PLACEHOLDER — replace this <div> with an <img> when assets are ready.
-        Expected content for "${card.title}": ${card.illoAlt}
-      */}
+      {/* Image or abstract numeral block */}
       <div
-        role="img"
-        aria-label={card.illoAlt}
         className={`
-          w-full aspect-[16/9] rounded-xl mb-5
-          ${isFuture ? "bg-slate-200" : "bg-stone-200"}
+          relative w-full aspect-[16/9] overflow-hidden
+          ${isFuture ? "bg-stone-800" : "bg-surface-muted"}
         `}
-      />
-
-      <h2
-        className="text-stone-900 text-xl md:text-2xl leading-tight mb-2"
-        style={titleStyle}
       >
-        {card.title}
-      </h2>
-      <p className="text-stone-700 text-sm leading-snug">{card.description}</p>
+        {card.imageSrc ? (
+          <img
+            src={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/${card.imageSrc}`}
+            alt={card.illoAlt}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div
+            role="img"
+            aria-label={card.illoAlt}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <span
+              aria-hidden="true"
+              className={`font-serif italic leading-none ${
+                isFuture ? "text-cream" : "text-muted-fg"
+              }`}
+              style={{ fontSize: "clamp(4rem, 22vw, 6rem)", letterSpacing: "-0.02em" }}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+        )}
+      </div>
 
-      <span
-        aria-hidden="true"
-        className={`
-          absolute bottom-5 right-6 text-xs uppercase
-          transition-transform duration-200
-          group-hover:translate-x-0.5
-          ${isFuture ? "text-slate-600" : "text-amber-600"}
-        `}
-        style={eyebrowStyle}
-      >
-        {openLabel} →
-      </span>
+      {/* Meta strip + title + description */}
+      <div className="p-5">
+        <div className="flex items-center justify-between mb-3">
+          <Marker className={isFuture ? "!bg-cream" : ""} />
+          <span
+            className={`ptta-label ${isFuture ? "text-accent" : "text-muted-fg"}`}
+            style={{ fontSize: "10pt" }}
+          >
+            Module · {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        <h2
+          className={`font-serif text-xl md:text-2xl leading-tight mb-2 ${
+            isFuture ? "text-cream" : "text-ink"
+          }`}
+          style={titleStyle}
+        >
+          — {card.title}
+        </h2>
+        <p
+          className={`text-sm leading-snug mb-4 ${
+            isFuture ? "text-stone-400" : "text-body-fg"
+          }`}
+        >
+          {card.description}
+        </p>
+
+        <span
+          aria-hidden="true"
+          className="ptta-label text-accent inline-flex items-center gap-1 transition-transform duration-200 group-hover:translate-x-0.5"
+          style={{ fontSize: "10pt" }}
+        >
+          {openLabel} →
+        </span>
+      </div>
     </motion.button>
   );
 }
@@ -131,56 +153,44 @@ export default function DemoHub() {
         hidden: { opacity: 0 },
         show: {
           opacity: 1,
-          transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+          transition: { staggerChildren: 0.06, delayChildren: 0.1 },
         },
       };
 
   return (
-    <div className="ptta-root min-h-screen bg-stone-50 text-stone-900">
+    <div className="ptta-root min-h-screen bg-page text-ink">
       <Header showBack backHref="/how-it-works" />
 
-      {/* INTRO */}
-      <section
-        className="w-full px-6 md:px-10 pt-8 pb-6 md:pt-12 md:pb-8 border-b border-stone-200"
-        aria-label="Page introduction"
-      >
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="text-amber-600 text-xs uppercase mb-3"
-            style={eyebrowStyle}
-          >
-            {demoHub.eyebrow}
-          </motion.p>
+      {/* Phone-width column */}
+      <div className="w-full mx-auto max-w-[440px] px-5 pt-6 pb-10">
+        {/* INTRO */}
+        <SectionLabel label={demoHub.eyebrow} tag="Dossier · 03" />
+        <div className="text-center mb-8">
           <motion.h1
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-stone-900 text-3xl md:text-5xl leading-[0.95] mb-3"
-            style={titleStyle}
-          >
-            {demoHub.headline}
-          </motion.h1>
-          <motion.p
             initial={reduceMotion ? false : { opacity: 0, y: 12 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-stone-700 text-sm md:text-base leading-relaxed max-w-xl mx-auto"
+            transition={{ duration: 0.4, delay: 0.05 }}
+            className="font-serif text-ink text-3xl md:text-4xl leading-[1.02] mb-2"
+            style={titleStyle}
+          >
+            — {demoHub.headline}
+          </motion.h1>
+          <motion.p
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="text-body-fg text-sm leading-snug"
           >
             {demoHub.subline}
           </motion.p>
         </div>
-      </section>
 
-      {/* CARD GRID */}
-      <main className="w-full px-6 md:px-10 py-10 md:py-14" aria-label="Demo modules">
+        {/* CARD STACK */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5"
+          className="flex flex-col gap-4"
         >
           {demoHub.cards.map((card, i) => (
             <DemoHubCard
@@ -194,22 +204,20 @@ export default function DemoHub() {
             />
           ))}
         </motion.div>
-      </main>
 
-      {/* FOOTER STRIP */}
-      <footer
-        className="w-full border-t border-stone-200 py-8 px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left"
-        role="contentinfo"
-      >
-        <p className="text-stone-500 text-xs md:text-sm">{demoHub.footer.note}</p>
-        <button
-          type="button"
-          onClick={handleReturn}
-          className="text-amber-600 text-xs md:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
-        >
-          ← {demoHub.footer.returnLink}
-        </button>
-      </footer>
+        {/* FOOTER STRIP */}
+        <div className="mt-10 flex flex-col items-center gap-3 text-center">
+          <p className="text-muted-fg text-xs">{demoHub.footer.note}</p>
+          <button
+            type="button"
+            onClick={handleReturn}
+            className="ptta-label text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            style={{ fontSize: "10pt" }}
+          >
+            ← {demoHub.footer.returnLink}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

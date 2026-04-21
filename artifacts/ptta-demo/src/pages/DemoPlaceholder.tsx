@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { useLocation, useParams } from "wouter";
 import { motion, useReducedMotion } from "framer-motion";
 import { Header } from "@/components/Header";
+import { SectionLabel } from "@/components/editorial";
 import { useLanguage } from "@/context/LanguageContext";
 
-const titleStyle = { letterSpacing: "-0.05em" } as const;
-const eyebrowStyle = { letterSpacing: "0.18em" } as const;
+const titleStyle = { letterSpacing: "-0.01em" } as const;
 
 export default function DemoPlaceholder() {
   const { t } = useLanguage();
@@ -21,32 +21,29 @@ export default function DemoPlaceholder() {
   }, [navigate]);
 
   return (
-    <div className="ptta-root min-h-screen bg-stone-50 text-stone-900 flex flex-col">
+    <div className="ptta-root min-h-screen bg-page text-ink flex flex-col">
       <Header showBack backHref="/demo-hub" />
 
       <main
-        className="flex-1 flex items-center justify-center px-6 py-16"
+        className="flex-1 flex items-center justify-center px-5 py-12"
         aria-label={title}
       >
         <motion.section
-          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-xl w-full text-center"
+          transition={{ duration: 0.4 }}
+          className="w-full max-w-[440px] text-center"
         >
-          <p
-            className="text-amber-600 text-xs uppercase mb-4"
-            style={eyebrowStyle}
-          >
-            {t.demoHub.eyebrow}
-          </p>
+          <div className="text-left">
+            <SectionLabel label={t.demoHub.eyebrow} tag="Module" />
+          </div>
           <h1
-            className="text-stone-900 text-4xl md:text-6xl leading-[0.95] mb-4"
+            className="font-serif text-ink text-4xl md:text-5xl leading-[0.98] mb-4"
             style={titleStyle}
           >
-            {title}
+            — {title}
           </h1>
-          <p className="text-stone-600 text-base md:text-lg mb-10">
+          <p className="text-body-fg text-base md:text-lg mb-10">
             {t.placeholder.comingSoon}
           </p>
 
@@ -54,8 +51,8 @@ export default function DemoPlaceholder() {
             type="button"
             onClick={handleBack}
             aria-label={t.placeholder.backToHub}
-            className="px-8 py-3 bg-stone-900 text-stone-50 font-bold text-sm md:text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
-            style={{ minHeight: 48, letterSpacing: "-0.02em" }}
+            className="w-full px-8 py-4 rounded-full bg-ink text-page font-bold text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            style={{ minHeight: 56, letterSpacing: "-0.02em" }}
           >
             ← {t.placeholder.backToHub}
           </button>
