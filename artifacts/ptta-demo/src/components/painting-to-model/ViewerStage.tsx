@@ -80,11 +80,15 @@ export function ViewerStage({ model, onBack }: Props) {
               alt={`3D tactile model of ${model.title} by ${model.artist}`}
               camera-controls
               auto-rotate
-              auto-rotate-delay="1800"
-              rotation-per-second="20deg"
-              shadow-intensity="1.1"
-              shadow-softness="0.9"
-              exposure="0.95"
+              auto-rotate-delay="0"
+              rotation-per-second="30deg"
+              camera-orbit="-30deg 78deg auto"
+              min-camera-orbit="-90deg 45deg auto"
+              max-camera-orbit="90deg 100deg auto"
+              shadow-intensity="1.8"
+              shadow-softness="0.5"
+              exposure="1.0"
+              environment-image="neutral"
               touch-action="pan-y"
               interaction-prompt="none"
               loading="eager"
@@ -94,7 +98,7 @@ export function ViewerStage({ model, onBack }: Props) {
                 height: "100%",
                 minHeight: 420,
                 display: "block",
-                backgroundColor: "transparent",
+                backgroundColor: "#14110e",
               }}
             />
             {status !== "ready" && (
