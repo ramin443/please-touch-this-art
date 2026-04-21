@@ -28,7 +28,7 @@ export default function FutureFeatures() {
             AI Artist Persona
           </h2>
           <p className="text-body-fg text-sm mb-4">
-            Ask a painter from our collection what they saw, what they felt, why they painted. Powered by Groq.
+            Ask a painter from our collection what they saw, what they felt, why they painted.
           </p>
           <ArtistPersona />
         </section>

@@ -39,7 +39,7 @@ export function ChatTranscript({ messages, status, artistShortName }: Props) {
       aria-atomic="false"
       aria-label={`Chat with ${artistShortName}`}
       className="flex-1 overflow-y-auto px-4 py-3 bg-surface rounded-2xl border border-hairline"
-      style={{ minHeight: "60vh", maxHeight: "60vh" }}
+      style={{ minHeight: 200, maxHeight: "50vh" }}
     >
       {messages.length === 0 && (
         <p className="text-muted-fg text-sm italic">

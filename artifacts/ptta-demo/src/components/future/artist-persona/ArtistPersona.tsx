@@ -1,6 +1,7 @@
 import { useArtistChat } from "./useArtistChat";
 import { ARTISTS, type ArtistId } from "@/content/artists";
 import { ArtistPicker } from "./ArtistPicker";
+import { ArtistHeader } from "./ArtistHeader";
 import { ChatTranscript } from "./ChatTranscript";
 import { ChatInput } from "./ChatInput";
 
@@ -24,6 +25,7 @@ export function ArtistPersona() {
         selected={chat.artistId}
         onSelect={(id: ArtistId) => chat.switchArtist(id)}
       />
+      <ArtistHeader artist={artist} />
       <ChatTranscript
         messages={chat.messages}
         status={chat.status}
