@@ -47,3 +47,6 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Superpowers brainstorming scratch (local-only, should never be tracked)
+.superpowers/
