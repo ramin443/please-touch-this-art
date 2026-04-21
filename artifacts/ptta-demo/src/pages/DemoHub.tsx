@@ -197,14 +197,16 @@ export default function DemoHub() {
           >
             — {demoHub.headline}
           </motion.h1>
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-body-fg text-sm leading-snug"
-          >
-            {demoHub.subline}
-          </motion.p>
+          {demoHub.subline && (
+            <motion.p
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-body-fg text-sm leading-snug"
+            >
+              {demoHub.subline}
+            </motion.p>
+          )}
         </div>
 
         {/* 2×2 (+1 wide) CARD GRID — app style */}

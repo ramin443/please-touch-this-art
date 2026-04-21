@@ -182,8 +182,7 @@ const en: PageCopy = {
   demoHub: {
     eyebrow: "Demo",
     headline: "Pick a process to explore.",
-    subline:
-      "Each module gives you a closer look at one part of how we build a tactile model.",
+    subline: "",
     openLabel: "Open",
     ariaOpenModule: (title) => `Open ${title} module`,
     cards: [
