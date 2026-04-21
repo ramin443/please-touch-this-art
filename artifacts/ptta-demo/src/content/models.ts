@@ -2,6 +2,7 @@ export type ModelId =
   | "mona-lisa"
   | "van-gogh"
   | "the-scream"
+  | "persistence-of-memory"
   | "st-nikolai"
   | "eiffel-tower";
 
@@ -54,6 +55,16 @@ export const MODELS: ModelEntry[] = [
     year: "1893",
     image: publicPath("paintings/the-scream.jpg"),
     glb: publicPath("models/the-scream.glb"),
+    available: true,
+  },
+  {
+    id: "persistence-of-memory",
+    type: "painting",
+    title: "The Persistence of Memory",
+    artist: "Salvador Dalí",
+    year: "1931",
+    image: publicPath("paintings/persistence-of-memory.jpeg"),
+    glb: publicPath("models/persistence-of-memory.glb"),
     available: true,
   },
   {
