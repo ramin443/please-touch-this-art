@@ -24,4 +24,13 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
+## Deployment secrets
+
+The AI Artist Persona chat (`POST /api/artist-chat`) calls Groq for LLM completions. For the deployed Replit app to work:
+
+- In **Replit → Tools → Secrets**, add `GROQ_API_KEY` with a valid key from https://console.groq.com/keys.
+- The api-server will refuse to start without it (by design, to fail loud if misconfigured).
+
+The artifact-based multi-service setup (`artifacts/api-server/.replit-artifact/artifact.toml` and `artifacts/ptta-demo/.replit-artifact/artifact.toml`) already routes `/api/*` to the api-server and everything else to the static ptta-demo — no additional wiring required.
+
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
