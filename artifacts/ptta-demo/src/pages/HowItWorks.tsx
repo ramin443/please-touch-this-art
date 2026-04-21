@@ -45,6 +45,8 @@ function StepHeading({
 }
 
 function StepBody({ children, className = "" }: { children: ReactNode; className?: string }) {
+  // Auto-hide when body text is empty so we can toggle per-step blurbs via copy.ts.
+  if (!children || (typeof children === "string" && children.trim() === "")) return null;
   return (
     <p className={`text-body-fg text-sm md:text-base leading-relaxed ${className}`}>
       {children}
@@ -322,7 +324,7 @@ export default function HowItWorks() {
   const [step1, step2, , step4, step5, step6] = intro.steps;
 
   return (
-    <div className="ptta-root min-h-screen bg-page text-ink pb-28 md:pb-32">
+    <div className="ptta-root min-h-screen bg-page text-ink pb-52 md:pb-56">
       <Header showBack backHref="/" />
 
       {/* INTRO */}
@@ -337,19 +339,21 @@ export default function HowItWorks() {
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="font-sans text-ink text-3xl md:text-5xl leading-[1.02] mb-3"
+              className="font-serif italic text-ink text-4xl md:text-6xl leading-[1.02] mb-3"
               style={titleStyle}
             >
               — {intro.headline}
             </motion.h1>
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-body-fg text-sm md:text-base leading-relaxed max-w-xl mx-auto"
-            >
-              {intro.subline}
-            </motion.p>
+            {intro.subline && (
+              <motion.p
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-body-fg text-sm md:text-base leading-relaxed max-w-xl mx-auto"
+              >
+                {intro.subline}
+              </motion.p>
+            )}
           </div>
         </div>
       </section>
@@ -381,18 +385,11 @@ export default function HowItWorks() {
                   </div>
                 </div>
               </div>
-              <div className="order-2 md:order-2 flex flex-col gap-4">
+              <div className="order-2 md:order-2 flex flex-col gap-3">
                 <div id="step-01">
                   <StepHeading num="01" title={step1.title} />
                 </div>
                 <StepBody>{step1.body}</StepBody>
-                <StepMeta
-                  rows={[
-                    ["Source", "Museum archive"],
-                    ["Resolution", "4200 × 6200 px"],
-                    ["Format", "TIFF 16-bit"],
-                  ]}
-                />
               </div>
             </section>
           </ScrollIn>
@@ -534,7 +531,7 @@ export default function HowItWorks() {
 
       {/* Floating continue CTA — fixed bottom, phone-app style */}
       <div
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-[440px] px-5 pointer-events-none"
+        className="fixed bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-40 w-full max-w-[440px] px-5 pointer-events-none"
         aria-label="Continue to demo"
       >
         <motion.button

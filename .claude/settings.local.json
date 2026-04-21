@@ -28,7 +28,19 @@
       "Bash(curl -s -I http://localhost:5173/videos/testimonials.mp4)",
       "Bash(defaults read *)",
       "Bash(git fetch *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(kill 7216)",
+      "Bash(lsof -ti:5173)",
+      "Bash(/opt/homebrew/opt/node@22/bin/node -v)",
+      "Read(//opt/homebrew/Cellar/node/25.9.0_2/bin/**)",
+      "Bash(/opt/homebrew/Cellar/node@22/22.22.2_1/bin/node -v)",
+      "Bash(export PATH=\"/opt/homebrew/Cellar/node@22/22.22.2_1/bin:$PATH\")",
+      "Bash(xargs -I {} kill {})",
+      "Bash(git restore *)",
+      "Bash('~/.local/bin/pnpm' --filter @workspace/ptta-demo dev)",
+      "Bash(echo \"started bg pid $!\")",
+      "Bash(node -e 'console.log\\('\\\\''node'\\\\'', process.version, '\\\\''works'\\\\''\\)')",
+      "Bash('~/.local/bin/pnpm' install *)"
     ]
   }
 }

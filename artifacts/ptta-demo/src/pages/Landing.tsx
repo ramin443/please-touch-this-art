@@ -139,10 +139,12 @@ export default function Landing() {
           <SectionLabel label="Epigraph" tag="Edition 01" />
           <blockquote className="text-center">
             <p
-              className="font-serif text-ink text-2xl md:text-3xl leading-[1.1]"
+              className="font-sans text-ink text-2xl md:text-4xl leading-[1.15]"
               style={headingTight}
             >
-              — {t.slogan.quote}
+              {t.slogan.quote.leading}
+              <span className="font-medium">{t.slogan.quote.emphasis}</span>
+              {t.slogan.quote.trailing}
             </p>
             <footer className="ptta-label mt-6 text-muted-fg" style={{ fontSize: "10pt" }}>
               {t.slogan.caption}

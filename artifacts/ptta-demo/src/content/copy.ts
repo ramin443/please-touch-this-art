@@ -40,7 +40,10 @@ export interface PageCopy {
     subline: { leading: string; emphasis: string; trailing: string };
     cta: string;
   };
-  slogan: { quote: string; caption: string };
+  slogan: {
+    quote: { leading: string; emphasis: string; trailing: string };
+    caption: string;
+  };
   problem: { heading: string; body: string };
   solution: { heading: string; body: string };
   facts: CopyFact[];
@@ -90,8 +93,12 @@ const en: PageCopy = {
     cta: "Tap to start demo",
   },
   slogan: {
-    quote: "Museums tell visitors not to touch. We’re changing that.",
-    caption: "Founded 2023 in Bremen · Social Impact Award Germany 2025",
+    quote: {
+      leading: "Museums tell visitors not to touch. ",
+      emphasis: "We’re changing that",
+      trailing: ".",
+    },
+    caption: "Tactile 3D models · Audio guides · Braille plaques",
   },
   problem: {
     heading: "The Problem",
@@ -118,14 +125,12 @@ const en: PageCopy = {
   howItWorks: {
     eyebrow: "How it works",
     headline: "From painting to fingertips.",
-    subline:
-      "Each tactile model goes through six stages of production. Here’s the workflow.",
+    subline: "",
     steps: [
       {
         num: "01",
         title: "High-resolution image acquisition",
-        body:
-          "We begin with a high-resolution scan or photograph of the artwork.",
+        body: "",
         illoAlt:
           "Museum-quality scan of a painting on an archival imaging rig",
         imageVariant: "dark",
@@ -133,8 +138,7 @@ const en: PageCopy = {
       {
         num: "02",
         title: "AI-assisted image analysis",
-        body:
-          "Depth-estimation models read the image and propose a depth map our team reviews.",
+        body: "",
         illoAlt:
           "Colorized depth map overlaid on the source painting",
         imageVariant: "accent",
@@ -167,7 +171,7 @@ const en: PageCopy = {
         num: "06",
         title: "Final production and installation",
         body:
-          "The tactile model, mounting system, braille plaque, and audio guide ship to the museum together. We support installation and run a haptic quality check with blind partners on-site before the exhibit opens to the public.",
+          "The tactile model, plinth, braille plaque, and audio guide ship to the museum together.",
         illoAlt:
           "Finished tactile artwork installed on a plinth with the PTTA braille plaque",
         imageSrc: "images/model-with-plaque.jpeg",
