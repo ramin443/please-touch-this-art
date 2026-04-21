@@ -8,6 +8,7 @@ import HowItWorks from "@/pages/HowItWorks";
 import DemoHub from "@/pages/DemoHub";
 import DemoPlaceholder from "@/pages/DemoPlaceholder";
 import PaintingToModel from "@/pages/PaintingToModel";
+import Fabrication from "@/pages/Fabrication";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/how-it-works" component={HowItWorks} />
       <Route path="/demo-hub" component={DemoHub} />
       <Route path="/painting-to-model" component={PaintingToModel} />
+      <Route path="/fabrication" component={Fabrication} />
       <Route path="/demo/:slug" component={DemoPlaceholder} />
       <Route component={NotFound} />
     </Switch>

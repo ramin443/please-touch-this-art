@@ -197,6 +197,7 @@ const en: PageCopy = {
         description: "Watch the model take physical shape, layer by layer.",
         illoAlt: "Finished tactile relief in a golden display frame",
         imageSrc: "images/model-golden-frame.jpeg",
+        route: "/fabrication",
       },
       {
         slug: "audio-guide",
