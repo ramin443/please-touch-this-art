@@ -1,6 +1,15 @@
 export const ARTIST_IDS = ["van-gogh", "dali", "munch"] as const;
 export type ArtistId = (typeof ARTIST_IDS)[number];
 
+export interface ArtistPalette {
+  /** Primary accent color — used for ring, highlight, cursor. */
+  accent: string;
+  /** Backdrop gradient start (top). */
+  gradientFrom: string;
+  /** Backdrop gradient end (bottom). */
+  gradientTo: string;
+}
+
 export interface ArtistMeta {
   id: ArtistId;
   displayName: string;
@@ -11,6 +20,9 @@ export interface ArtistMeta {
   portraitAlt: string;
   lifespan: string;
   tagline: string;
+  /** Short italic quote shown in the hero card. */
+  quote: string;
+  palette: ArtistPalette;
 }
 
 export const ARTISTS: Record<ArtistId, ArtistMeta> = {
@@ -18,7 +30,7 @@ export const ARTISTS: Record<ArtistId, ArtistMeta> = {
     id: "van-gogh",
     displayName: "Vincent van Gogh",
     shortName: "Vincent",
-    placeholder: "Ask Vincent something…",
+    placeholder: "Type your question to Vincent",
     suggested: [
       "Why the swirls in the sky?",
       "What did Theo mean to you?",
@@ -26,13 +38,19 @@ export const ARTISTS: Record<ArtistId, ArtistMeta> = {
     portrait: "artists/van-gogh.webp",
     portraitAlt: "Self-portrait of Vincent van Gogh with a grey felt hat",
     lifespan: "1853–1890",
-    tagline: "Writing from Saint-Rémy, 1889",
+    tagline: "Saint-Rémy, 1889",
+    quote: "I dream my painting and I paint my dream.",
+    palette: {
+      accent: "#e0a82e",
+      gradientFrom: "#1b3a6b",
+      gradientTo: "#2b1a0a",
+    },
   },
   "dali": {
     id: "dali",
     displayName: "Salvador Dalí",
     shortName: "Salvador",
-    placeholder: "Ask Salvador something…",
+    placeholder: "Type your question to Salvador",
     suggested: [
       "Why do the clocks melt?",
       "Tell me about Gala.",
@@ -41,12 +59,18 @@ export const ARTISTS: Record<ArtistId, ArtistMeta> = {
     portraitAlt: "Photograph of Salvador Dalí with his iconic upturned moustache",
     lifespan: "1904–1989",
     tagline: "Port Lligat, 1960s",
+    quote: "The only difference between me and a madman is that I am not mad.",
+    palette: {
+      accent: "#e28b3a",
+      gradientFrom: "#c58c3f",
+      gradientTo: "#3a1f0f",
+    },
   },
   "munch": {
     id: "munch",
     displayName: "Edvard Munch",
     shortName: "Edvard",
-    placeholder: "Ask Edvard something…",
+    placeholder: "Type your question to Edvard",
     suggested: [
       "What scream did you hear?",
       "How did love and death meet in your work?",
@@ -55,5 +79,11 @@ export const ARTISTS: Record<ArtistId, ArtistMeta> = {
     portraitAlt: "Self-portrait of Edvard Munch holding a palette",
     lifespan: "1863–1944",
     tagline: "Ekely, Kristiania",
+    quote: "I felt a great, unending scream piercing through nature.",
+    palette: {
+      accent: "#d55a2b",
+      gradientFrom: "#1d3647",
+      gradientTo: "#0a1820",
+    },
   },
 };

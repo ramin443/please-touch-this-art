@@ -28,12 +28,16 @@ export function ArtistPicker({ selected, onSelect }: Props) {
     <div
       role="tablist"
       aria-label="Choose an artist to chat with"
-      className="flex gap-2 mb-4"
+      className="flex gap-5 md:gap-8 justify-center mb-5"
       onKeyDown={onKey}
     >
       {ARTIST_IDS.map((id, i) => {
         const meta = ARTISTS[id];
         const isSelected = id === selected;
+        const src = `${import.meta.env.BASE_URL || "/"}${meta.portrait}`.replace(
+          /\/{2,}/g,
+          "/",
+        );
         return (
           <button
             key={id}
@@ -45,13 +49,38 @@ export function ArtistPicker({ selected, onSelect }: Props) {
             aria-controls="artist-chat-panel"
             tabIndex={isSelected ? 0 : -1}
             onClick={() => onSelect(id)}
-            className={`px-4 py-2 rounded-full text-sm font-sans focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-              isSelected
-                ? "bg-ink text-page"
-                : "bg-surface text-ink border border-hairline"
-            }`}
+            className="flex flex-col items-center gap-1.5 focus-visible:outline-none group"
           >
-            {meta.shortName}
+            <span
+              className={`rounded-full p-[3px] transition-all duration-300 ${
+                isSelected
+                  ? "scale-110"
+                  : "opacity-55 group-hover:opacity-90 group-hover:scale-105"
+              }`}
+              style={{
+                background: isSelected
+                  ? `linear-gradient(135deg, ${meta.palette.accent}, ${meta.palette.gradientFrom})`
+                  : "transparent",
+                boxShadow: isSelected
+                  ? `0 6px 20px -6px ${meta.palette.accent}55`
+                  : "none",
+              }}
+            >
+              <img
+                src={src}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover bg-surface-muted border border-hairline"
+              />
+            </span>
+            <span
+              className={`text-xs md:text-sm font-sans transition-colors ${
+                isSelected ? "text-ink font-semibold" : "text-muted-fg"
+              }`}
+            >
+              {meta.shortName}
+            </span>
           </button>
         );
       })}

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useArtistChat } from "./useArtistChat";
 import { ARTISTS, type ArtistId } from "@/content/artists";
 import { ArtistPicker } from "./ArtistPicker";
@@ -18,6 +19,7 @@ const ERROR_COPY: Record<string, (name: string) => string> = {
 export function ArtistPersona() {
   const chat = useArtistChat("van-gogh");
   const artist = ARTISTS[chat.artistId];
+  const reduceMotion = useReducedMotion() ?? false;
 
   return (
     <section className="flex flex-col" aria-label="AI Artist Persona">
@@ -25,12 +27,26 @@ export function ArtistPersona() {
         selected={chat.artistId}
         onSelect={(id: ArtistId) => chat.switchArtist(id)}
       />
-      <ArtistHeader artist={artist} />
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={chat.artistId}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={reduceMotion ? undefined : { opacity: 1 }}
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <ArtistHeader artist={artist} />
+        </motion.div>
+      </AnimatePresence>
+
       <ChatTranscript
         messages={chat.messages}
         status={chat.status}
         artistShortName={artist.shortName}
+        accentColor={artist.palette.accent}
       />
+
       {chat.status === "error" && chat.error && (
         <div
           role="alert"
@@ -51,6 +67,7 @@ export function ArtistPersona() {
           )}
         </div>
       )}
+
       <ChatInput
         placeholder={artist.placeholder}
         suggested={artist.suggested}
@@ -58,6 +75,7 @@ export function ArtistPersona() {
           chat.messages.length === 0 && chat.status !== "streaming"
         }
         disabled={chat.status === "streaming"}
+        accentColor={artist.palette.accent}
         onSend={(text) => void chat.send(text)}
       />
     </section>
