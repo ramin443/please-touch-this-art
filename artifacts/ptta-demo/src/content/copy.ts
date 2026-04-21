@@ -102,13 +102,11 @@ const en: PageCopy = {
   },
   problem: {
     heading: "The Problem",
-    body:
-      "For blind and visually impaired people, art in museums is essentially invisible. Paintings sit behind glass with “do not touch” signs. Audio guides describe what others can see — but they can’t replace the experience of perceiving a work directly.",
+    body: "",
   },
   solution: {
     heading: "Our Solution",
-    body:
-      "We convert paintings and objects into precise tactile 3D models, paired with custom audio descriptions and braille plaques. Visitors explore the artwork with their hands, guided by audio crafted with blind collaborators.",
+    body: "Tactile 3D models paired with custom audio. Art explored by hand.",
   },
   facts: [
     { label: "Installations", value: "27+" },

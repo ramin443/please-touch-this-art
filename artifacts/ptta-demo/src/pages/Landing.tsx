@@ -6,7 +6,9 @@ import { CyclingText } from "@/components/CyclingText";
 import { SectionLabel, AlertBanner, Marker } from "@/components/editorial";
 import { useLanguage } from "@/context/LanguageContext";
 
-const VIDEO_SRC = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/videos/people-using-tactile.mp4`;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const VIDEO_SRC = `${BASE}/videos/people-using-tactile.mp4`;
+const SOLUTION_IMG = `${BASE}/images/hands-exploring-model.jpeg`;
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
 const headingTight = { letterSpacing: "-0.02em" } as const;
@@ -132,29 +134,146 @@ export default function Landing() {
         <div className="mx-auto max-w-[440px]">
           <SectionLabel label="Dispatch" tag="Brief · 02" />
           <div className="flex flex-col gap-4">
-            <article className="bg-surface border border-hairline rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-3">
+            {/* PROBLEM — stat-forward, minimal body */}
+            <article className="bg-surface border border-hairline rounded-2xl p-5 md:p-6">
+              <div className="flex items-center justify-between mb-4">
                 <Marker />
-                <span className="ptta-label text-muted-fg" style={{ fontSize: "10pt" }}>01</span>
+                <span className="ptta-label text-muted-fg" style={{ fontSize: "10pt" }}>
+                  Problem · 01
+                </span>
               </div>
-              <h2 className="font-serif text-ink text-xl md:text-2xl mb-2" style={headingTight}>
+
+              <h2
+                className="font-serif italic text-ink text-xl md:text-2xl mb-5"
+                style={headingTight}
+              >
                 — {t.problem.heading}
               </h2>
-              <p className="text-body-fg text-sm leading-relaxed">
-                {t.problem.body}
+
+              {/* Primary stat */}
+              <div className="flex items-baseline gap-2 mb-1">
+                <span
+                  className="font-serif italic text-accent leading-none"
+                  style={{
+                    fontSize: "clamp(3rem, 14vw, 4.5rem)",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  300M
+                </span>
+              </div>
+              <p className="text-body-fg text-sm leading-snug mb-5">
+                people worldwide live with vision impairment.
+              </p>
+
+              {/* Horizontal proportion bar — 300M of 8B ≈ 3.75% */}
+              <div
+                aria-hidden="true"
+                className="relative w-full h-2 bg-stone-300 rounded-full overflow-hidden mb-2"
+              >
+                <div
+                  className="absolute left-0 top-0 h-full bg-accent"
+                  style={{ width: "3.75%", minWidth: "6px" }}
+                />
+              </div>
+              <div className="flex justify-between mb-5">
+                <span className="ptta-label text-accent" style={{ fontSize: "9pt" }}>
+                  300M
+                </span>
+                <span
+                  className="ptta-label text-muted-fg"
+                  style={{ fontSize: "9pt" }}
+                >
+                  8B global
+                </span>
+              </div>
+
+              {/* Secondary stat — subset emphasis */}
+              <div className="flex items-center gap-3 pt-4 border-t border-hairline">
+                <span
+                  className="ptta-label text-muted-fg"
+                  style={{ fontSize: "9pt" }}
+                >
+                  Of which
+                </span>
+                <span
+                  className="font-serif italic text-ink leading-none"
+                  style={{ fontSize: "1.75rem", letterSpacing: "-0.02em" }}
+                >
+                  43M
+                </span>
+                <span
+                  className="ptta-label text-muted-fg"
+                  style={{ fontSize: "9pt" }}
+                >
+                  fully blind
+                </span>
+              </div>
+
+              <p
+                className="ptta-label text-muted-fg mt-4"
+                style={{ fontSize: "9pt" }}
+              >
+                Source · WHO, 2023
               </p>
             </article>
-            <article className="bg-surface border border-hairline rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <Marker />
-                <span className="ptta-label text-accent" style={{ fontSize: "10pt" }}>02</span>
+
+            {/* SOLUTION — photo header + stat + short body */}
+            <article className="bg-surface border border-hairline rounded-2xl overflow-hidden">
+              <div className="relative w-full aspect-[16/10] bg-stone-200 overflow-hidden">
+                <img
+                  src={SOLUTION_IMG}
+                  alt="Hands actively exploring a finished tactile relief sculpture"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 p-4"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(12,10,9,0.85) 0%, rgba(12,10,9,0.35) 55%, transparent 100%)",
+                  }}
+                >
+                  <div className="flex items-baseline gap-2">
+                    <span
+                      className="font-serif italic text-cream leading-none"
+                      style={{
+                        fontSize: "clamp(2.5rem, 12vw, 3.5rem)",
+                        letterSpacing: "-0.03em",
+                      }}
+                    >
+                      27+
+                    </span>
+                    <span
+                      className="ptta-label text-cream/80"
+                      style={{ fontSize: "9pt" }}
+                    >
+                      Installations
+                    </span>
+                  </div>
+                </div>
               </div>
-              <h2 className="font-serif text-ink text-xl md:text-2xl mb-2" style={headingTight}>
-                — {t.solution.heading}
-              </h2>
-              <p className="text-body-fg text-sm leading-relaxed">
-                {t.solution.body}
-              </p>
+
+              <div className="p-5 md:p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <Marker />
+                  <span
+                    className="ptta-label text-accent"
+                    style={{ fontSize: "10pt" }}
+                  >
+                    Solution · 02
+                  </span>
+                </div>
+                <h2
+                  className="font-serif italic text-ink text-xl md:text-2xl mb-2"
+                  style={headingTight}
+                >
+                  — {t.solution.heading}
+                </h2>
+                <p className="text-body-fg text-sm leading-relaxed">
+                  {t.solution.body}
+                </p>
+              </div>
             </article>
           </div>
         </div>
