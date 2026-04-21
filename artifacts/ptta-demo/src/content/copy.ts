@@ -25,6 +25,8 @@ export interface DemoCard {
   imageSrc?: string;
   /** Override destination. If omitted, DemoHub navigates to /demo/:slug (the placeholder). */
   route?: string;
+  /** Slug of the next module in the sequential tour. Terminal if omitted. */
+  nextModule?: string;
 }
 
 export interface PageCopy {
@@ -191,6 +193,7 @@ const en: PageCopy = {
         illoAlt: "Van Gogh Self-Portrait painting, the source for a tactile conversion",
         imageSrc: "paintings/van-gogh.webp",
         route: "/painting-to-model",
+        nextModule: "3d-printing",
       },
       {
         slug: "3d-printing",
@@ -199,6 +202,7 @@ const en: PageCopy = {
         illoAlt: "3D-printed tactile relief of Dalí's The Persistence of Memory",
         imageSrc: "printed/persistence-of-memory.png",
         route: "/fabrication",
+        nextModule: "audio-guide",
       },
       {
         slug: "audio-guide",
@@ -208,6 +212,7 @@ const en: PageCopy = {
         illoAlt: "Audio guide device and headphones for museum visitors",
         imageSrc: "images/audio-guide.jpg",
         route: "/audio-guide",
+        nextModule: "future",
       },
       {
         slug: "showcase",
@@ -224,6 +229,7 @@ const en: PageCopy = {
           "What’s next: scaling to more museums, more languages, more formats.",
         illoAlt: "Abstract roadmap visualisation",
         variant: "future",
+        route: "/future-features",
       },
     ],
     footer: {
