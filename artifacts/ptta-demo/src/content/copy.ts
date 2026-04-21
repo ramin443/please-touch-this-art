@@ -23,6 +23,8 @@ export interface DemoCard {
   illoAlt: string;
   variant?: "default" | "future";
   imageSrc?: string;
+  /** Override destination. If omitted, DemoHub navigates to /demo/:slug (the placeholder). */
+  route?: string;
 }
 
 export interface PageCopy {
@@ -188,6 +190,7 @@ const en: PageCopy = {
         description: "See how a flat painting becomes a layered 3D form.",
         illoAlt: "Hands exploring a finished tactile relief on a pedestal",
         imageSrc: "images/hands-touching-model.jpeg",
+        route: "/painting-to-model",
       },
       {
         slug: "3d-printing",

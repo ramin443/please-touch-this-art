@@ -138,9 +138,10 @@ export default function DemoHub() {
 
   const handleOpen = useCallback(
     (slug: string) => {
-      navigate(`/demo/${slug}`);
+      const card = demoHub.cards.find((c) => c.slug === slug);
+      navigate(card?.route ?? `/demo/${slug}`);
     },
-    [navigate]
+    [navigate, demoHub.cards]
   );
 
   const handleReturn = useCallback(() => {

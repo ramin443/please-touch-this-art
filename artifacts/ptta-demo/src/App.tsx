@@ -7,6 +7,7 @@ import Landing from "@/pages/Landing";
 import HowItWorks from "@/pages/HowItWorks";
 import DemoHub from "@/pages/DemoHub";
 import DemoPlaceholder from "@/pages/DemoPlaceholder";
+import PaintingToModel from "@/pages/PaintingToModel";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/how-it-works" component={HowItWorks} />
       <Route path="/demo-hub" component={DemoHub} />
+      <Route path="/painting-to-model" component={PaintingToModel} />
       <Route path="/demo/:slug" component={DemoPlaceholder} />
       <Route component={NotFound} />
     </Switch>
