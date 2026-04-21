@@ -3,6 +3,7 @@ import { ArrowLeft, Pause, Play } from "lucide-react";
 import type { ModelEntry } from "@/content/models";
 import { AUDIO_SRC } from "@/content/audio-guide";
 import { Marker } from "@/components/editorial";
+import { NextModuleCta } from "@/components/NextModuleCta";
 
 const titleStyle = { letterSpacing: "-0.01em" } as const;
 
@@ -254,6 +255,10 @@ export function AudioPlayer({ model, onBack }: Props) {
             <Play size={24} fill="currentColor" className="ml-1" />
           )}
         </button>
+
+        <div className="w-full mt-10">
+          <NextModuleCta fromSlug="audio-guide" />
+        </div>
       </main>
 
       {/* Hidden audio element driving playback */}
