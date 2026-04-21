@@ -1,8 +1,18 @@
-import "@google/model-viewer";
+import { ModelViewerElement } from "@google/model-viewer";
 import "@/types/model-viewer";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import type { ModelEntry } from "@/content/models";
+
+// Our GLBs are produced by gltfpack with EXT_meshopt_compression +
+// KHR_mesh_quantization. model-viewer only wires the meshopt decoder into
+// three's GLTFLoader if this location is set (see @google/model-viewer's
+// features/loading.js). Without it the GLB download completes but the
+// geometry is never decoded — load event never fires, canvas stays empty.
+// Setting this at module scope guarantees it runs before React renders any
+// <model-viewer> tag. CDN-hosted; can be swapped for a local copy later.
+ModelViewerElement.meshoptDecoderLocation =
+  "https://unpkg.com/meshoptimizer@0.20.0/meshopt_decoder.js";
 
 interface Props {
   model: ModelEntry;
@@ -21,7 +31,34 @@ export function ViewerStage({ model, onBack }: Props) {
     const el = viewerRef.current;
     if (!el) return;
 
-    const handleLoad = () => setStatus("ready");
+    const handleLoad = () => {
+      setStatus("ready");
+      // GLBs have no embedded materials — model-viewer falls back to a
+      // white PBR default that washes out in neutral lighting. Swap the
+      // default(s) for a warm-stone, non-metallic, matte material so the
+      // relief topography reads clearly under the environment lighting.
+      try {
+        type PBRSetters = {
+          setBaseColorFactor?: (rgba: [number, number, number, number]) => void;
+          setMetallicFactor?: (v: number) => void;
+          setRoughnessFactor?: (v: number) => void;
+        };
+        type MVMaterial = { pbrMetallicRoughness?: PBRSetters };
+        type MVModel = { materials?: MVMaterial[] };
+        const materials = (el as unknown as { model?: MVModel }).model?.materials;
+        if (materials && materials.length > 0) {
+          for (const mat of materials) {
+            mat.pbrMetallicRoughness?.setBaseColorFactor?.([
+              0.85, 0.80, 0.72, 1,
+            ]);
+            mat.pbrMetallicRoughness?.setMetallicFactor?.(0);
+            mat.pbrMetallicRoughness?.setRoughnessFactor?.(0.85);
+          }
+        }
+      } catch {
+        /* material tweaking is progressive enhancement */
+      }
+    };
     const handleProgress = (event: Event) => {
       const detail = (event as CustomEvent<{ totalProgress: number }>).detail;
       if (detail?.totalProgress != null) {
@@ -81,14 +118,15 @@ export function ViewerStage({ model, onBack }: Props) {
               camera-controls
               auto-rotate
               auto-rotate-delay="0"
-              rotation-per-second="30deg"
-              camera-orbit="-30deg 78deg auto"
-              min-camera-orbit="-90deg 45deg auto"
-              max-camera-orbit="90deg 100deg auto"
-              shadow-intensity="1.8"
-              shadow-softness="0.5"
-              exposure="1.0"
-              environment-image="neutral"
+              rotation-per-second="28deg"
+              camera-orbit="-22deg 80deg auto"
+              min-camera-orbit="-85deg 45deg auto"
+              max-camera-orbit="85deg 100deg auto"
+              shadow-intensity="1.6"
+              shadow-softness="0.6"
+              exposure="1.05"
+              environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
+              skybox-image=""
               touch-action="pan-y"
               interaction-prompt="none"
               loading="eager"

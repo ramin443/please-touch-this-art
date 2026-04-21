@@ -4,10 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PTTA — Standalone Model Viewer Test</title>
-  <script
-    type="module"
-    src="https://unpkg.com/@google/model-viewer@4.2.0/dist/model-viewer.min.js">
-  </script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -53,6 +49,7 @@
       font-size: 12px;
       font-family: ui-monospace, Menlo, monospace;
       white-space: pre-line;
+      z-index: 1;
     }
   </style>
 </head>
@@ -61,52 +58,82 @@
     <h1>Standalone model-viewer test</h1>
     <button id="mona" class="active">Mona Lisa</button>
     <button id="gogh">Van Gogh</button>
-    <span style="font-size:12px;opacity:0.6;margin-left:auto;">Loaded from unpkg CDN — no bundler</span>
+    <span style="font-size:12px;opacity:0.6;margin-left:auto;">CDN + meshopt decoder registered</span>
   </header>
   <main>
+    <!-- No src yet — we set it AFTER the meshopt decoder is registered. -->
     <model-viewer
       id="mv"
-      src="/models/mona-lisa.glb"
       alt="Tactile relief model"
       camera-controls
       auto-rotate
       auto-rotate-delay="0"
       rotation-per-second="30deg"
-      camera-orbit="-30deg 78deg auto"
-      min-camera-orbit="-90deg 45deg auto"
-      max-camera-orbit="90deg 100deg auto"
-      shadow-intensity="1.8"
-      shadow-softness="0.5"
-      exposure="1.0"
-      environment-image="neutral"
+      camera-orbit="-22deg 80deg auto"
+      min-camera-orbit="-85deg 45deg auto"
+      max-camera-orbit="85deg 100deg auto"
+      shadow-intensity="1.6"
+      shadow-softness="0.6"
+      exposure="1.05"
+      environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
       touch-action="pan-y"
       interaction-prompt="none"
       loading="eager"
     ></model-viewer>
     <div id="status">booting…</div>
   </main>
-  <script>
-    const mv = document.getElementById("mv");
+  <script type="module">
     const status = document.getElementById("status");
     const setStatus = (s) => (status.textContent = s);
-    mv.addEventListener("load", () => setStatus("loaded ✓"));
+    setStatus("loading model-viewer…");
+    await import("https://unpkg.com/@google/model-viewer@4.2.0/dist/model-viewer.min.js");
+    await customElements.whenDefined("model-viewer");
+    const MV = customElements.get("model-viewer");
+    // Register meshopt decoder BEFORE setting src.
+    MV.meshoptDecoderLocation =
+      "https://unpkg.com/meshoptimizer@0.20.0/meshopt_decoder.js";
+
+    const mv = document.getElementById("mv");
+    const tuneMaterials = () => {
+      try {
+        const mats = mv.model?.materials;
+        if (mats?.length) {
+          for (const m of mats) {
+            m.pbrMetallicRoughness?.setBaseColorFactor?.([0.85, 0.80, 0.72, 1]);
+            m.pbrMetallicRoughness?.setMetallicFactor?.(0);
+            m.pbrMetallicRoughness?.setRoughnessFactor?.(0.85);
+          }
+        }
+      } catch (e) { /* noop */ }
+    };
+    mv.addEventListener("load", () => {
+      setStatus("loaded ✓");
+      tuneMaterials();
+    });
     mv.addEventListener("progress", (e) => {
       const p = Math.round((e.detail.totalProgress || 0) * 100);
       setStatus("loading " + p + "%");
     });
     mv.addEventListener("error", (e) => {
-      setStatus("error: " + (e.detail?.sourceError?.message || e.detail?.type || "unknown"));
+      setStatus(
+        "error: " +
+          (e.detail?.sourceError?.message || e.detail?.type || "unknown")
+      );
     });
-    document.getElementById("mona").onclick = () => {
-      mv.src = "/models/mona-lisa.glb";
-      document.getElementById("mona").classList.add("active");
-      document.getElementById("gogh").classList.remove("active");
+
+    const setModel = (url, btnId) => {
+      mv.src = url;
+      document.querySelectorAll("header button").forEach((b) =>
+        b.classList.toggle("active", b.id === btnId)
+      );
     };
-    document.getElementById("gogh").onclick = () => {
-      mv.src = "/models/van-gogh.glb";
-      document.getElementById("gogh").classList.add("active");
-      document.getElementById("mona").classList.remove("active");
-    };
+    document.getElementById("mona").onclick = () =>
+      setModel("/models/mona-lisa.glb", "mona");
+    document.getElementById("gogh").onclick = () =>
+      setModel("/models/van-gogh.glb", "gogh");
+
+    // Initial load: Mona Lisa.
+    setModel("/models/mona-lisa.glb", "mona");
   </script>
 </body>
 </html>

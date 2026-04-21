@@ -43,8 +43,9 @@ export const MODELS: ModelEntry[] = [
     title: "St. Nikolai Church",
     artist: "Hamburg",
     year: "19th century",
-    image: "",
-    available: false,
+    image: publicPath("paintings/st-nikolai.jpg"),
+    glb: publicPath("models/st-nikolai.glb"),
+    available: true,
   },
 ];
 
