@@ -528,7 +528,7 @@ export default function HowItWorks() {
           type="button"
           onClick={handleContinue}
           aria-label={intro.continueCta}
-          className="pointer-events-auto w-full px-6 py-4 rounded-full bg-ink text-page text-base shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="pointer-events-auto w-full px-6 py-4 rounded-full bg-accent text-black text-base font-sans font-normal shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           style={{ minHeight: 56, letterSpacing: "-0.02em" }}
         >
           {intro.continueCta} →
