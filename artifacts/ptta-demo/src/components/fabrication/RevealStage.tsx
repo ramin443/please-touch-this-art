@@ -14,21 +14,33 @@ export function RevealStage({ model, onBack, onPickAnother }: Props) {
 
   return (
     <div className="fixed inset-0 bg-stone-950 text-cream overflow-hidden">
-      {/* Full-bleed finished-piece photo */}
-      {src ? (
-        <motion.img
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          src={src}
-          alt={`Finished tactile relief of ${model.title} by ${model.artist}`}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-white/60">
-          <p className="text-sm">Finished piece not on file yet.</p>
-        </div>
-      )}
+      {/* Image area — padded so the full photo always fits between the
+          top and bottom overlays, preserving aspect ratio on any screen. */}
+      <div
+        className="absolute inset-0 flex items-center justify-center px-4"
+        style={{
+          paddingTop: "calc(max(5.5rem, env(safe-area-inset-top) + 4.5rem))",
+          paddingBottom:
+            "calc(max(11rem, env(safe-area-inset-bottom) + 10rem))",
+        }}
+      >
+        {src ? (
+          <motion.img
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            src={src}
+            alt={`Finished tactile relief of ${model.title} by ${model.artist}`}
+            className="max-w-full max-h-full object-contain"
+            style={{
+              width: "auto",
+              height: "auto",
+            }}
+          />
+        ) : (
+          <p className="text-white/60 text-sm">Finished piece not on file yet.</p>
+        )}
+      </div>
 
       {/* Top gradient + back */}
       <header
