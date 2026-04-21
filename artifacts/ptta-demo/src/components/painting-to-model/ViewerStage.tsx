@@ -154,8 +154,6 @@ export function ViewerStage({ model, onBack }: Props) {
         auto-rotate
         rotation-per-second="24deg"
         camera-orbit={cameraOrbit}
-        min-camera-orbit="-120deg 40deg auto"
-        max-camera-orbit="120deg 110deg auto"
         shadow-intensity={shadowIntensity}
         shadow-softness="0.4"
         exposure={exposure}
