@@ -92,6 +92,30 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Test Untitled Sans";
+  src: url("/fonts/TestUntitledSans-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Test Untitled Sans";
+  src: url("/fonts/TestUntitledSans-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Test Untitled Sans";
+  src: url("/fonts/TestUntitledSans-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -149,7 +173,9 @@
   --font-mono: var(--app-font-mono);
 
   --color-cream: #FFFAEE;
-  --color-accent: #D64324;
+  /* Reference: previous terracotta accent was #D64324 (hsl(11, 70%, 49%)). */
+  --ptta-accent-orange-legacy: #D64324;
+  --color-accent: hsl(20, 95%, 57%);
   --color-accent-foreground: #FFFAEE;
 
   /* Theme-aware semantic tokens — flip via .dark on <html> */
@@ -225,6 +251,7 @@
   --app-font-serif: 'Instrument Serif', 'Georgia', 'Times New Roman', serif;
   --app-font-display: 'Helvetica Neue', 'Helvetica', 'Arial', system-ui, sans-serif;
   --app-font-mono: 'Menlo', monospace;
+  --app-font-mono-display: 'IBM Plex Mono', 'JetBrains Mono', 'Menlo', monospace;
   --radius: 0.5rem;
 
   --shadow-2xs: 0px 1px 2px 0px rgba(20, 14, 8, 0.04);
@@ -253,6 +280,26 @@
   --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
   --destructive-border: hsl(var(--destructive));
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* Editorial font theme — toggled via the header dropdown.
+   Swaps the body sans (Aeonik) for Test Untitled Sans and the display
+   serif (Instrument Serif) for Fraunces. The mono / wordmark stacks
+   (used by the "PLEASE TOUCH THIS ART" label and section eyebrows) are
+   deliberately untouched. */
+html.font-editorial {
+  --app-font-sans: 'Test Untitled Sans', 'Aeonik', 'Helvetica', 'Arial', system-ui, sans-serif;
+  --app-font-serif: 'Fraunces', 'GT Sectra', 'EB Garamond', 'Cormorant Garamond', 'Georgia', serif;
+}
+html.font-editorial .font-serif {
+  font-variation-settings: "opsz" 96;
+  letter-spacing: -0.005em;
+  font-feature-settings: "ss01" on, "ss02" on;
+}
+html.font-editorial .font-serif em,
+html.font-editorial .font-serif i,
+html.font-editorial em.italic {
+  font-variation-settings: normal;
 }
 
 .dark {
@@ -415,10 +462,10 @@
      Holds opacity while the ring grows, then fades — so it's visible instead
      of lost in a spread/opacity inverse trade-off. */
   @keyframes ptta-cta-halo {
-    0%   { box-shadow: 0 0 0 0    rgba(214, 67, 36, 0.75); }
-    25%  { box-shadow: 0 0 0 8px  rgba(214, 67, 36, 0.60); }
-    55%  { box-shadow: 0 0 0 20px rgba(214, 67, 36, 0);    }
-    100% { box-shadow: 0 0 0 20px rgba(214, 67, 36, 0);    }
+    0%   { box-shadow: 0 0 0 0    rgba(250, 111, 41, 0.75); }
+    25%  { box-shadow: 0 0 0 8px  rgba(250, 111, 41, 0.60); }
+    55%  { box-shadow: 0 0 0 20px rgba(250, 111, 41, 0);    }
+    100% { box-shadow: 0 0 0 20px rgba(250, 111, 41, 0);    }
   }
   .ptta-cta-halo {
     animation: ptta-cta-halo 2s ease-out infinite;
@@ -480,11 +527,41 @@
   }
 
   .ptta-label {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 12pt;
+    font-family: var(--app-font-mono-display);
+    font-size: 11pt;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     font-weight: 400;
+    font-feature-settings: "kern", "liga", "calt", "ss03";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    .ptta-label { letter-spacing: 0.22em; }
+  }
+
+  /* Maison-mono eyebrow — IBM Plex Mono, generously tracked, ultra-light
+     weight. The look used by Prada, Loewe, Gucci and Hermès for nav labels,
+     captions and section eyebrows. Intentionally restrained: same colour
+     contract as the surrounding palette, the refinement is purely typographic.
+     Letter-spacing scales with viewport so the long hero eyebrow stays
+     readable on small phones without overflowing. */
+  .ptta-mono-eyebrow {
+    font-family: var(--app-font-mono-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-feature-settings: "kern", "liga", "calt", "ss03";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    .ptta-mono-eyebrow { letter-spacing: 0.2em; }
+  }
+  @media (min-width: 768px) {
+    .ptta-mono-eyebrow { letter-spacing: 0.24em; }
   }
 
   [contenteditable][data-placeholder]:empty::before {
@@ -552,3 +629,111 @@
     inset: -1px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VAN GOGH "GALLERY ROOM" THEME OVERLAY
+   Re-skins the whole PTTA app with the dark Prussian-blue gradient stage,
+   cream text and the lighter PTTA-orange accent. Token-level override so it
+   cascades through every bg-page / text-ink / *-accent / surface usage.
+   Background lives on <html> as fixed layers (no pseudo-element overlay, so
+   it can never paint over app content).
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root,
+html.dark {
+  --ptta-page: transparent;
+  --ptta-ink: #F2E9D6;
+  --ptta-surface: rgba(242, 233, 214, 0.06);
+  --ptta-surface-muted: rgba(242, 233, 214, 0.035);
+  --ptta-body-fg: rgba(242, 233, 214, 0.80);
+  --ptta-muted-fg: rgba(242, 233, 214, 0.55);
+  --ptta-hairline: rgba(242, 233, 214, 0.16);
+
+  --color-accent: #F2994D;
+  --color-accent-foreground: #241A0E;
+  --color-cream: #F2E9D6;
+  --accent: 28 86% 63%;
+  --accent-foreground: 26 60% 9%;
+  --ring: 28 86% 63%;
+}
+
+html {
+  background:
+    radial-gradient(ellipse at 50% 40%,
+      rgba(0, 0, 0, 0) 22%, rgba(0, 0, 0, 0.65) 60%, rgba(0, 0, 0, 0.95) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 70% 55% at 50% 28%,
+      #122c4c 0%, #0a1f37 22%, #040c14 48%, #010306 75%, #000000 100%)
+    !important;
+  background-attachment: fixed, fixed, fixed !important;
+  background-size: cover, 160px 160px, cover !important;
+  background-repeat: no-repeat, repeat, no-repeat !important;
+}
+
+body {
+  background-color: transparent !important;
+  color: var(--ptta-ink);
+}
+
+/* Typography — the brand label in the header uses the same Maison-mono
+   treatment as the section eyebrows (see .ptta-mono-eyebrow). Generous
+   tracking, light weight, careful kerning/ligatures. !important is kept
+   from the previous override so it still trumps the base .ptta-label rule
+   when the gallery theme is active. */
+.ptta-label {
+  font-family: var(--app-font-mono-display) !important;
+  letter-spacing: 0.14em;
+  font-weight: 400;
+}
+@media (min-width: 640px) {
+  .ptta-label { letter-spacing: 0.22em; }
+}
+
+/* Carry the Gallery gradient through the inner demo screens. The journey
+   stages hard-code near-black backdrops; make those transparent so the
+   fixed <html> gradient shows, and lift text to cream. Colour-only — no
+   layout/position is touched (keeps the cascade-layer safety intact). */
+.bg-stone-950,
+.bg-stone-900 { background-color: transparent !important; }
+/* loading / dim overlays — a deep-Prussian veil instead of flat black */
+.bg-stone-950\/90,
+.bg-stone-950\/95,
+.bg-stone-950\/80 { background-color: rgba(8, 17, 29, 0.86) !important; }
+.bg-stone-800 { background-color: rgba(242, 233, 214, 0.06) !important; }
+.text-white { color: #F4ECD8 !important; }
+.text-stone-100,
+.text-stone-200 { color: rgba(242, 233, 214, 0.86) !important; }
+.text-stone-300,
+.text-stone-400,
+.text-stone-500 { color: rgba(242, 233, 214, 0.56) !important; }
+
+/* Unify the one hard-coded orange CTA with the accent token. */
+.bg-orange-500 { background-color: var(--color-accent) !important; }
+.hover\:bg-orange-600:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 86%, #000) !important;
+}
+.active\:bg-orange-700:active {
+  background-color: color-mix(in srgb, var(--color-accent) 72%, #000) !important;
+}
+
+/* Attention pulse for the primary "Try the demo" CTA — a soft expanding
+   glow ring + gentle breathing scale to draw the eye. Reduced-motion off. */
+@keyframes ptta-cta-attn {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent),
+                      0 10px 30px -8px color-mix(in srgb, var(--color-accent) 50%, transparent);
+         transform: scale(1); }
+  60%  { box-shadow: 0 0 0 16px color-mix(in srgb, var(--color-accent) 0%, transparent),
+                      0 12px 34px -8px color-mix(in srgb, var(--color-accent) 45%, transparent);
+         transform: scale(1.035); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 0%, transparent),
+                      0 10px 30px -8px color-mix(in srgb, var(--color-accent) 50%, transparent);
+         transform: scale(1); }
+}
+.ptta-cta-attn {
+  animation: ptta-cta-attn 2.4s ease-out infinite;
+  will-change: transform, box-shadow;
+}
+.ptta-cta-attn:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .ptta-cta-attn { animation: none; }
+}
+

@@ -18,7 +18,7 @@ export function ArtistHeader({ artist }: Props) {
       initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="relative overflow-hidden rounded-2xl border border-hairline mb-4"
+      className="relative overflow-hidden rounded-2xl border border-hairline mb-3 md:mb-4"
       style={{
         background: `linear-gradient(160deg, ${artist.palette.gradientFrom} 0%, ${artist.palette.gradientTo} 100%)`,
       }}
@@ -33,12 +33,12 @@ export function ArtistHeader({ artist }: Props) {
         }}
       />
 
-      <div className="relative flex items-stretch gap-4 p-4 md:p-5">
+      <div className="relative flex items-stretch gap-3 md:gap-4 p-3 md:p-5">
         <img
           src={src}
           alt={artist.portraitAlt}
           loading="lazy"
-          className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover flex-shrink-0 border"
+          className="w-14 h-14 md:w-24 md:h-24 rounded-xl object-cover flex-shrink-0 border"
           style={{
             borderColor: artist.palette.accent,
             boxShadow: `0 8px 24px -8px ${artist.palette.accent}88`,
@@ -49,7 +49,7 @@ export function ArtistHeader({ artist }: Props) {
             <p
               className="ptta-label"
               style={{
-                fontSize: "9pt",
+                fontSize: "8.5pt",
                 color: artist.palette.accent,
                 letterSpacing: "0.08em",
               }}
@@ -57,20 +57,20 @@ export function ArtistHeader({ artist }: Props) {
               Speaking with
             </p>
             <h3
-              className="font-serif text-xl md:text-2xl leading-tight mt-0.5 text-white drop-shadow"
+              className="font-serif text-base md:text-2xl leading-tight mt-0.5 text-white drop-shadow"
               style={{ letterSpacing: "-0.01em" }}
             >
               {artist.displayName}
             </h3>
             <p
-              className="text-white/70 text-xs md:text-sm mt-0.5"
-              style={{ fontSize: "10.5pt" }}
+              className="text-white/70 mt-0.5"
+              style={{ fontSize: "9.5pt" }}
             >
               {artist.lifespan} · {artist.tagline}
             </p>
           </div>
           <p
-            className="font-serif italic text-white/85 text-sm md:text-base mt-2 leading-snug"
+            className="hidden md:block font-serif italic text-white/85 text-sm md:text-base mt-2 leading-snug"
             style={{ letterSpacing: "-0.005em" }}
           >
             “{artist.quote}”

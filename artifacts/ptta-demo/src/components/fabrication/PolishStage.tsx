@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import type { ModelEntry } from "@/content/models";
 import { polishRender } from "@/content/fabrication-images";
@@ -9,9 +8,11 @@ interface Props {
   model: ModelEntry;
   onDone: () => void;
   onBack: () => void;
+  /** Divide all internal timings by this. Default 1 (unchanged). */
+  speedMultiplier?: number;
 }
 
-const POLISH_MS = 3000;
+const POLISH_MS_BASE = 3000;
 
 // Same responsive square-aspect wrapper as FabricateStage — keeps the
 // image occupying the whole stage while respecting its native shape.
@@ -23,7 +24,12 @@ const IMAGE_WRAP_STYLE: CSSProperties = {
   overflow: "hidden",
 };
 
-export function PolishStage({ model, onDone, onBack }: Props) {
+export function PolishStage({
+  model,
+  onDone,
+  speedMultiplier = 1,
+}: Props) {
+  const POLISH_MS = POLISH_MS_BASE / speedMultiplier;
   const [pass, setPass] = useState(1);
   const startedAt = useRef<number>(Date.now());
 
@@ -36,7 +42,7 @@ export function PolishStage({ model, onDone, onBack }: Props) {
   useEffect(() => {
     const t = setTimeout(onDone, POLISH_MS);
     return () => clearTimeout(t);
-  }, [onDone]);
+  }, [onDone, POLISH_MS]);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -48,28 +54,8 @@ export function PolishStage({ model, onDone, onBack }: Props) {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-stone-950 text-cream flex flex-col overflow-hidden relative">
-      <header className="flex items-center gap-3 px-5 pt-6 pb-2 relative z-30">
-        <button
-          onClick={onBack}
-          aria-label="Back to fabrication picker"
-          className="w-11 h-11 flex items-center justify-center rounded-full text-white/80 hover:bg-white/10 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <div className="min-w-0">
-          <p className="ptta-label text-accent" style={{ fontSize: "9pt" }}>
-            Finishing · Table 04
-          </p>
-          <p
-            className="font-serif text-base leading-none truncate"
-            style={{ letterSpacing: "-0.01em" }}
-          >
-            — {model.title}
-          </p>
-        </div>
-      </header>
-
+    <div className="h-full min-h-[480px] bg-stone-950 text-cream flex flex-col overflow-hidden relative">
+      <div className="pt-4" />
       <ReferenceCard model={model} />
 
       <p
@@ -77,7 +63,7 @@ export function PolishStage({ model, onDone, onBack }: Props) {
         style={{ fontSize: "14pt", letterSpacing: "-0.01em" }}
         aria-live="polite"
       >
-        — Polishing the relief…
+        Polishing the relief…
       </p>
 
       {/* Stage area — no inner frame. The image fills the stage (up to
@@ -97,14 +83,14 @@ export function PolishStage({ model, onDone, onBack }: Props) {
               <img
                 src={baseSrc}
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain"
                 style={fallbackFilter ? { filter: fallbackFilter } : undefined}
               />
               <motion.img
                 src={baseSrc}
                 alt=""
                 aria-hidden
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                 initial={{
                   filter: fallbackFilter
                     ? "blur(7px) grayscale(1) brightness(0.6)"
@@ -163,7 +149,7 @@ export function PolishStage({ model, onDone, onBack }: Props) {
               width: 28,
               height: 28,
               background:
-                "radial-gradient(circle, rgba(214,67,36,0.25), transparent)",
+                "radial-gradient(circle, rgba(250,111,41,0.25), transparent)",
               transform: "translate(-50%, -50%)",
             }}
             animate={{
@@ -179,7 +165,7 @@ export function PolishStage({ model, onDone, onBack }: Props) {
             <motion.span
               aria-hidden
               className="absolute inset-[-3px] rounded-full"
-              style={{ border: "1px dashed rgba(214,67,36,0.6)" }}
+              style={{ border: "1px dashed rgba(250,111,41,0.6)" }}
               animate={{ rotate: 360 }}
               transition={{ duration: 1.5, ease: "linear", repeat: Infinity }}
             />

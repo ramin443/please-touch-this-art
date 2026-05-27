@@ -10,6 +10,7 @@ type ModelViewerAttributes = HTMLAttributes<HTMLElement> & {
   "rotation-per-second"?: string;
   "shadow-intensity"?: string | number;
   "shadow-softness"?: string | number;
+  "tone-mapping"?: "auto" | "aces" | "agx" | "commerce" | "neutral";
   exposure?: string | number;
   "touch-action"?: string;
   "interaction-prompt"?: "auto" | "none" | "when-focused";

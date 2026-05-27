@@ -35,7 +35,7 @@ export function GuidedWalkCard() {
         </span>
         <h3 className="font-sans text-lg mt-1 mb-1">Personalized Guided Walk</h3>
         <p className="text-body-fg text-sm leading-snug">
-          A route through the museum tuned to your time and taste — AI builds the path, you walk it.
+          A route through the museum tuned to your time and taste. AI builds the path, you walk it.
         </p>
       </div>
     </article>

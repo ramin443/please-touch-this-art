@@ -45,6 +45,19 @@ function standardRenders(id: string, revealFile: string): ModelImages {
 const IMAGES: Record<ModelId, ModelImages> = {
   "mona-lisa":             standardRenders("mona-lisa",             "mona-lisa.jpg"),
   "van-gogh":              standardRenders("van-gogh",              "van-gogh.png"),
+  "starry-night":          standardRenders("starry-night",          "starry-night.png"),
+  "sunflowers":            standardRenders("sunflowers",            "sunflowers.png"),
+  "girl-with-pearl-earring": standardRenders("girl-with-pearl-earring", "girl-with-pearl-earring.png"),
+  "guernica":              standardRenders("guernica",              "guernica.png"),
+  "three-musicians":       standardRenders("three-musicians",       "three-musicians.png"),
+  "the-night-watch":       standardRenders("the-night-watch",       "the-night-watch.png"),
+  "dogs-playing-poker":    standardRenders("dogs-playing-poker",    "dogs-playing-poker.png"),
+  "napoleon-crossing-the-alps": standardRenders("napoleon-crossing-the-alps", "napoleon-crossing-the-alps.png"),
+  "the-great-wave":        standardRenders("the-great-wave",        "the-great-wave.png"),
+  "takiyasha":             standardRenders("takiyasha",             "takiyasha.png"),
+  "harlequins-carnival":   standardRenders("harlequins-carnival",   "harlequins-carnival.png"),
+  "whaam":                 standardRenders("whaam",                 "whaam.png"),
+  "the-weeping-woman":     standardRenders("the-weeping-woman",     "the-weeping-woman.png"),
   "the-scream":            standardRenders("the-scream",            "the-scream.png"),
   "persistence-of-memory": standardRenders("persistence-of-memory", "persistence-of-memory.png"),
   "st-nikolai":            standardRenders("st-nikolai",            "st-nikolai.png"),
@@ -71,6 +84,22 @@ export function fabricateRenders(
 export function polishRender(id: ModelId): string | undefined {
   const r = IMAGES[id]?.polish;
   return r ? withBase(r) : undefined;
+}
+
+/**
+ * Every image used across the Fabricate → Polish → Reveal flow for a model.
+ * Used to warm these (heavy) renders in the background before the user
+ * reaches the Fabrication stage.
+ */
+export function fabricationAssetUrls(id: ModelId): string[] {
+  const urls: string[] = [];
+  const renders = fabricateRenders(id);
+  if (renders) urls.push(...renders);
+  const polish = polishRender(id);
+  if (polish) urls.push(polish);
+  const reveal = fabricationImage(id);
+  if (reveal) urls.push(reveal);
+  return urls;
 }
 
 /**

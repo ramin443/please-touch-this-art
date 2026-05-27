@@ -17,12 +17,12 @@ export default function DemoPlaceholder() {
   const title = card?.title ?? t.placeholder.notFoundTitle;
 
   const handleBack = useCallback(() => {
-    navigate("/demo-hub");
+    navigate("/demo");
   }, [navigate]);
 
   return (
     <div className="ptta-root min-h-screen bg-page text-ink flex flex-col">
-      <Header showBack backHref="/demo-hub" />
+      <Header showBack backHref="/demo" />
 
       <main
         className="flex-1 flex items-center justify-center px-5 py-12"
@@ -41,7 +41,7 @@ export default function DemoPlaceholder() {
             className="font-serif text-ink text-4xl md:text-5xl leading-[0.98] mb-4"
             style={titleStyle}
           >
-            — {title}
+            {title}
           </h1>
           <p className="text-body-fg text-base md:text-lg mb-10">
             {t.placeholder.comingSoon}

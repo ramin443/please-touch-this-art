@@ -33,7 +33,7 @@ export function AudioDescriberCard() {
         </span>
         <h3 className="font-sans text-lg mt-1 mb-1">Real-time AI Audio Describer</h3>
         <p className="text-body-fg text-sm leading-snug">
-          Narration for everything between the artworks — the room, the crowd, the stairs — spoken only to you.
+          Narration for everything between the artworks (the room, the crowd, the stairs), spoken only to you.
         </p>
       </div>
     </article>

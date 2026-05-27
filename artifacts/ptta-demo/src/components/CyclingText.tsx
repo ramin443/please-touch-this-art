@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 interface CyclingTextProps {
   words: string[];
@@ -7,6 +7,10 @@ interface CyclingTextProps {
   holdMs?: number;
   gapMs?: number;
   reduceMotion?: boolean;
+  /** Custom caret content. When omitted, renders the .ptta-caret thin bar. */
+  caret?: ReactNode;
+  /** Whether the caret blinks while idle (holding/deleting). Defaults to true. */
+  blink?: boolean;
 }
 
 type Phase = "holding" | "deleting" | "typing";
@@ -18,6 +22,8 @@ export function CyclingText({
   holdMs = 1800,
   gapMs = 250,
   reduceMotion = false,
+  caret,
+  blink = true,
 }: CyclingTextProps) {
   const first = words[0] ?? "";
   const [displayed, setDisplayed] = useState(first);
@@ -61,18 +67,23 @@ export function CyclingText({
   }, [displayed, phase, wordIndex, words, holdMs, gapMs, deleteSpeedMs, typeSpeedMs, reduceMotion]);
 
   const showCaret = !reduceMotion && words.length > 1;
-  // Blink while holding or deleting — stay solid only while actively typing.
   const caretIdle = phase === "holding" || phase === "deleting";
+  const blinkClass = blink && caretIdle ? "ptta-caret--blink" : "";
 
   return (
     <span className="inline-flex items-baseline">
       <span>{displayed}</span>
-      {showCaret && (
-        <span
-          className={`ptta-caret ${caretIdle ? "ptta-caret--blink" : ""}`}
-          aria-hidden="true"
-        />
-      )}
+      {showCaret &&
+        (caret !== undefined ? (
+          <span className={blinkClass} aria-hidden="true">
+            {caret}
+          </span>
+        ) : (
+          <span
+            className={`ptta-caret ${blinkClass}`}
+            aria-hidden="true"
+          />
+        ))}
     </span>
   );
 }

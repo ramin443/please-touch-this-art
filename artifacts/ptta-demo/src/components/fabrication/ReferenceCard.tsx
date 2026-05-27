@@ -34,7 +34,7 @@ export function ReferenceCard({ model }: Props) {
       {/* Push-pin */}
       <span
         className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-accent"
-        style={{ boxShadow: "0 0 5px rgba(214,67,36,0.9)" }}
+        style={{ boxShadow: "0 0 5px rgba(250,111,41,0.9)" }}
       />
       {/* Tiny caption */}
       <span

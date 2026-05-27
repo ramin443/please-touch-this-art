@@ -4,13 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Landing from "@/pages/Landing";
-import HowItWorks from "@/pages/HowItWorks";
-import DemoHub from "@/pages/DemoHub";
+import ArtworkPicker from "@/pages/ArtworkPicker";
+import JourneyShell from "@/pages/JourneyShell";
 import DemoPlaceholder from "@/pages/DemoPlaceholder";
-import PaintingToModel from "@/pages/PaintingToModel";
-import Fabrication from "@/pages/Fabrication";
-import AudioGuide from "@/pages/AudioGuide";
-import ArtistPersonaPage from "@/pages/ArtistPersonaPage";
 import FutureFeatures from "@/pages/FutureFeatures";
 import NotFound from "@/pages/not-found";
 
@@ -20,12 +16,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
-      <Route path="/how-it-works" component={HowItWorks} />
-      <Route path="/demo-hub" component={DemoHub} />
-      <Route path="/painting-to-model" component={PaintingToModel} />
-      <Route path="/fabrication" component={Fabrication} />
-      <Route path="/audio-guide" component={AudioGuide} />
-      <Route path="/artist-persona" component={ArtistPersonaPage} />
+      <Route path="/demo" component={ArtworkPicker} />
+      <Route path="/journey/:artworkId" component={JourneyShell} />
+      <Route path="/journey/:artworkId/:processSlug" component={JourneyShell} />
       <Route path="/future-features" component={FutureFeatures} />
       <Route path="/demo/:slug" component={DemoPlaceholder} />
       <Route component={NotFound} />
